@@ -1,0 +1,109 @@
+/*
+FRINEX Premium — Produktlisting (Phase 3)
+==================================================
+Modernes Grid, ruhige Karten (Hover-Lift kommt aus base.scss),
+Filter als klare Pill-Toggles, aktive Filter als entfernbare Chips,
+runde Pagination (Konzept 02/07).
+*/
+
+// ---------------------------------------------------------------
+// Produktkarte
+// ---------------------------------------------------------------
+.product-box .card {
+    border-color: var(--frx-line);
+    overflow: hidden;
+}
+
+// Bildfläche: heller, neutraler Grund statt Reinweiß-Kasten
+.product-image-wrapper {
+    background: var(--frx-surface);
+}
+
+.product-name {
+    font-weight: 600;
+    font-size: .95rem;
+    line-height: 1.35;
+    color: var(--frx-ink);
+}
+
+.product-name:hover {
+    color: var(--frx-accent);
+}
+
+.product-variant-characteristics,
+.product-price-unit {
+    color: var(--frx-muted);
+    font-size: .8rem;
+}
+
+.product-price {
+    font-weight: 650;
+    color: var(--frx-ink);
+}
+
+// Rabatt-Badge: Ink statt Signalrot (Konzept: Sale = Anthrazit)
+.product-badges .badge {
+    font-size: .68rem;
+}
+
+.product-badges .badge.bg-danger {
+    background-color: var(--frx-ink) !important;
+}
+
+// ---------------------------------------------------------------
+// Filter: Pill-Toggles, ruhige Panels
+// ---------------------------------------------------------------
+.filter-panel-item-toggle {
+    border: 1.5px solid var(--frx-line);
+    border-radius: 50rem;
+    font-weight: 600;
+    font-size: .88rem;
+    color: var(--frx-ink);
+    transition:
+        border-color var(--frx-t-fast) var(--frx-ease),
+        background-color var(--frx-t-fast) var(--frx-ease);
+}
+
+.filter-panel-item-toggle:hover {
+    border-color: var(--frx-muted);
+    background: var(--frx-surface);
+}
+
+.filter-panel-item-toggle[aria-expanded='true'] {
+    border-color: var(--frx-accent);
+    color: var(--frx-accent);
+}
+
+// Aktive Filter: entfernbare Chips über dem Grid
+.filter-active {
+    background: var(--frx-surface);
+    border: 1px solid var(--frx-line);
+    border-radius: 50rem;
+    font-size: .8rem;
+    font-weight: 600;
+}
+
+// ---------------------------------------------------------------
+// Pagination: runde Ziele wie im Konzept (07)
+// ---------------------------------------------------------------
+.pagination .page-link {
+    border: 0;
+    border-radius: 50rem;
+    min-width: 2.4rem;
+    text-align: center;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--frx-ink);
+    margin: 0 .15rem;
+    transition: background-color var(--frx-t-fast) var(--frx-ease);
+}
+
+.pagination .page-link:hover {
+    background: var(--frx-surface);
+    color: var(--frx-ink);
+}
+
+.pagination .page-item.active .page-link {
+    background: var(--frx-accent);
+    color: #ffffff;
+}

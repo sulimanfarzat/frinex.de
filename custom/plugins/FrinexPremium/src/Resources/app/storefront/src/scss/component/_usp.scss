@@ -1,0 +1,67 @@
+/*
+FRINEX Premium — USP-Leiste (Konzept-Sektion 2 „Vorteile")
+==================================================
+Wird über das Core-CMS-Element „HTML" gepflegt (Snippet siehe
+README). Ein echter Drag-&-Drop-CMS-Block folgt, sobald eine
+Admin-Build-Pipeline existiert — die Storefront-Optik ist identisch.
+
+Markup:
+<div class="frx-usp-bar">
+    <div class="frx-usp">
+        <span class="frx-usp-icon">…SVG…</span>
+        <span class="frx-usp-title">Schneller Versand</span>
+        <span class="frx-usp-text">Heute bestellt, morgen versandt</span>
+    </div>
+    … (4 Einträge)
+</div>
+*/
+
+.frx-usp-bar {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); // Mobile: 2 × 2 (Konzept 08)
+    gap: 1.25rem;
+    padding: 1.5rem 0;
+}
+
+@media (min-width: 768px) {
+    .frx-usp-bar {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+.frx-usp {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: .35rem;
+}
+
+.frx-usp-icon {
+    width: 3rem;
+    height: 3rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--frx-surface);
+    color: var(--frx-accent);
+    margin-bottom: .4rem;
+}
+
+.frx-usp-icon svg {
+    width: 1.4rem;
+    height: 1.4rem;
+}
+
+.frx-usp-title {
+    font-weight: 700;
+    font-size: .92rem;
+    color: var(--frx-ink);
+}
+
+.frx-usp-text {
+    font-size: .8rem;
+    color: var(--frx-muted);
+}

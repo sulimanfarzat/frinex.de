@@ -229,3 +229,12 @@ button:focus-visible {
 @import 'layout/navigation';
 @import 'layout/footer';
 @import 'layout/offcanvas';
+
+// ---------------------------------------------------------------
+// Seiten & CMS (Phase 3 + 4)
+// ---------------------------------------------------------------
+@import 'component/cms';
+@import 'component/usp';
+@import 'page/listing';
+@import 'page/product-detail';
+@import 'page/checkout';

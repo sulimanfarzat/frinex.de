@@ -1,0 +1,131 @@
+/*
+FRINEX Premium — Warenkorb & Checkout (Phase 4)
+==================================================
+Minimalistisch: Hairlines statt Kästen, Zusammenfassung als ruhige
+sticky Karte, ein dominanter CTA pro Schritt (Konzept 02/09/11).
+*/
+
+// ---------------------------------------------------------------
+// Positionen (line items): Hairline-Trennung, klare Hierarchie
+// ---------------------------------------------------------------
+.line-item {
+    border-color: var(--frx-line);
+}
+
+.line-item-img,
+.line-item-img-link {
+    border-radius: .375rem;
+    background: var(--frx-surface);
+}
+
+.line-item-label {
+    font-weight: 600;
+    color: var(--frx-ink);
+}
+
+.line-item-label:hover {
+    color: var(--frx-accent);
+}
+
+.line-item-price,
+.line-item-total-price,
+.line-item-unit-price {
+    font-variant-numeric: tabular-nums;
+}
+
+.line-item-total-price {
+    font-weight: 650;
+}
+
+.line-item-remove-button {
+    color: var(--frx-muted);
+    transition: color var(--frx-t-fast) var(--frx-ease);
+}
+
+.line-item-remove-button:hover {
+    color: var(--frx-bad, #cf4b3a);
+}
+
+// ---------------------------------------------------------------
+// Zusammenfassung: sticky Karte mit klarer Summenzeile
+// ---------------------------------------------------------------
+.checkout-aside {
+    position: sticky;
+    top: 6.5rem;
+}
+
+.checkout-aside-container {
+    background: var(--frx-surface);
+    border: 1px solid var(--frx-line);
+    border-radius: var(--frx-radius);
+}
+
+.checkout-aside-summary-list {
+    font-size: .9rem;
+}
+
+.checkout-aside-summary-value {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+}
+
+.checkout-aside-summary-total,
+.checkout-aside-summary-total-value {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--frx-ink);
+}
+
+// Primär-CTA: volle Breite, großes Ziel
+.checkout-aside-action .btn-primary,
+.begin-checkout-btn {
+    width: 100%;
+    padding-top: .85rem;
+    padding-bottom: .85rem;
+    font-size: 1rem;
+}
+
+// ---------------------------------------------------------------
+// Bestellschritte (Adresse/Zahlung/Bestätigen): ruhige Karten
+// ---------------------------------------------------------------
+.checkout-card,
+.confirm-address .card,
+.confirm-payment .card,
+.confirm-shipping .card {
+    border-color: var(--frx-line);
+    border-radius: var(--frx-radius);
+}
+
+.confirm-tos .card-title,
+.checkout-card .card-title {
+    font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+    font-weight: 800;
+    letter-spacing: -.01em;
+}
+
+// Zahlungs-/Versandarten: klare Auswahlzustände
+.payment-method,
+.shipping-method {
+    border: 1.5px solid var(--frx-line);
+    border-radius: var(--frx-radius);
+    transition: border-color var(--frx-t-fast) var(--frx-ease);
+}
+
+.payment-method:hover,
+.shipping-method:hover {
+    border-color: var(--frx-muted);
+}
+
+// ---------------------------------------------------------------
+// Bestellabschluss: Erfolg ruhig, nicht schrill
+// ---------------------------------------------------------------
+.finish-header {
+    font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+    font-weight: 800;
+    letter-spacing: -.02em;
+}
+
+.finish-order-details .card {
+    border-color: var(--frx-line);
+    border-radius: var(--frx-radius);
+}

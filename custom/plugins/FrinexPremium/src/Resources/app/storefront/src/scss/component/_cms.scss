@@ -1,0 +1,121 @@
+/*
+FRINEX Premium — CMS-Blöcke / Erlebniswelten (Phase 3)
+==================================================
+Restyling der Core-Blöcke, damit Marketing die Startseite aus
+Standard-Bausteinen im Konzept-Look pflegen kann (Konzept 10):
+Hero (Bild-Text-Cover), Produkt-Slider, Bild-Text, Formulare.
+*/
+
+// ---------------------------------------------------------------
+// Vertikaler Rhythmus der Startseite: Sektionen atmen
+// ---------------------------------------------------------------
+.is-act-home .cms-section + .cms-section {
+    margin-top: clamp(3rem, 7vw, 7rem);
+}
+
+// ---------------------------------------------------------------
+// Sektions-/Block-Titel: Manrope, große klare Hierarchie
+// ---------------------------------------------------------------
+.cms-block .cms-element-title,
+.cms-block h2.cms-element-title {
+    font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+    font-weight: 800;
+    letter-spacing: -.015em;
+    text-wrap: balance;
+}
+
+// ---------------------------------------------------------------
+// Hero (Bild-Text-Cover / image-text-cover): Text-Overlay-Look
+// ---------------------------------------------------------------
+.cms-element-image-cover img,
+.cms-element-image img {
+    border-radius: 0; // Hero läuft randlos (full-bleed)
+}
+
+.cms-block-image-text-cover .cms-element-text h1,
+.cms-block-image-text-cover .cms-element-text h2 {
+    font-size: clamp(2.4rem, calc(1.6rem + 4vw), 4.5rem);
+    line-height: 1.05;
+    letter-spacing: -.03em;
+}
+
+// ---------------------------------------------------------------
+// Produkt-Slider: Peek-Effekt bleibt, Pfeile als weiße runde Ziele
+// ---------------------------------------------------------------
+.base-slider-controls-prev,
+.base-slider-controls-next {
+    background: var(--frx-paper);
+    border: 1px solid var(--frx-line);
+    border-radius: 50%;
+    width: 2.75rem;
+    height: 2.75rem;
+    box-shadow: var(--frx-shadow);
+    color: var(--frx-ink);
+    transition:
+        color var(--frx-t-fast) var(--frx-ease),
+        box-shadow var(--frx-t-fast) var(--frx-ease);
+}
+
+.base-slider-controls-prev:hover,
+.base-slider-controls-next:hover {
+    color: var(--frx-accent);
+    box-shadow: var(--frx-shadow-lift);
+}
+
+.base-slider-dot {
+    background: var(--frx-line);
+}
+
+.base-slider-dot.tns-nav-active {
+    background: var(--frx-accent);
+}
+
+// ---------------------------------------------------------------
+// Bild-Elemente in Blöcken: weiche Radien, Hover-Zoom bei Links
+// ---------------------------------------------------------------
+.cms-block:not(.cms-block-image-text-cover) .cms-element-image {
+    border-radius: var(--frx-radius);
+    overflow: hidden;
+}
+
+.cms-element-image a img {
+    transition: transform var(--frx-t-slow) var(--frx-ease);
+}
+
+.cms-element-image a:hover img {
+    transform: scale(1.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cms-element-image a img {
+        transition: none;
+    }
+
+    .cms-element-image a:hover img {
+        transform: none;
+    }
+}
+
+// ---------------------------------------------------------------
+// Newsletter-/Kontaktformular im CMS: einzeilig ruhig
+// ---------------------------------------------------------------
+.cms-element-form .card {
+    border: 0;
+    background: transparent;
+}
+
+// ---------------------------------------------------------------
+// Scroll-up-Button: rund, weiß, Akzent-Hover
+// ---------------------------------------------------------------
+.scroll-up-button {
+    background: var(--frx-paper);
+    color: var(--frx-ink);
+    border: 1px solid var(--frx-line);
+    border-radius: 50%;
+    box-shadow: var(--frx-shadow);
+}
+
+.scroll-up-button:hover {
+    color: var(--frx-accent);
+    box-shadow: var(--frx-shadow-lift);
+}

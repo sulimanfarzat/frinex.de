@@ -1,0 +1,146 @@
+/*
+FRINEX Premium — Produktdetailseite (Phase 3)
+==================================================
+Große Galerie auf Surface-Grund, Sticky-Kaufbox als
+Entscheidungszentrale, Akzent-Tabs, präzise Daten-Tabelle
+(Konzept 02/09/11).
+*/
+
+// ---------------------------------------------------------------
+// Kaufbox: sticky auf Desktop, alles Kaufrelevante ohne Scrollen
+// ---------------------------------------------------------------
+.product-detail-buy {
+    position: sticky;
+    top: 6.5rem; // unter dem kollabierten Sticky-Header
+}
+
+.product-detail-name {
+    font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+    font-weight: 800;
+    letter-spacing: -.02em;
+    line-height: 1.12;
+}
+
+.product-detail-price {
+    font-weight: 650;
+    font-size: 1.6rem;
+    color: var(--frx-ink);
+    font-variant-numeric: tabular-nums;
+}
+
+.product-detail-price-unit,
+.product-detail-tax {
+    color: var(--frx-muted);
+    font-size: .82rem;
+}
+
+// Kauf-Button: volle Breite, großes Touchziel; auf Mobile klebt er
+// am unteren Viewport-Rand, solange die Kaufbox im Fluss steht
+.product-detail-buy .btn-buy {
+    width: 100%;
+    padding-top: .85rem;
+    padding-bottom: .85rem;
+    font-size: 1rem;
+}
+
+@media (max-width: 767.98px) {
+    .product-detail-buy {
+        position: static;
+    }
+
+    .product-detail-buy .btn-buy {
+        position: sticky;
+        bottom: .75rem;
+        z-index: 10;
+        box-shadow: var(--frx-shadow-lift);
+    }
+}
+
+// Lieferstatus: klarer Farbpunkt + Text
+.delivery-information {
+    font-size: .88rem;
+}
+
+.delivery-status-indicator {
+    width: .55rem;
+    height: .55rem;
+}
+
+// ---------------------------------------------------------------
+// Galerie: ruhiger Grund, klare Thumbnail-Zustände
+// ---------------------------------------------------------------
+.gallery-slider-item,
+.gallery-slider-single-image {
+    background: var(--frx-surface);
+    border-radius: var(--frx-radius);
+}
+
+.gallery-slider-thumbnails-item .gallery-slider-thumbnails-image {
+    border-radius: .375rem;
+    border: 1.5px solid transparent;
+    transition: border-color var(--frx-t-fast) var(--frx-ease);
+}
+
+.gallery-slider-thumbnails-item.tns-nav-active .gallery-slider-thumbnails-image,
+.gallery-slider-thumbnails-item:hover .gallery-slider-thumbnails-image {
+    border-color: var(--frx-accent);
+}
+
+// ---------------------------------------------------------------
+// Tabs: Akzent-Unterstreichung statt Kästen (wie Konzept-Demo 07)
+// ---------------------------------------------------------------
+.product-detail-tabs .nav-tabs {
+    border-bottom: 1.5px solid var(--frx-line);
+    gap: .25rem;
+}
+
+.product-detail-tabs .nav-tabs .nav-link {
+    border: 0;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1.5px;
+    background: none;
+    font-weight: 600;
+    font-size: .92rem;
+    color: var(--frx-muted);
+    transition:
+        color var(--frx-t-fast) var(--frx-ease),
+        border-color var(--frx-t-fast) var(--frx-ease);
+}
+
+.product-detail-tabs .nav-tabs .nav-link:hover {
+    color: var(--frx-ink);
+}
+
+.product-detail-tabs .nav-tabs .nav-link.active {
+    color: var(--frx-accent);
+    border-bottom-color: var(--frx-accent);
+}
+
+// ---------------------------------------------------------------
+// Technische Daten: Hairlines, fluchtende Werte
+// ---------------------------------------------------------------
+.product-detail-properties-table td,
+.product-detail-properties-table th {
+    border-color: var(--frx-line);
+    padding: .6rem .75rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.product-detail-properties-table .properties-label {
+    color: var(--frx-muted);
+    font-weight: 500;
+}
+
+// ---------------------------------------------------------------
+// Bewertungen & Cross-Selling
+// ---------------------------------------------------------------
+.product-detail-review-teaser .point-rating,
+.product-review-rating .point-rating {
+    color: var(--frx-b2b); // Sterne in Amber — einziges Nicht-Blau-Signal
+}
+
+.product-detail-cross-selling .cms-element-title,
+.cross-selling-tab-navigation .nav-link {
+    font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+    font-weight: 800;
+}
