@@ -148,6 +148,24 @@ Runterscrollen, sofort wieder da beim Hochscrollen).
     box-shadow: none;
 }
 
+// Warenkorb-Button trägt die Bestellsumme (ab sm sichtbar) und braucht
+// natürliche Breite — die runde 2.75rem-Fixbreite schnitt den Betrag ab
+.header-cart-btn.header-actions-btn {
+    width: auto;
+    min-width: 2.75rem;
+    padding-left: .65rem;
+    padding-right: .8rem;
+    border-radius: 50rem;
+}
+
+.header-cart-total {
+    font-weight: 650;
+    font-size: .92rem;
+    color: var(--frx-ink);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
 // Warenkorb-/Merklisten-Zähler in Akzentfarbe
 .header-cart-badge,
 .header-wishlist-badge {
