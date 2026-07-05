@@ -1,0 +1,112 @@
+/*
+FRINEX Premium — Hauptnavigation & Mega-Menü (Phase 2)
+==================================================
+Struktur (Shopware 6.7): .nav-main > .navbar.main-navigation-menu >
+.main-navigation-menu-list > .nav-item > .nav-link; das Mega-Menü ist
+das Bootstrap-.dropdown-menu.w-100 mit .navigation-flyout-*-Inhalten.
+*/
+
+// ---------------------------------------------------------------
+// Nav-Zeile: weiß, Hairline unten, ruhige Typografie
+// ---------------------------------------------------------------
+.nav-main {
+    background: transparent;
+    border-bottom: 1px solid var(--frx-line);
+}
+
+.main-navigation-menu .nav-link.main-navigation-link {
+    font-weight: 600;
+    font-size: .92rem;
+    letter-spacing: .01em;
+    color: var(--frx-muted);
+    padding: .85rem 1.1rem;
+    position: relative;
+    transition: color var(--frx-t-fast) var(--frx-ease);
+}
+
+.main-navigation-menu .nav-link.main-navigation-link:hover,
+.main-navigation-menu .nav-link.main-navigation-link:focus-visible {
+    color: var(--frx-ink);
+}
+
+// Aktiver Punkt: 2-px-Akzentlinie statt Farbfläche
+.main-navigation-menu .nav-link.main-navigation-link.active,
+.main-navigation-menu .nav-item.active > .nav-link.main-navigation-link {
+    color: var(--frx-ink);
+}
+
+.main-navigation-menu .nav-link.main-navigation-link.active::after,
+.main-navigation-menu .nav-item.active > .nav-link.main-navigation-link::after {
+    content: "";
+    position: absolute;
+    left: 1.1rem;
+    right: 1.1rem;
+    bottom: 0;
+    height: 2px;
+    background: var(--frx-accent);
+}
+
+// ---------------------------------------------------------------
+// Mega-Menü: volle Breite, weiße Fläche, weiche Kante
+// ---------------------------------------------------------------
+.main-navigation-menu .dropdown-menu {
+    border: 0;
+    border-top: 1px solid var(--frx-line);
+    border-radius: 0 0 var(--frx-radius) var(--frx-radius);
+    box-shadow: var(--frx-shadow-lift);
+    padding: 2rem 2.5rem;
+    margin-top: 0;
+}
+
+// Kategorien-Spalten
+.navigation-flyout-link {
+    display: block;
+    padding: .35rem 0;
+    color: var(--frx-muted);
+    text-decoration: none;
+    transition: color var(--frx-t-fast) var(--frx-ease);
+}
+
+.navigation-flyout-link:hover,
+.navigation-flyout-link:focus-visible {
+    color: var(--frx-accent);
+}
+
+// Ebene 0 = Spaltentitel: Manrope, Versal-Label wie im Konzept
+.navigation-flyout-link.is-level-0 {
+    font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+    font-weight: 800;
+    font-size: .78rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--frx-ink);
+    margin-bottom: .5rem;
+}
+
+.navigation-flyout-link.is-level-0:hover {
+    color: var(--frx-accent);
+}
+
+// Bildteaser rechts: abgerundet, sanfter Zoom
+.navigation-flyout-teaser-image-container {
+    border-radius: var(--frx-radius);
+    overflow: hidden;
+}
+
+.navigation-flyout-teaser img {
+    transition: transform var(--frx-t-slow) var(--frx-ease);
+}
+
+.navigation-flyout-teaser:hover img {
+    transform: scale(1.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .navigation-flyout-teaser img {
+        transition: none;
+    }
+
+    .navigation-flyout-teaser:hover img {
+        transform: none;
+    }
+}

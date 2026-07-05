@@ -1,0 +1,54 @@
+{% sw_extends '@Storefront/storefront/layout/header.html.twig' %}
+
+{#
+    FRINEX Premium — Sticky Header (Phase 2)
+    Wrapper um Header + Hauptnavigation: klebt am Viewport-Anfang,
+    klappt die Nav-Zeile beim Runterscrollen ein und zeigt sie beim
+    Hochscrollen sofort wieder (Konzept, Abschnitt 02/12).
+
+    Das Verhalten liegt bewusst als kleines Inline-Script hier im
+    Template statt im Webpack-Build: kein Node/Build-Toolchain auf
+    dem Server nötig, ~0,4 KB, nur transform/opacity (INP-sicher).
+#}
+
+{% block header %}
+    <div class="frx-header-sticky js-frx-header">
+        {{ parent() }}
+    </div>
+
+    <script>
+        (function () {
+            var el = document.querySelector('.js-frx-header');
+            if (!el) {
+                return;
+            }
+
+            var lastY = window.scrollY;
+            var ticking = false;
+
+            function update() {
+                var y = window.scrollY;
+                el.classList.toggle('frx-scrolled', y > 8);
+
+                // Nicht einklappen, solange ein Menü-Flyout offen ist
+                if (!el.querySelector('.dropdown-menu.show')) {
+                    if (y > 160 && y > lastY + 4) {
+                        el.classList.add('frx-collapsed');
+                    } else if (y < lastY - 4 || y <= 160) {
+                        el.classList.remove('frx-collapsed');
+                    }
+                }
+
+                lastY = y;
+                ticking = false;
+            }
+
+            window.addEventListener('scroll', function () {
+                if (!ticking) {
+                    window.requestAnimationFrame(update);
+                    ticking = true;
+                }
+            }, { passive: true });
+        })();
+    </script>
+{% endblock %}

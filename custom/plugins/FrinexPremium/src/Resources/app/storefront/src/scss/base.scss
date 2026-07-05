@@ -221,3 +221,11 @@ button:focus-visible {
         transform: none;
     }
 }
+
+// ---------------------------------------------------------------
+// Layout-Module (Phase 2)
+// ---------------------------------------------------------------
+@import 'layout/header';
+@import 'layout/navigation';
+@import 'layout/footer';
+@import 'layout/offcanvas';

@@ -1,0 +1,145 @@
+/*
+FRINEX Premium — Header (Phase 2)
+==================================================
+Sticky-Verhalten: der Twig-Override (views/storefront/layout/
+header.html.twig) legt den Wrapper .frx-header-sticky um Header +
+Navigation und toggelt per Inline-JS die Klassen .frx-scrolled
+(Schatten) und .frx-collapsed (Nav-Zeile eingeklappt beim
+Runterscrollen, sofort wieder da beim Hochscrollen).
+*/
+
+// ---------------------------------------------------------------
+// Sticky-Wrapper
+// ---------------------------------------------------------------
+.frx-header-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+    background: var(--frx-paper);
+    transition: box-shadow var(--frx-t-med) var(--frx-ease);
+}
+
+@supports (backdrop-filter: blur(1px)) {
+    .frx-header-sticky {
+        background: rgba(255, 255, 255, .88);
+        backdrop-filter: blur(12px);
+    }
+}
+
+.frx-header-sticky.frx-scrolled {
+    box-shadow: 0 1px 0 var(--frx-line), 0 8px 24px rgba(20, 24, 30, .06);
+}
+
+// Nav-Zeile klappt beim Runterscrollen ein (Konzept 02: Header
+// kollabiert auf die Funktionszeile, −48px)
+.frx-header-sticky .nav-main {
+    max-height: 5rem;
+    transition:
+        max-height var(--frx-t-med) var(--frx-ease),
+        opacity var(--frx-t-med) var(--frx-ease);
+}
+
+.frx-header-sticky.frx-collapsed .nav-main {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .frx-header-sticky,
+    .frx-header-sticky .nav-main {
+        transition: none;
+    }
+}
+
+// ---------------------------------------------------------------
+// Top-Bar (Sprache/Währung, nur ≥lg): schmale Anthrazit-Leiste
+// ---------------------------------------------------------------
+.top-bar {
+    background: var(--frx-ink);
+    color: rgba(255, 255, 255, .78);
+    font-size: .78rem;
+    border-bottom: 0;
+}
+
+.top-bar a,
+.top-bar .top-bar-nav-text,
+.top-bar button {
+    color: rgba(255, 255, 255, .78);
+    text-decoration: none;
+}
+
+.top-bar a:hover,
+.top-bar button:hover {
+    color: #ffffff;
+}
+
+// ---------------------------------------------------------------
+// Funktionszeile: Logo · Suche · Konto/Merkliste/Warenkorb
+// ---------------------------------------------------------------
+.header-main {
+    background: transparent;
+    border-bottom: 1px solid var(--frx-line);
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+}
+
+// Suchfeld: Pill auf Surface-Grau, zentriert, großzügig
+.header-search {
+    max-width: 40rem;
+}
+
+.header-search-input.form-control {
+    background: var(--frx-surface);
+    border-color: transparent;
+    border-radius: 50rem;
+    padding: .65rem 1.25rem;
+    font-size: .95rem;
+}
+
+.header-search-input.form-control:hover:not(:focus) {
+    border-color: var(--frx-line);
+}
+
+.header-search-input.form-control:focus {
+    background: var(--frx-paper);
+    border-color: var(--frx-accent);
+}
+
+.header-search-btn {
+    color: var(--frx-muted);
+}
+
+.header-search-btn:hover {
+    color: var(--frx-accent);
+}
+
+// Aktions-Buttons: runde 44-px-Ziele, ruhiger Hover
+.header-actions-btn {
+    width: 2.75rem;
+    height: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: var(--frx-ink);
+    transition:
+        background-color var(--frx-t-fast) var(--frx-ease),
+        color var(--frx-t-fast) var(--frx-ease);
+}
+
+.header-actions-btn:hover {
+    background: var(--frx-surface);
+    color: var(--frx-accent);
+    transform: none;
+    box-shadow: none;
+}
+
+// Warenkorb-/Merklisten-Zähler in Akzentfarbe
+.header-cart-badge,
+.header-wishlist-badge {
+    background: var(--frx-accent);
+    color: #ffffff;
+    font-variant-numeric: tabular-nums;
+}

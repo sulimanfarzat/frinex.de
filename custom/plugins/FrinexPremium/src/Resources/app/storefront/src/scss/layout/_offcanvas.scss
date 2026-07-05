@@ -1,0 +1,45 @@
+/*
+FRINEX Premium — Offcanvas-Navigation Mobile (Phase 2)
+==================================================
+Core-Verhalten (Slide-in, Ebenen-Navigation) bleibt; hier nur
+Typografie, Touch-Ziele und ruhige Zustände.
+*/
+
+.navigation-offcanvas-headline {
+    font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+    font-weight: 800;
+    letter-spacing: -.01em;
+    color: var(--frx-ink);
+}
+
+.navigation-offcanvas-link.nav-link {
+    color: var(--frx-ink);
+    font-weight: 500;
+    // 44-px-Touchziele (Konzept 08)
+    min-height: 2.75rem;
+    display: flex;
+    align-items: center;
+    transition: background-color var(--frx-t-fast) var(--frx-ease);
+}
+
+.navigation-offcanvas-link.nav-link:hover,
+.navigation-offcanvas-link.nav-link:focus-visible {
+    background: var(--frx-surface);
+    color: var(--frx-accent);
+}
+
+.navigation-offcanvas-link.is-current-category {
+    color: var(--frx-accent);
+    font-weight: 600;
+}
+
+.navigation-offcanvas-list-item {
+    border-color: var(--frx-line);
+}
+
+// Zurück-/Home-Links als Meta-Ebene absetzen
+.navigation-offcanvas-link.is-back-link,
+.navigation-offcanvas-link.is-home-link {
+    color: var(--frx-muted);
+    font-size: .88rem;
+}

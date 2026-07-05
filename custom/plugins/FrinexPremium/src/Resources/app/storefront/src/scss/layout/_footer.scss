@@ -1,0 +1,96 @@
+/*
+FRINEX Premium — Footer (Phase 2)
+==================================================
+Anthrazit-Grund (Konzept 05: Ink trägt Text UND Footer), mehrspaltig,
+auf Mobile klappen die Spalten als Akkordeon (Core-Verhalten
+.js-footer-column bleibt erhalten, nur restyled).
+*/
+
+.footer-main {
+    background: var(--frx-ink);
+    color: rgba(255, 255, 255, .72);
+    border-top: 0;
+    padding-top: 3.5rem;
+    font-size: .9rem;
+}
+
+// ---------------------------------------------------------------
+// Spalten & Headlines
+// ---------------------------------------------------------------
+.footer-main .footer-headline,
+.footer-main .footer-column-headline {
+    font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+    font-weight: 800;
+    font-size: .75rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: #ffffff;
+    border-bottom: 0;
+}
+
+.footer-main .footer-link,
+.footer-main .footer-contact a {
+    color: rgba(255, 255, 255, .72);
+    text-decoration: none;
+    transition: color var(--frx-t-fast) var(--frx-ease);
+}
+
+.footer-main .footer-link:hover,
+.footer-main .footer-contact a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.footer-main .footer-link-item {
+    padding: .3rem 0;
+}
+
+// Mobile-Akkordeon: Hairline zwischen Spalten, heller Toggle
+.footer-main .footer-column {
+    border-color: rgba(255, 255, 255, .12);
+}
+
+.footer-main .footer-column-toggle {
+    color: rgba(255, 255, 255, .72);
+}
+
+// ---------------------------------------------------------------
+// Zahlungs-/Versandlogos: weiße Chips auf dunklem Grund
+// ---------------------------------------------------------------
+.footer-main .footer-logos {
+    border-color: rgba(255, 255, 255, .12);
+}
+
+.footer-main .footer-logo {
+    background: #ffffff;
+    border-radius: .375rem;
+    padding: .25rem .5rem;
+}
+
+// ---------------------------------------------------------------
+// Service-Menü + Copyright: abgesetzte Bottom-Zeile
+// ---------------------------------------------------------------
+.footer-main .footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, .12);
+    margin-top: 2.5rem;
+    background: transparent;
+}
+
+.footer-main .footer-service-menu-link,
+.footer-main .footer-copyright,
+.footer-main .footer-vat {
+    color: rgba(255, 255, 255, .55);
+    font-size: .8rem;
+}
+
+.footer-main .footer-service-menu-link:hover {
+    color: #ffffff;
+}
+
+// Fokus-Sichtbarkeit auf dunklem Grund: heller Ring
+.footer-main a:focus-visible,
+.footer-main button:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, .8);
+    outline-offset: 2px;
+}
