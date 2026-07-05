@@ -9,8 +9,11 @@ runde Pagination (Konzept 02/07).
 // ---------------------------------------------------------------
 // Produktkarte
 // ---------------------------------------------------------------
+// Randlos mit weichem Schatten statt Rahmen — der Hover-Lift
+// (base.scss) hebt die Karte zusätzlich an
 .product-box .card {
-    border-color: var(--frx-line);
+    border: 0;
+    box-shadow: var(--frx-shadow);
     overflow: hidden;
 }
 

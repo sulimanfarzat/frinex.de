@@ -1,0 +1,25 @@
+{% sw_extends '@Storefront/storefront/component/buy-widget/buy-widget-price.html.twig' %}
+
+{#
+    FRINEX Premium — Zweitpreis in der Kaufbox (portiert aus MeinB2BTheme)
+    B2B (Netto-Anzeige): Primärpreis ist netto, Brutto klein darunter.
+    B2C (Brutto-Anzeige): Netto klein darunter.
+#}
+
+{% block page_product_detail_price_inner %}
+    {{ parent() }}
+
+    {% set price = page.product.calculatedPrice %}
+    {% set firstTax = price.calculatedTaxes.first %}
+    {% set taxRate = firstTax ? firstTax.taxRate : 0 %}
+
+    <div class="frx-secondary-price product-detail-secondary-price">
+        {% if context.currentCustomerGroup.displayGross %}
+            {% set netPrice = price.unitPrice / (1 + taxRate / 100) %}
+            {{ netPrice|currency }} <small>zzgl. {{ taxRate|number_format(0) }}&nbsp;% MwSt.</small>
+        {% else %}
+            {% set grossPrice = price.unitPrice * (1 + taxRate / 100) %}
+            {{ grossPrice|currency }} <small>inkl. {{ taxRate|number_format(0) }}&nbsp;% MwSt.</small>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,101 @@
+{% sw_extends '@Storefront/storefront/component/product/card/action.html.twig' %}
+
+{#
+    FRINEX Premium — B2B-Quick-Buy in der Produktkarte (portiert aus
+    MeinB2BTheme, restyled): Mengen-Stepper + „In den Warenkorb" direkt
+    im Listing. Greift nur, wenn „Kauf im Listing" in den Einstellungen
+    aktiv ist (core.listing.allowBuyInListing) — sonst Core-Verhalten.
+#}
+
+{% block component_product_box_action_buy_button %}
+    <div class="d-grid gap-2 frx-card-buy">
+        <div class="input-group input-group-sm frx-card-qty-group">
+            <button type="button"
+                    class="btn btn-outline-secondary btn-product-card-qty-minus"
+                    aria-label="{{ 'component.product.quantitySelect.decrease'|trans|striptags }}">−</button>
+            <input type="number"
+                   class="form-control text-center product-card-qty-input"
+                   value="{{ product.minPurchase }}"
+                   min="{{ product.minPurchase }}"
+                   max="{{ product.calculatedMaxPurchase > 0 ? product.calculatedMaxPurchase : 9999 }}"
+                   readonly
+                   aria-label="{{ 'component.product.quantitySelect.label'|trans|striptags }}">
+            <button type="button"
+                    class="btn btn-outline-secondary btn-product-card-qty-plus"
+                    aria-label="{{ 'component.product.quantitySelect.increase'|trans|striptags }}">+</button>
+        </div>
+        <button class="btn btn-buy">
+            {{ 'listing.boxAddProduct'|trans|sw_sanitize }}
+        </button>
+    </div>
+
+    <script>
+        (function () {
+            'use strict';
+
+            var form = document.currentScript.closest('form.buy-widget');
+            if (!form) {
+                return;
+            }
+
+            var qtyDisplay = form.querySelector('.product-card-qty-input');
+            var qtyHidden = form.querySelector('.product-card-qty');
+            var minusBtn = form.querySelector('.btn-product-card-qty-minus');
+            var plusBtn = form.querySelector('.btn-product-card-qty-plus');
+
+            if (!qtyDisplay || !qtyHidden || !minusBtn || !plusBtn) {
+                return;
+            }
+
+            var minQty = parseInt(qtyHidden.value, 10) || 1;
+
+            function setQty(value) {
+                qtyDisplay.value = value;
+                qtyHidden.value = value;
+            }
+
+            minusBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var val = parseInt(qtyDisplay.value, 10) || minQty;
+                if (val > minQty) {
+                    setQty(val - 1);
+                }
+            });
+
+            plusBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var val = parseInt(qtyDisplay.value, 10) || minQty;
+                var max = parseInt(qtyDisplay.max, 10) || 9999;
+                if (val < max) {
+                    setQty(val + 1);
+                }
+            });
+        })();
+    </script>
+{% endblock %}
+
+{# Core-Block ersetzt (kein parent()), damit das Mengen-Feld nicht
+   doppelt existiert — einziges quantity-Input trägt die Stepper-Klasse #}
+{% block component_product_box_action_buy_info %}
+    <input type="hidden"
+           name="lineItems[{{ id }}][id]"
+           value="{{ id }}">
+    <input type="hidden"
+           name="lineItems[{{ id }}][referencedId]"
+           value="{{ id }}">
+    <input type="hidden"
+           name="lineItems[{{ id }}][type]"
+           value="product">
+    <input type="hidden"
+           name="lineItems[{{ id }}][stackable]"
+           value="1">
+    <input type="hidden"
+           name="lineItems[{{ id }}][removable]"
+           value="1">
+    <input type="hidden"
+           name="lineItems[{{ id }}][quantity]"
+           value="{{ product.minPurchase }}"
+           class="product-card-qty">
+{% endblock %}

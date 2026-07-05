@@ -119,3 +119,14 @@ $modal-content-border-radius: .75rem;
 // ---------------------------------------------------------------
 $breadcrumb-divider-color: $frx-line;
 $breadcrumb-active-color:  $frx-ink;
+
+// ---------------------------------------------------------------
+// Raster: Inhaltsbreite 1360px (Konzept 04)
+// ---------------------------------------------------------------
+$container-max-widths: (
+    sm: 540px,
+    md: 720px,
+    lg: 960px,
+    xl: 1140px,
+    xxl: 1360px
+);

@@ -1,0 +1,125 @@
+/*
+FRINEX Premium — Feinschliff „moderner B2B-Shop"
+==================================================
+Zweitpreis (netto/brutto), Breadcrumbs, Mengen-Stepper,
+Karten-Quick-Buy, ruhige Detail-Politur.
+*/
+
+// ---------------------------------------------------------------
+// Zweitpreis: Primärpreis netto groß, Brutto klein daneben (B2B)
+// ---------------------------------------------------------------
+.frx-secondary-price {
+    color: var(--frx-muted);
+    font-size: .82rem;
+    font-variant-numeric: tabular-nums;
+    margin-top: .1rem;
+}
+
+.frx-secondary-price small {
+    font-size: .78rem;
+}
+
+// ---------------------------------------------------------------
+// Breadcrumbs: leise Meta-Zeile, aktueller Punkt betont
+// ---------------------------------------------------------------
+.breadcrumb {
+    font-size: .82rem;
+    margin-bottom: 1rem;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    color: var(--frx-line);
+}
+
+.breadcrumb-link {
+    color: var(--frx-muted);
+    text-decoration: none;
+}
+
+.breadcrumb-link:hover {
+    color: var(--frx-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.breadcrumb-link.is-active,
+.breadcrumb-item.active {
+    color: var(--frx-ink);
+    font-weight: 600;
+}
+
+// ---------------------------------------------------------------
+// Mengen-Stepper (PDP-Core + Karten-Quick-Buy): Pill-Gruppe
+// ---------------------------------------------------------------
+.quantity-selector-group,
+.frx-card-qty-group {
+    border: 1.5px solid var(--frx-line);
+    border-radius: 50rem;
+    overflow: hidden;
+}
+
+.quantity-selector-group .btn,
+.frx-card-qty-group .btn {
+    border: 0;
+    background: transparent;
+    color: var(--frx-ink);
+    font-weight: 600;
+    min-width: 2.4rem;
+}
+
+.quantity-selector-group .btn:hover,
+.frx-card-qty-group .btn:hover {
+    background: var(--frx-surface);
+    color: var(--frx-accent);
+    transform: none;
+    box-shadow: none;
+}
+
+.quantity-selector-group .form-control,
+.frx-card-qty-group .form-control {
+    border: 0;
+    background: transparent;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    max-width: 3.5rem;
+}
+
+.quantity-selector-group .form-control:focus,
+.frx-card-qty-group .form-control:focus {
+    box-shadow: none;
+}
+
+// Karten-Quick-Buy: kompakter Kauf-Button
+.frx-card-buy .btn-buy {
+    padding-top: .55rem;
+    padding-bottom: .55rem;
+    font-size: .88rem;
+}
+
+// ---------------------------------------------------------------
+// Kategorie-Kopf: großzügige H1, kurze Beschreibung gedämpft
+// ---------------------------------------------------------------
+.cms-element-category-navigation h1,
+.cms-page h1.cms-element-title {
+    margin-bottom: .75rem;
+}
+
+// ---------------------------------------------------------------
+// Offcanvas-Warenkorb: ruhige Fläche, klare Summe
+// ---------------------------------------------------------------
+.offcanvas .offcanvas-header {
+    border-bottom: 1px solid var(--frx-line);
+}
+
+.offcanvas .offcanvas-title {
+    font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+    font-weight: 800;
+    letter-spacing: -.01em;
+}
+
+// ---------------------------------------------------------------
+// MwSt.-Hinweis im Footer sichtbar statt versteckt
+// ---------------------------------------------------------------
+.footer-vat {
+    opacity: 1;
+}

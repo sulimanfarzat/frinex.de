@@ -1,0 +1,22 @@
+{% sw_extends '@Storefront/storefront/component/product/card/price-unit.html.twig' %}
+
+{#
+    FRINEX Premium — Zweitpreis in der Produktkarte (portiert aus
+    MeinB2BTheme): Netto-Shop zeigt Brutto als Zusatzinfo und umgekehrt.
+#}
+
+{% block component_product_box_price_info %}
+    {{ parent() }}
+
+    {% set price = product.calculatedPrice %}
+    {% set firstTax = price.calculatedTaxes.first %}
+    {% set taxRate = firstTax ? firstTax.taxRate : 0 %}
+
+    <div class="frx-secondary-price product-detail-secondary-price">
+        {% if context.currentCustomerGroup.displayGross %}
+            {{ (price.unitPrice / (1 + taxRate / 100))|currency }} <small>zzgl. MwSt.</small>
+        {% else %}
+            {{ (price.unitPrice * (1 + taxRate / 100))|currency }} <small>inkl. MwSt.</small>
+        {% endif %}
+    </div>
+{% endblock %}
