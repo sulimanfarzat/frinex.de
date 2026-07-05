@@ -3,12 +3,13 @@
 {#
     FRINEX Premium — Sticky Header (Phase 2)
     Wrapper um Header + Hauptnavigation: klebt am Viewport-Anfang,
-    klappt die Nav-Zeile beim Runterscrollen ein und zeigt sie beim
-    Hochscrollen sofort wieder (Konzept, Abschnitt 02/12).
+    gleitet beim Runterscrollen per transform hinaus und beim
+    Hochscrollen sofort wieder herein (Konzept, Abschnitt 02/12).
 
-    Das Verhalten liegt bewusst als kleines Inline-Script hier im
-    Template statt im Webpack-Build: kein Node/Build-Toolchain auf
-    dem Server nötig, ~0,4 KB, nur transform/opacity (INP-sicher).
+    Bewusst als kleines Inline-Script statt Webpack-Build (kein Node
+    auf dem Server nötig). Nur transform/opacity — INP-sicher.
+    Hysterese über kumulierte Scroll-Deltas verhindert Flattern an
+    der Schwelle (Jitter-Loop der früheren max-height-Variante).
 #}
 
 {% block header %}
@@ -24,23 +25,42 @@
             }
 
             var lastY = window.scrollY;
+            var downTravel = 0;   // kumuliert nach unten gescrollte Pixel
+            var upTravel = 0;     // kumuliert nach oben gescrollte Pixel
             var ticking = false;
+
+            var SHOW_MIN_Y = 200;    // darüber darf der Header verschwinden
+            var HIDE_AFTER = 48;     // erst nach 48px Abwärts-Scroll ausblenden
+            var SHOW_AFTER = 16;     // nach 16px Aufwärts-Scroll einblenden
 
             function update() {
                 var y = window.scrollY;
-                el.classList.toggle('frx-scrolled', y > 8);
-
-                // Nicht einklappen, solange ein Menü-Flyout offen ist
-                if (!el.querySelector('.dropdown-menu.show')) {
-                    if (y > 160 && y > lastY + 4) {
-                        el.classList.add('frx-collapsed');
-                    } else if (y < lastY - 4 || y <= 160) {
-                        el.classList.remove('frx-collapsed');
-                    }
-                }
-
+                var delta = y - lastY;
                 lastY = y;
                 ticking = false;
+
+                el.classList.toggle('frx-scrolled', y > 8);
+
+                // Offenes Mega-Menü: Header nie ausblenden
+                if (el.querySelector('.dropdown-menu.show')) {
+                    downTravel = 0;
+                    upTravel = 0;
+                    return;
+                }
+
+                if (delta > 0) {
+                    downTravel += delta;
+                    upTravel = 0;
+                } else if (delta < 0) {
+                    upTravel -= delta;
+                    downTravel = 0;
+                }
+
+                if (y <= SHOW_MIN_Y || upTravel >= SHOW_AFTER) {
+                    el.classList.remove('frx-collapsed');
+                } else if (downTravel >= HIDE_AFTER) {
+                    el.classList.add('frx-collapsed');
+                }
             }
 
             window.addEventListener('scroll', function () {

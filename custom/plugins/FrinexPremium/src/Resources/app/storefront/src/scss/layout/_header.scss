@@ -16,7 +16,9 @@ Runterscrollen, sofort wieder da beim Hochscrollen).
     top: 0;
     z-index: 1020;
     background: var(--frx-paper);
-    transition: box-shadow var(--frx-t-med) var(--frx-ease);
+    transition:
+        box-shadow var(--frx-t-med) var(--frx-ease),
+        transform var(--frx-t-med) var(--frx-ease);
 }
 
 @supports (backdrop-filter: blur(1px)) {
@@ -30,25 +32,19 @@ Runterscrollen, sofort wieder da beim Hochscrollen).
     box-shadow: 0 1px 0 var(--frx-line), 0 8px 24px rgba(20, 24, 30, .06);
 }
 
-// Nav-Zeile klappt beim Runterscrollen ein (Konzept 02: Header
-// kollabiert auf die Funktionszeile, −48px)
-.frx-header-sticky .nav-main {
-    max-height: 5rem;
-    transition:
-        max-height var(--frx-t-med) var(--frx-ease),
-        opacity var(--frx-t-med) var(--frx-ease);
-}
-
-.frx-header-sticky.frx-collapsed .nav-main {
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-    pointer-events: none;
+// Beim Runterscrollen gleitet der ganze Header per transform raus,
+// beim Hochscrollen sofort wieder rein. Bewusst NICHT über max-height
+// der Nav-Zeile: Höhen-Animation verschiebt den Seiteninhalt, das
+// ändert die Scroll-Position und kippt die Richtungserkennung um —
+// der Header flatterte dadurch beim Einklappen (Jitter-Loop).
+// transform ändert kein Layout und ist damit rückkopplungsfrei.
+.frx-header-sticky.frx-collapsed {
+    transform: translateY(-100%);
+    box-shadow: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .frx-header-sticky,
-    .frx-header-sticky .nav-main {
+    .frx-header-sticky {
         transition: none;
     }
 }
