@@ -1,0 +1,57 @@
+{% sw_extends '@Storefront/storefront/component/checkout/add-product-by-number.html.twig' %}
+
+{#
+    „Produktnummer"-Formular der Warenkorbseite mit Mengenfeld.
+    Postet an die Plugin-Route add-by-number-qty (Nummer + Menge)
+    statt an die Core-Route (immer Menge 1).
+#}
+
+{% block page_checkout_cart_add_product %}
+    <div class="col-md-5 cart-add-product-container">
+        <form action="{{ path('frontend.checkout.product.add-by-number-qty') }}" method="post">
+            {% block page_checkout_cart_add_product_redirect %}
+                <input type="hidden"
+                       name="redirectTo"
+                       value="frontend.checkout.cart.page">
+            {% endblock %}
+
+            {% block page_checkout_cart_add_product_label %}
+                <label class="mb-1" for="addProductInput">
+                    {{ 'checkout.addProductLabel'|trans|sw_sanitize }}
+                </label>
+            {% endblock %}
+
+            {% block page_checkout_cart_add_product_input_group %}
+                <div class="input-group frx-add-by-number">
+                    {% block page_checkout_cart_add_product_input %}
+                        <input type="text"
+                               name="number"
+                               class="form-control"
+                               id="addProductInput"
+                               placeholder="{{ 'checkout.addProductPlaceholder'|trans|striptags }}">
+                    {% endblock %}
+
+                    {% block page_checkout_cart_add_product_quantity %}
+                        <input type="number"
+                               name="quantity"
+                               class="form-control frx-add-by-number-qty"
+                               value="1"
+                               min="1"
+                               max="9999"
+                               inputmode="numeric"
+                               aria-label="{{ 'component.product.quantitySelect.label'|trans|striptags }}">
+                    {% endblock %}
+
+                    {% block page_checkout_cart_add_product_submit %}
+                        <button class="btn btn-outline-secondary add-product-button"
+                                type="submit"
+                                aria-labelledby="addProductInput"
+                                id="addProductButton">
+                            {% sw_icon 'checkmark' %}
+                        </button>
+                    {% endblock %}
+                </div>
+            {% endblock %}
+        </form>
+    </div>
+{% endblock %}

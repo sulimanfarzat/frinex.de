@@ -14,6 +14,14 @@
             </call>
         </service>
 
+        <service id="ZeroBudgetB2B\Storefront\Controller\AddByNumberQuantityController" public="true">
+            <argument type="service" id="Shopware\Core\Checkout\Cart\SalesChannel\CartService"/>
+            <argument type="service" id="product.repository"/>
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
+
         <service id="ZeroBudgetB2B\Subscriber\B2bRegistrationSubscriber">
             <argument type="service" id="Shopware\Core\Content\Media\MediaService"/>
             <argument type="service" id="Doctrine\DBAL\Connection"/>

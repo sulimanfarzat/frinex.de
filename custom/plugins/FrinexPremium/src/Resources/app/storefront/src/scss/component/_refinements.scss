@@ -135,6 +135,21 @@ Karten-Quick-Buy, ruhige Detail-Politur.
 }
 
 // ---------------------------------------------------------------
+// „Produktnummer"-Formular (Warenkorb): schmales Mengenfeld,
+// Nummer flext, nichts bricht um
+// ---------------------------------------------------------------
+.frx-add-by-number {
+    flex-wrap: nowrap;
+}
+
+.frx-add-by-number .frx-add-by-number-qty {
+    flex: 0 0 4.5rem;
+    max-width: 4.5rem;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+}
+
+// ---------------------------------------------------------------
 // MwSt.-Hinweis im Footer sichtbar statt versteckt
 // ---------------------------------------------------------------
 .footer-vat {
