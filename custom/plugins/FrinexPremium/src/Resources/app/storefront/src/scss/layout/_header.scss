@@ -115,8 +115,15 @@ Runterscrollen, sofort wieder da beim Hochscrollen).
     color: var(--frx-accent);
 }
 
-// Aktions-Buttons: runde 44-px-Ziele, ruhiger Hover
+// Aktions-Buttons: runde 44-px-Ziele, ruhiger Hover.
+// Wichtig: der Core setzt --bs-btn-hover-color auf transparent —
+// Bootstrap nutzt diese Variable auch für :focus-visible, wodurch das
+// Hamburger-Icon auf Touch-Geräten nach dem Tippen unsichtbar wurde.
+// Deshalb alle Zustands-Variablen explizit auf Markenfarben pinnen.
 .header-actions-btn {
+    --bs-btn-color: var(--frx-ink);
+    --bs-btn-hover-color: var(--frx-accent);
+    --bs-btn-active-color: var(--frx-accent);
     width: 2.75rem;
     height: 2.75rem;
     display: inline-flex;
@@ -127,6 +134,11 @@ Runterscrollen, sofort wieder da beim Hochscrollen).
     transition:
         background-color var(--frx-t-fast) var(--frx-ease),
         color var(--frx-t-fast) var(--frx-ease);
+}
+
+.header-actions-btn:focus-visible {
+    color: var(--frx-ink);
+    background: var(--frx-surface);
 }
 
 .header-actions-btn:hover {
