@@ -1,0 +1,35 @@
+{% sw_extends '@Storefront/storefront/component/account/register.html.twig' %}
+
+{# Das Formular braucht multipart/form-data, sonst kommt der Dokument-Upload
+   nicht am Server an. Der <form>-Tag liegt mitten in diesem Block, daher wird
+   die Ausgabe des Parents gezielt um das Attribut ergänzt. #}
+{% block component_account_register_form %}
+    {% set formOutput %}{{ parent() }}{% endset %}
+    {{ formOutput|replace({'class="register-form"': 'class="register-form" enctype="multipart/form-data"'})|raw }}
+{% endblock %}
+
+{% block component_account_register_company_fields %}
+    {{ parent() }}
+
+    {# js-field-toggle-contact-type-company: derselbe Toggle wie bei den
+       Firmenfeldern - der Core-FormFieldTogglePlugin blendet das Feld nur bei
+       Kontoart "Gewerblich" ein und verwaltet dabei required/disabled selbst. #}
+    <div class="js-field-toggle-contact-type-company d-none">
+        <div class="form-group b2b-upload-field">
+            <label class="form-label" for="b2b_document_upload">
+                Handelsregisterauszug oder Gewerbeschein hochladen (PDF, JPG, PNG)*
+            </label>
+
+            <input type="file"
+                   class="form-control"
+                   id="b2b_document_upload"
+                   name="b2b_document_upload"
+                   accept="image/jpeg,image/png,application/pdf"
+                   required>
+
+            <small class="form-text text-muted">
+                Bitte laden Sie ein gültiges Dokument (max. 5 MB) zur Prüfung Ihres B2B-Antrags hoch.
+            </small>
+        </div>
+    </div>
+{% endblock %}

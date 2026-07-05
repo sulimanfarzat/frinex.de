@@ -1,0 +1,10 @@
+{% sw_extends '@Storefront/storefront/page/checkout/cart/line-item.html.twig' %}
+
+{% block page_checkout_summary_line_item_quantity %}
+    <div class="col-4 col-sm-2 line-item-quantity">
+        {# Diese Blöcke stellen sicher, dass das Mengen-Inputfeld gerendert wird #}
+        {% block page_checkout_summary_line_item_quantity_input %}
+            {% sw_include '@Storefront/storefront/component/line-item/line-item-quantity-editor.html.twig' %}
+        {% endblock %}
+    </div>
+{% endblock %}

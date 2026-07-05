@@ -1,0 +1,121 @@
+/*
+FRINEX Premium — Variable Overrides
+==================================================
+Lädt VOR dem Storefront-Core (siehe theme.json). Setzt die
+Bootstrap-/Shopware-!default-Variablen auf das FRINEX-Token-System.
+Quelle der Werte: Frontend-Konzept v1.0, Abschnitte 04–06.
+
+Farbregel 90/7/3: Weiß/Hellgrau tragen die Fläche, Anthrazit den Text,
+Industrialblau ist die einzige Akzentfarbe. Amber ist dem B2B-Kontext
+vorbehalten und wird bewusst NICHT als Bootstrap-$warning verwendet.
+*/
+
+// ---------------------------------------------------------------
+// Farbpalette
+// ---------------------------------------------------------------
+$frx-paper:         #ffffff;
+$frx-surface:       #f4f5f7;
+$frx-ink:           #14181e;
+$frx-muted:         #5b6470;
+$frx-line:          #e4e7eb;
+$frx-accent:        #0f4c81;
+$frx-accent-strong: #0a3b65;
+$frx-b2b-amber:     #f2a900;
+
+$primary:   $frx-accent;
+$secondary: $frx-muted;
+$success:   #1f9d55;
+$warning:   #b97d00;
+$danger:    #cf4b3a;
+$info:      $frx-accent;
+$light:     $frx-surface;
+$dark:      $frx-ink;
+
+$body-bg:      $frx-paper;
+$body-color:   $frx-ink;
+$border-color: $frx-line;
+
+$link-color:            $frx-accent;
+$link-hover-color:      $frx-accent-strong;
+$link-decoration:       underline;
+$link-underline-offset: 3px;
+
+// ---------------------------------------------------------------
+// Typografie (Inter = UI/Fließtext, Manrope = Headlines, s. base.scss)
+// ---------------------------------------------------------------
+$font-family-base:      'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+$headings-font-family:  'Manrope', 'Inter', system-ui, sans-serif;
+$headings-font-weight:  800;
+$headings-color:        $frx-ink;
+$font-size-base:        1rem;
+$line-height-base:      1.65;
+$headings-line-height:  1.15;
+
+// ---------------------------------------------------------------
+// Form & Tiefe
+// ---------------------------------------------------------------
+$border-radius:    .625rem;   // 10px
+$border-radius-sm: .375rem;   //  6px
+$border-radius-lg: .75rem;    // 12px
+
+$box-shadow:    0 1px 2px rgba(20, 24, 30, .05), 0 8px 24px rgba(20, 24, 30, .07);
+$box-shadow-sm: 0 1px 2px rgba(20, 24, 30, .06);
+$box-shadow-lg: 0 2px 4px rgba(20, 24, 30, .06), 0 16px 40px rgba(20, 24, 30, .12);
+
+$focus-ring-width:   3px;
+$focus-ring-opacity: .18;
+$focus-ring-color:   rgba(15, 76, 129, .18);
+
+// ---------------------------------------------------------------
+// Buttons: Pill-Form, 44-px-Touchziel, Gewicht 600
+// ---------------------------------------------------------------
+$btn-border-radius:    50rem;
+$btn-border-radius-sm: 50rem;
+$btn-border-radius-lg: 50rem;
+$btn-font-weight:      600;
+$btn-padding-y:        .7rem;
+$btn-padding-x:        1.5rem;
+$btn-padding-y-sm:     .45rem;
+$btn-padding-x-sm:     1.1rem;
+$btn-padding-y-lg:     .85rem;
+$btn-padding-x-lg:     1.9rem;
+$btn-focus-width:      3px;
+
+// ---------------------------------------------------------------
+// Formulare: 1,5-px-Rahmen, blauer Fokusring
+// ---------------------------------------------------------------
+$input-border-width:       1.5px;
+$input-border-color:       $frx-line;
+$input-border-radius:      .375rem;
+$input-border-radius-sm:   .375rem;
+$input-border-radius-lg:   .5rem;
+$input-padding-y:          .7rem;
+$input-padding-x:          .9rem;
+$input-color:              $frx-ink;
+$input-placeholder-color:  $frx-muted;
+$input-focus-border-color: $frx-accent;
+$input-focus-box-shadow:   0 0 0 3px rgba(15, 76, 129, .18);
+$form-label-font-weight:   600;
+$form-select-border-radius: .375rem;
+
+// ---------------------------------------------------------------
+// Badges: Pill, Versal (Text-Transform in base.scss)
+// ---------------------------------------------------------------
+$badge-font-weight:   700;
+$badge-border-radius: 50rem;
+$badge-padding-y:     .35em;
+$badge-padding-x:     .9em;
+
+// ---------------------------------------------------------------
+// Karten & Modals
+// ---------------------------------------------------------------
+$card-border-color:   $frx-line;
+$card-border-radius:  .625rem;
+$card-cap-bg:         $frx-surface;
+$modal-content-border-radius: .75rem;
+
+// ---------------------------------------------------------------
+// Breadcrumb
+// ---------------------------------------------------------------
+$breadcrumb-divider-color: $frx-line;
+$breadcrumb-active-color:  $frx-ink;

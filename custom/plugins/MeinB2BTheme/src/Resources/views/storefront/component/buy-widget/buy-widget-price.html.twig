@@ -1,0 +1,22 @@
+{% extends '@Storefront/storefront/component/buy-widget/buy-widget-price.html.twig' %}
+
+{# Sekundäre Preisanzeige: Brutto↔Netto je nach Kundengruppe #}
+{% block page_product_detail_price_inner %}
+    {{ parent() }}
+
+    {% set price = page.product.calculatedPrice %}
+    {% set firstTax = price.calculatedTaxes.first %}
+    {% set taxRate = firstTax ? firstTax.taxRate : 0 %}
+
+    <div class="product-detail-secondary-price">
+        {% if context.currentCustomerGroup.displayGross %}
+            {# B2C: Primärpreis ist Brutto → Netto als Zusatzinfo #}
+            {% set netPrice = price.unitPrice / (1 + taxRate / 100) %}
+            {{ netPrice|currency }} <small>zzgl. {{ taxRate|number_format(0) }}% MwSt.</small>
+        {% else %}
+            {# B2B: Primärpreis ist Netto → Brutto als Zusatzinfo #}
+            {% set grossPrice = price.unitPrice * (1 + taxRate / 100) %}
+            {{ grossPrice|currency }} <small>inkl. {{ taxRate|number_format(0) }}% MwSt.</small>
+        {% endif %}
+    </div>
+{% endblock %}

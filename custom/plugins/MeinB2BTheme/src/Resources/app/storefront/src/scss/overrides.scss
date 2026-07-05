@@ -1,0 +1,23 @@
+/*
+Override variable defaults
+==================================================
+This file is used to override default SCSS variables from the Shopware Storefront or Bootstrap.
+
+Because of the !default flags, theme variable overrides have to be declared beforehand.
+https://getbootstrap.com/docs/5.3/customize/sass/#variable-defaults
+*/
+
+// Brand palette: industrial blue + signal amber
+$primary: #0f4c81;
+$secondary: #2f3b4c;
+$success: #1f9d55;
+$warning: #f2a900;
+$danger: #cf4b3a;
+
+$border-radius: 0.5rem;
+$border-radius-sm: 0.35rem;
+$border-radius-lg: 0.8rem;
+
+$btn-border-radius: 999px;
+$btn-padding-x: 1.1rem;
+$btn-padding-y: 0.6rem;

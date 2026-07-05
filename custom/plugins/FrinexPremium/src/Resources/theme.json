@@ -1,0 +1,45 @@
+{
+  "name": "FrinexPremium",
+  "author": "Frinex",
+  "views": [
+    "@Storefront",
+    "@Plugins",
+    "@ZeroBudgetB2B",
+    "@FrinexPremium"
+  ],
+  "style": [
+    "app/storefront/src/scss/overrides.scss",
+    "@Storefront",
+    "app/storefront/src/scss/base.scss"
+  ],
+  "script": [
+    "@Storefront"
+  ],
+  "asset": [
+    "@Storefront",
+    "app/storefront/src/assets"
+  ],
+  "configInheritance": [
+    "@Storefront",
+    "@ZeroBudgetB2B"
+  ],
+  "config": {
+    "fields": {
+      "sw-color-brand-primary": { "value": "#0f4c81" },
+      "sw-color-brand-secondary": { "value": "#5b6470" },
+      "sw-border-color": { "value": "#e4e7eb" },
+      "sw-background-color": { "value": "#ffffff" },
+      "sw-color-success": { "value": "#1f9d55" },
+      "sw-color-info": { "value": "#0f4c81" },
+      "sw-color-warning": { "value": "#b97d00" },
+      "sw-color-danger": { "value": "#cf4b3a" },
+      "sw-font-family-base": { "value": "'Inter', sans-serif" },
+      "sw-text-color": { "value": "#14181e" },
+      "sw-font-family-headline": { "value": "'Manrope', 'Inter', sans-serif" },
+      "sw-headline-color": { "value": "#14181e" },
+      "sw-color-price": { "value": "#14181e" },
+      "sw-color-buy-button": { "value": "#0f4c81" },
+      "sw-color-buy-button-text": { "value": "#ffffff" }
+    }
+  }
+}

@@ -1,0 +1,282 @@
+{% sw_extends '@Storefront/storefront/base.html.twig' %}
+
+{% block base_content %}
+<div class="container mt-4 mb-5">
+
+    {# Page header #}
+    <div class="quick-order-header mb-4">
+        <div class="d-flex align-items-center gap-3">
+            <div class="quick-order-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.5 2H.5a.5.5 0 0 1-.5-.5zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-1.646-3-.5-2H5.646l-.5 2h5.208z"/>
+                </svg>
+            </div>
+            <div>
+                <h1 class="h3 mb-0">Schnellerfassung</h1>
+                <p class="text-muted mb-0 small">Mehrere Artikel per Artikelnummer direkt in den Warenkorb legen</p>
+            </div>
+        </div>
+    </div>
+
+    {# Flash messages #}
+    {% for type, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ type == 'error' ? 'danger' : type }} alert-dismissible fade show mb-3" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    {# Main form card #}
+    <div class="card quick-order-card">
+        <div class="card-body p-0">
+            <form action="{{ path('frontend.quickorder.add') }}" method="post" id="quick-order-form" data-quick-order="true" novalidate>
+                {{ csrf_token('frontend.quickorder.add')|sw_csrf('frontend.quickorder.add') }}
+
+                <div class="quick-order-table-wrapper">
+                    <table class="table quick-order-table mb-0">
+                        <thead>
+                            <tr>
+                                <th class="quick-order-col-index" scope="col">#</th>
+                                <th class="quick-order-col-sku" scope="col">Artikelnummer (SKU)</th>
+                                <th class="quick-order-col-qty" scope="col">Menge</th>
+                                <th class="quick-order-col-action" scope="col" aria-label="Aktionen"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="quick-order-rows">
+                            {% for i in 1..5 %}
+                            <tr class="quick-order-row" data-index="{{ i }}">
+                                <td class="quick-order-col-index">
+                                    <span class="row-index text-muted">{{ i }}</span>
+                                </td>
+                                <td class="quick-order-col-sku">
+                                    <input
+                                        type="text"
+                                        name="items[{{ i }}][sku]"
+                                        class="form-control quick-order-sku"
+                                        placeholder="z. B. SW10001"
+                                        autocomplete="off"
+                                        autocapitalize="off"
+                                        spellcheck="false"
+                                    >
+                                </td>
+                                <td class="quick-order-col-qty">
+                                    <div class="input-group input-group-sm">
+                                        <button type="button" class="btn btn-outline-secondary btn-qty-minus" title="Verringern">−</button>
+                                        <input
+                                            type="number"
+                                            name="items[{{ i }}][quantity]"
+                                            class="form-control quick-order-qty text-center"
+                                            value="1"
+                                            min="1"
+                                            max="9999"
+                                            style="max-width: 60px"
+                                        >
+                                        <button type="button" class="btn btn-outline-secondary btn-qty-plus" title="Erhöhen">+</button>
+                                    </div>
+                                </td>
+                                <td class="quick-order-col-action">
+                                    <button
+                                        type="button"
+                                        class="btn btn-icon btn-remove-row"
+                                        title="Zeile entfernen"
+                                        aria-label="Zeile entfernen"
+                                        {% if i <= 1 %}disabled{% endif %}
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="quick-order-footer">
+                    <button type="button" id="quick-order-add-row" class="btn btn-outline-secondary btn-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16" class="me-1">
+                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                        </svg>
+                        Zeile hinzufügen
+                    </button>
+
+                    <div class="quick-order-actions">
+                        <button type="button" id="quick-order-clear" class="btn btn-ghost-secondary btn-sm">
+                            Liste leeren
+                        </button>
+                        <button type="submit" class="btn btn-primary quick-order-submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="me-2">
+                                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.5 2H.5a.5.5 0 0 1-.5-.5z"/>
+                            </svg>
+                            In den Warenkorb
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {# Hint box #}
+    <div class="quick-order-hint mt-3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 16 16" class="me-1 flex-shrink-0" style="margin-top:1px">
+            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+        </svg>
+        Lassen Sie SKU-Felder leer, wenn Sie weniger Zeilen benötigen. Nur ausgefüllte Zeilen werden verarbeitet.
+    </div>
+
+</div>
+
+{# Inline script for dynamic row management #}
+<script>
+(function () {
+    'use strict';
+
+    const tbody   = document.getElementById('quick-order-rows');
+    const addBtn  = document.getElementById('quick-order-add-row');
+    const clearBtn = document.getElementById('quick-order-clear');
+
+    if (!tbody || !addBtn) return;
+
+    function getNextIndex() {
+        return tbody.querySelectorAll('.quick-order-row').length + 1;
+    }
+
+    function updateIndices() {
+        tbody.querySelectorAll('.quick-order-row').forEach(function (row, i) {
+            const idx = i + 1;
+            row.dataset.index = idx;
+            row.querySelector('.row-index').textContent = idx;
+            row.querySelectorAll('[name]').forEach(function (input) {
+                input.name = input.name.replace(/items\[\d+\]/, 'items[' + idx + ']');
+            });
+            const removeBtn = row.querySelector('.btn-remove-row');
+            if (removeBtn) removeBtn.disabled = (idx === 1);
+        });
+    }
+
+    function createRow(idx) {
+        const tr = document.createElement('tr');
+        tr.className = 'quick-order-row quick-order-row--new';
+        tr.dataset.index = idx;
+        tr.innerHTML = `
+            <td class="quick-order-col-index"><span class="row-index text-muted">${idx}</span></td>
+            <td class="quick-order-col-sku">
+                <input type="text" name="items[${idx}][sku]" class="form-control quick-order-sku"
+                       placeholder="z. B. SW10001" autocomplete="off" autocapitalize="off" spellcheck="false">
+            </td>
+            <td class="quick-order-col-qty">
+                <div class="input-group input-group-sm">
+                    <button type="button" class="btn btn-outline-secondary btn-qty-minus" title="Verringern">−</button>
+                    <input type="number" name="items[${idx}][quantity]" class="form-control quick-order-qty text-center"
+                           value="1" min="1" max="9999" style="max-width: 60px">
+                    <button type="button" class="btn btn-outline-secondary btn-qty-plus" title="Erhöhen">+</button>
+                </div>
+            </td>
+            <td class="quick-order-col-action">
+                <button type="button" class="btn btn-icon btn-remove-row" title="Zeile entfernen" aria-label="Zeile entfernen">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                    </svg>
+                </button>
+            </td>`;
+
+        // Animate in
+        requestAnimationFrame(function () {
+            tr.classList.remove('quick-order-row--new');
+        });
+
+        return tr;
+    }
+
+    addBtn.addEventListener('click', function () {
+        const idx = getNextIndex();
+        const row = createRow(idx);
+        tbody.appendChild(row);
+        row.querySelector('.quick-order-sku').focus();
+        updateIndices();
+    });
+
+    // Plus/Minus buttons für Mengen
+    tbody.addEventListener('click', function (e) {
+        const minusBtn = e.target.closest('.btn-qty-minus');
+        const plusBtn = e.target.closest('.btn-qty-plus');
+        
+        if (minusBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+            const qtyInput = minusBtn.closest('.input-group').querySelector('.quick-order-qty');
+            if (qtyInput) {
+                const val = parseInt(qtyInput.value, 10) || 1;
+                if (val > 1) {
+                    qtyInput.value = val - 1;
+                }
+            }
+            return;
+        }
+        
+        if (plusBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+            const qtyInput = plusBtn.closest('.input-group').querySelector('.quick-order-qty');
+            if (qtyInput) {
+                const val = parseInt(qtyInput.value, 10) || 1;
+                const max = parseInt(qtyInput.max, 10) || 9999;
+                if (val < max) {
+                    qtyInput.value = val + 1;
+                }
+            }
+            return;
+        }
+    });
+
+    tbody.addEventListener('click', function (e) {
+        const btn = e.target.closest('.btn-remove-row');
+        if (!btn || btn.disabled) return;
+        const row = btn.closest('.quick-order-row');
+        row.style.animation = 'qo-fade-out 150ms ease forwards';
+        row.addEventListener('animationend', function () {
+            row.remove();
+            updateIndices();
+        }, { once: true });
+    });
+
+    if (clearBtn) {
+        clearBtn.addEventListener('click', function () {
+            tbody.querySelectorAll('.quick-order-row').forEach(function (row, i) {
+                if (i === 0) {
+                    row.querySelectorAll('input').forEach(function (inp) {
+                        if (inp.type === 'number') inp.value = 1;
+                        else inp.value = '';
+                    });
+                } else {
+                    row.remove();
+                }
+            });
+            updateIndices();
+        });
+    }
+
+    // Tab from last SKU in last row → add new row
+    tbody.addEventListener('keydown', function (e) {
+        if (e.key !== 'Tab' || e.shiftKey) return;
+        const rows = tbody.querySelectorAll('.quick-order-row');
+        const lastRow = rows[rows.length - 1];
+        if (!lastRow) return;
+        const lastQty = lastRow.querySelector('.quick-order-qty');
+        if (e.target === lastQty) {
+            e.preventDefault();
+            const idx = getNextIndex();
+            const row = createRow(idx);
+            tbody.appendChild(row);
+            updateIndices();
+            row.querySelector('.quick-order-sku').focus();
+        }
+    });
+}());
+</script>
+{% endblock %}

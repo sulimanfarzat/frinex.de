@@ -1,0 +1,27 @@
+{
+  "name": "frinex/frinex-premium",
+  "description": "FRINEX Premium Storefront Theme",
+  "version": "1.0.0",
+  "type": "shopware-platform-plugin",
+  "license": "proprietary",
+  "autoload": {
+    "psr-4": {
+      "FrinexPremium\\": "src/"
+    }
+  },
+  "require": {
+    "shopware/core": "~6.7.0",
+    "shopware/storefront": "~6.7.0"
+  },
+  "extra": {
+    "shopware-plugin-class": "FrinexPremium\\FrinexPremium",
+    "label": {
+      "de-DE": "FRINEX Premium Theme",
+      "en-GB": "FRINEX Premium Theme"
+    },
+    "description": {
+      "de-DE": "Premium-Storefront-Theme für frinex.de: Design-Token-System, Typografie (Inter + Manrope), Buttons, Formulare und Badges. Phase 1 des Frontend-Redesigns.",
+      "en-GB": "Premium storefront theme for frinex.de: design token system, typography (Inter + Manrope), buttons, forms and badges. Phase 1 of the frontend redesign."
+    }
+  }
+}

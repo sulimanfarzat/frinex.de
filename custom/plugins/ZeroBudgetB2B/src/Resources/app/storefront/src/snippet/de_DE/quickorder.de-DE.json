@@ -1,0 +1,8 @@
+{
+    "quickorder": {
+        "loginRequired": "Diese Funktion ist nur für angemeldete Kunden (B2B) verfügbar.",
+        "productNotFound": "Das Produkt mit der Artikelnummer \"%sku%\" wurde nicht gefunden oder ist nicht verfügbar.",
+        "productAdded": "Produkt \"%name%\" wurde in der Menge %quantity% zum Warenkorb hinzugefügt.",
+        "cartError": "Fehler beim Hinzufügen zum Warenkorb. Bitte überprüfen Sie die Bestellbedingungen oder wenden Sie sich an den Support."
+    }
+}

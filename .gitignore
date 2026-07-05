@@ -1,0 +1,34 @@
+# =====================================================================
+# frinex.de — Versionierung NUR für eigenen Custom-Code.
+# Whitelist-Prinzip: alles ist ignoriert, außer explizit freigegeben.
+# Das Repo ist derzeit ÖFFENTLICH — niemals Secrets, .env, Dumps
+# oder kommerzielle Store-Plugins (Klarna, SwagPayPal, …) aufnehmen.
+# =====================================================================
+
+/*
+
+# --- freigegeben: Meta ---
+!/.gitignore
+!/README.md
+!/composer.json
+
+# --- freigegeben: eigene Plugins ---
+!/custom/
+/custom/*
+!/custom/plugins/
+/custom/plugins/*
+!/custom/plugins/FrinexPremium/
+!/custom/plugins/MeinB2BTheme/
+!/custom/plugins/ZeroBudgetB2B/
+
+# --- nie versionieren, auch nicht innerhalb der Plugins ---
+.env
+.env.*
+node_modules/
+vendor/
+*.sql
+*.gz
+*.zip
+*.save
+*.bak
+*.orig

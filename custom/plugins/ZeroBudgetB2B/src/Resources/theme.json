@@ -1,0 +1,8 @@
+{
+  "name": "ZeroBudgetB2B",
+  "author": "Frinex",
+  "views": [
+    "@Storefront",
+    "@ZeroBudgetB2B"
+  ]
+}

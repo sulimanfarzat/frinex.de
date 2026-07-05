@@ -1,0 +1,19 @@
+{% extends '@Storefront/storefront/component/product/card/price-unit.html.twig' %}
+
+{% block component_product_box_price_info %}
+    {{ parent() }}
+
+    {% set price = product.calculatedPrice %}
+    {% set firstTax = price.calculatedTaxes.first %}
+    {% set taxRate = firstTax ? firstTax.taxRate : 0 %}
+
+    <div class="product-detail-secondary-price">
+        {% if context.currentCustomerGroup.displayGross %}
+            {# B2C: Netto als Zusatzinfo #}
+            {{ (price.unitPrice / (1 + taxRate / 100))|currency }} <small>zzgl. MwSt.</small>
+        {% else %}
+            {# B2B: Brutto als Zusatzinfo #}
+            {{ (price.unitPrice * (1 + taxRate / 100))|currency }} <small>inkl. MwSt.</small>
+        {% endif %}
+    </div>
+{% endblock %}
