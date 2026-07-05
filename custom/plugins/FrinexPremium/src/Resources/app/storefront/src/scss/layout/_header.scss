@@ -126,6 +126,10 @@ Runterscrollen, sofort wieder da beim Hochscrollen).
     --bs-btn-active-color: var(--frx-accent);
     width: 2.75rem;
     height: 2.75rem;
+    // Bootstrap-Buttons bringen 1.5rem Padding-x mit — im 2.75rem-Kreis
+    // blieben dem Icon 2px Contentbreite, flex-shrink quetschte es auf 0
+    // (Hamburger/Suche waren dadurch unsichtbar)
+    padding: 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -136,9 +140,41 @@ Runterscrollen, sofort wieder da beim Hochscrollen).
         color var(--frx-t-fast) var(--frx-ease);
 }
 
+.header-actions-btn .icon {
+    flex-shrink: 0;
+}
+
 .header-actions-btn:focus-visible {
     color: var(--frx-ink);
     background: var(--frx-surface);
+}
+
+// Chromium rendert <use href="#id"> nicht, wenn die referenzierte
+// SVG-Definition in einem display:none-Container liegt. Die erste
+// stack-Icon-Definition der Seite steckt im Tablet-Burger
+// (.d-none.d-sm-block.d-lg-none) — auf Mobile blieb der sichtbare
+// Hamburger dadurch leer. Lösung: Container auf 0×0 klippen statt
+// display:none, damit die Definition paintbar bleibt.
+.header-row .d-none.d-sm-block.d-lg-none:has(.nav-main-toggle) {
+    display: block !important;
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+// … außer auf Tablet (sm–lg): dort IST er der sichtbare Burger
+@media (min-width: 576px) and (max-width: 991.98px) {
+    .header-row .d-none.d-sm-block.d-lg-none:has(.nav-main-toggle) {
+        position: static;
+        width: auto;
+        height: auto;
+        overflow: visible;
+        pointer-events: auto;
+    }
 }
 
 .header-actions-btn:hover {
