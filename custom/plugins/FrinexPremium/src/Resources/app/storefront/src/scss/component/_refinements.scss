@@ -56,12 +56,11 @@ Karten-Quick-Buy, ruhige Detail-Politur.
     border: 1.5px solid var(--frx-line);
     border-radius: 50rem;
     overflow: hidden;
-    // Bootstrap-input-group darf umbrechen — hier nie: −/Zahl/+ bleiben
-    // immer eine Zeile (Bug: Plus-Button rutschte im Offcanvas-Warenkorb
-    // in die zweite Zeile)
+    // −/Zahl/+ immer in einer Zeile, egal wie schmal der Container:
+    // Buttons fix kompakt, nur das Zahlenfeld flext. (Bugs: erst brach
+    // der Plus-Button um, mit width:max-content wurde er abgeschnitten.)
     flex-wrap: nowrap;
-    width: max-content;
-    max-width: 100%;
+    max-width: 9.5rem; // schmale Container füllen, breite nicht ausufern
 }
 
 .quantity-selector-group .btn,
@@ -70,8 +69,13 @@ Karten-Quick-Buy, ruhige Detail-Politur.
     background: transparent;
     color: var(--frx-ink);
     font-weight: 600;
-    min-width: 2.4rem;
-    flex: 0 0 auto;
+    flex: 0 0 2.25rem;
+    min-width: 0;
+    padding-left: .25rem;
+    padding-right: .25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .quantity-selector-group .btn:hover,
@@ -89,9 +93,12 @@ Karten-Quick-Buy, ruhige Detail-Politur.
     font-weight: 600;
     font-variant-numeric: tabular-nums;
     text-align: center;
-    flex: 0 1 3.5rem;
-    width: 3.5rem;
-    min-width: 2.5rem;
+    flex: 1 1 auto;
+    width: 1%;
+    min-width: 1.5rem;
+    max-width: 4.5rem; // auf breiten Flächen (PDP) nicht ausufern
+    padding-left: .25rem;
+    padding-right: .25rem;
 }
 
 .quantity-selector-group .form-control:focus,
