@@ -29,21 +29,12 @@ das Bootstrap-.dropdown-menu.w-100 mit .navigation-flyout-*-Inhalten.
     color: var(--frx-ink);
 }
 
-// Aktiver Punkt: 2-px-Akzentlinie statt Farbfläche
+// Aktiver Punkt: die 2-px-Akzentlinie unterm Text kommt bereits vom
+// Core-Skin (.active .main-navigation-link-text, border-color: $primary
+// = unser Blau) — hier nur die Textfarbe, KEINE zweite Linie
 .main-navigation-menu .nav-link.main-navigation-link.active,
 .main-navigation-menu .nav-item.active > .nav-link.main-navigation-link {
     color: var(--frx-ink);
-}
-
-.main-navigation-menu .nav-link.main-navigation-link.active::after,
-.main-navigation-menu .nav-item.active > .nav-link.main-navigation-link::after {
-    content: "";
-    position: absolute;
-    left: 1.1rem;
-    right: 1.1rem;
-    bottom: 0;
-    height: 2px;
-    background: var(--frx-accent);
 }
 
 // ---------------------------------------------------------------

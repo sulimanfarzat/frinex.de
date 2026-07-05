@@ -13,6 +13,12 @@ Hero (Bild-Text-Cover), Produkt-Slider, Bild-Text, Formulare.
     margin-top: clamp(3rem, 7vw, 7rem);
 }
 
+// Hero randlos an die Menüleiste: das 20-px-Top-Padding des
+// .container-main erzeugte einen weißen Streifen unter der Navigation
+.is-act-home .container-main {
+    padding-top: 0;
+}
+
 // ---------------------------------------------------------------
 // Sektions-/Block-Titel: Manrope, große klare Hierarchie
 // ---------------------------------------------------------------
