@@ -1,0 +1,10 @@
+{# FRINEX Kampagnen-Banner: ein Slot, Element „frinex-banner",
+   mehrfach pro Seite einsetzbar #}
+{% block block_frinex_banner %}
+    {% set element = block.slots.getSlot('banner') %}
+    {% if element %}
+        <div class="col-12" data-cms-element-id="{{ element.id }}">
+            {% sw_include '@Storefront/storefront/element/cms-element-' ~ element.type ~ '.html.twig' ignore missing %}
+        </div>
+    {% endif %}
+{% endblock %}

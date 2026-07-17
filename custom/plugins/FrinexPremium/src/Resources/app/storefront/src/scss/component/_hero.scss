@@ -1,0 +1,123 @@
+/*
+FRINEX Premium — Hero-Block (cms-block-frinex-hero)
+==================================================
+Vollbreiter Above-the-Fold-Hero: Bild als Cover, dunkler Verlauf für
+Lesbarkeit (WCAG), Inhalt links auf Containerbreite, Trust-Leiste am
+unteren Rand. Feste Mindesthöhe → kein Layout Shift beim Bild-Load.
+Ohne Bild fällt der Hero auf einen Marken-Verlauf zurück.
+*/
+
+.frx-hero {
+    position: relative;
+    display: flex;
+    min-height: clamp(30rem, 62vh, 40rem);
+    background: linear-gradient(135deg, var(--frx-accent) 0%, var(--frx-accent-strong) 100%);
+    color: #ffffff;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.frx-hero-media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+}
+
+.frx-hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+// Verlauf über dem Bild: links dunkel (Text), rechts Bild sichtbar
+.frx-hero--has-image .frx-hero-media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(90deg, rgba(10, 22, 34, .82) 0%, rgba(10, 22, 34, .55) 45%, rgba(10, 22, 34, .18) 100%),
+        linear-gradient(0deg, rgba(10, 22, 34, .55) 0%, transparent 35%);
+}
+
+.frx-hero-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--frx-s6);
+    padding-top: var(--frx-s7);
+    padding-bottom: var(--frx-s5);
+}
+
+.frx-hero-content {
+    max-width: 38rem;
+}
+
+.frx-hero-headline {
+    color: #ffffff;
+    font-size: clamp(2.1rem, calc(1.5rem + 2.8vw), 3.5rem);
+    line-height: 1.08;
+    margin-bottom: var(--frx-s3);
+}
+
+.frx-hero-subline {
+    font-size: clamp(1.05rem, calc(1rem + .35vw), 1.25rem);
+    line-height: 1.55;
+    color: rgba(255, 255, 255, .88);
+    margin-bottom: var(--frx-s5);
+    max-width: 34rem;
+}
+
+.frx-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--frx-s3);
+}
+
+.frx-hero-cta-secondary {
+    --bs-btn-color: #ffffff;
+    --bs-btn-border-color: rgba(255, 255, 255, .65);
+    --bs-btn-hover-bg: rgba(255, 255, 255, .12);
+    --bs-btn-hover-color: #ffffff;
+    --bs-btn-hover-border-color: #ffffff;
+}
+
+// ---------------------------------------------------------------
+// Trust-Leiste: 4 Punkte, mobil 2 × 2
+// ---------------------------------------------------------------
+.frx-hero-trust {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    justify-content: start;
+    gap: var(--frx-s2) var(--frx-s5);
+    margin: 0;
+    padding: var(--frx-s3) 0 0;
+    border-top: 1px solid rgba(255, 255, 255, .22);
+}
+
+@media (min-width: 992px) {
+    .frx-hero-trust {
+        grid-template-columns: repeat(4, auto);
+    }
+}
+
+.frx-hero-trust-item {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    font-size: .875rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, .92);
+}
+
+.frx-hero-trust-icon {
+    flex-shrink: 0;
+    color: var(--frx-b2b);
+}
+
+// Eager geladenes Hero-Bild sanft einblenden (nur einmalig beim Load)
+@media (prefers-reduced-motion: no-preference) {
+    .frx-hero-content {
+        animation: frx-rise-in var(--frx-t-slow) var(--frx-ease) both;
+    }
+}

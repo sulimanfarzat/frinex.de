@@ -1,0 +1,112 @@
+/*
+FRINEX Premium — Kategorien-Grid (cms-block-frinex-category-grid)
+==================================================
+Kacheln mit Bild, Namens-Overlay und Hover-Zoom. 2 Spalten mobil,
+3 ab md, 4 ab xl — bei 6 oder 8 Kategorien geht die letzte Reihe
+sauber auf. Feste Seitenverhältnisse verhindern Layout Shifts.
+*/
+
+.frx-cat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--frx-s3);
+}
+
+@media (min-width: 768px) {
+    .frx-cat-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--frx-s4);
+    }
+}
+
+@media (min-width: 1200px) {
+    .frx-cat-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.frx-cat-tile {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--frx-radius, .625rem);
+    overflow: hidden;
+    background: var(--frx-surface);
+    text-decoration: none;
+    box-shadow: var(--frx-shadow);
+    transition: box-shadow var(--frx-t-med) var(--frx-ease);
+}
+
+.frx-cat-tile:hover {
+    box-shadow: var(--frx-shadow-lift);
+}
+
+.frx-cat-tile-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--frx-t-slow) var(--frx-ease);
+}
+
+.frx-cat-tile:hover .frx-cat-tile-img {
+    transform: scale(1.05);
+}
+
+// Fallback ohne Kategoriebild: Initial auf Flächengrau
+.frx-cat-tile-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--frx-line);
+}
+
+.frx-cat-tile-label {
+    position: absolute;
+    inset: auto 0 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+    padding: 2.25rem var(--frx-s3) var(--frx-s3);
+    background: linear-gradient(0deg, rgba(10, 22, 34, .78) 0%, rgba(10, 22, 34, .45) 55%, transparent 100%);
+}
+
+.frx-cat-tile-name {
+    font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #ffffff;
+    letter-spacing: -.01em;
+}
+
+.frx-cat-tile-arrow {
+    flex-shrink: 0;
+    color: #ffffff;
+    opacity: .75;
+    transition:
+        transform var(--frx-t-fast) var(--frx-ease),
+        opacity var(--frx-t-fast) var(--frx-ease);
+}
+
+.frx-cat-tile:hover .frx-cat-tile-arrow {
+    transform: translateX(4px);
+    opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .frx-cat-tile-img,
+    .frx-cat-tile-arrow {
+        transition: none;
+    }
+
+    .frx-cat-tile:hover .frx-cat-tile-img {
+        transform: none;
+    }
+}

@@ -1,0 +1,15 @@
+{% sw_extends '@Storefront/storefront/page/checkout/cart/index.html.twig' %}
+
+{#
+    Gefüllter Warenkorb: Der Core rendert das „Produktnummer"-Formular
+    hier noch als deprecated Inline-Block (Feature-Flag v6.8.0.0 aus),
+    nicht über die Komponente add-product-by-number.html.twig — unser
+    Komponenten-Override mit Mengenfeld griff dadurch nur im leeren
+    Warenkorb. Block auf die Komponente umbiegen, damit beide Fälle
+    dasselbe Formular (Nummer + Menge) zeigen. Ab v6.8 macht der Core
+    das selbst, dann kann dieses Override entfallen.
+#}
+
+{% block page_checkout_cart_add_product %}
+    {% sw_include '@Storefront/storefront/component/checkout/add-product-by-number.html.twig' %}
+{% endblock %}

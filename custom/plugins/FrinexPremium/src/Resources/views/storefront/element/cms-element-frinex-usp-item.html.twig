@@ -1,0 +1,35 @@
+{# FRINEX USP-Element: Icon (auswählbar) + Titel + Kurztext.
+   Markup entspricht der bestehenden .frx-usp-Optik (component/_usp.scss). #}
+{% block element_frinex_usp_item %}
+    {% set config = element.config %}
+    {% set icon = config.icon.value ?: 'truck' %}
+
+    <div class="cms-element-frinex-usp-item frx-usp">
+        <span class="frx-usp-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                {% if icon == 'truck' %}
+                    <path d="M5 18H3V6h12v12H9m6 0h-4m4-8h4l3 4v4h-2"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/>
+                {% elseif icon == 'invoice' %}
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/>
+                {% elseif icon == 'headset' %}
+                    <path d="M3 14v-3a9 9 0 0 1 18 0v3"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
+                {% elseif icon == 'tag' %}
+                    <path d="M12 2H2v10l9.3 9.3a1.9 1.9 0 0 0 2.7 0l7-7a1.9 1.9 0 0 0 0-2.7z"/><circle cx="7" cy="7" r="1.5"/>
+                {% elseif icon == 'shield' %}
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/>
+                {% elseif icon == 'box' %}
+                    <path d="M21 8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4a2 2 0 0 0 1-1.7z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/>
+                {% else %}
+                    <path d="M20 6 9 17l-5-5"/>
+                {% endif %}
+            </svg>
+        </span>
+        {% if config.title.value %}
+            <span class="frx-usp-title">{{ config.title.value }}</span>
+        {% endif %}
+        {% if config.text.value %}
+            <span class="frx-usp-text">{{ config.text.value }}</span>
+        {% endif %}
+    </div>
+{% endblock %}

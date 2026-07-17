@@ -1,0 +1,28 @@
+{
+    "frinexPremium": {
+        "hero": {
+            "ctaPrimary": "Create business account",
+            "ctaSecondary": "Browse catalogue",
+            "trustAriaLabel": "Your benefits at FRINEX",
+            "trust1": "Net prices for business customers",
+            "trust2": "Buy on invoice",
+            "trust3": "Dispatch within 24 h",
+            "trust4": "Personal account manager"
+        },
+        "categoryGrid": {
+            "ariaLabel": "Product categories"
+        },
+        "banner": {
+            "ctaFallback": "Learn more"
+        },
+        "references": {
+            "heading": "These companies trust FRINEX",
+            "ariaLabel": "Customer logos"
+        },
+        "cta": {
+            "headlineFallback": "Open your B2B account now",
+            "buttonFallback": "Register for free",
+            "note": "Free & non-binding — activation within 24 h on business days"
+        }
+    }
+}

@@ -1,0 +1,45 @@
+{# FRINEX Kategorien-Grid: Kacheln mit Bild, Namens-Overlay und
+   Hover-Zoom. Kategorien + Reihenfolge kommen aus dem Resolver
+   (FrinexCategoryGridCmsElementResolver). #}
+{% block element_frinex_category_grid %}
+    {% set config = element.config %}
+    {% set categories = element.data.get('categories') %}
+
+    <div class="cms-element-frinex-category-grid">
+        {% if config.headline.value %}
+            <h2 class="frx-section-headline">{{ config.headline.value }}</h2>
+        {% endif %}
+
+        {% if categories|length > 0 %}
+            <nav class="frx-cat-grid" aria-label="{{ 'frinexPremium.categoryGrid.ariaLabel'|trans|striptags }}">
+                {% for category in categories %}
+                    {% set categoryName = category.translated.name %}
+                    <a class="frx-cat-tile" href="{{ category_url(category) }}"
+                       {% if category_linknewtab(category) %}target="_blank" rel="noopener"{% endif %}>
+                        {% if category.media %}
+                            {% sw_thumbnails 'frx-cat-tile-image' with {
+                                media: category.media,
+                                sizes: { 'xs': '50vw', 'md': '33vw', 'default': '340px' },
+                                attributes: {
+                                    'class': 'frx-cat-tile-img',
+                                    'alt': category.media.translated.alt ?: categoryName,
+                                    'loading': 'lazy'
+                                }
+                            } %}
+                        {% else %}
+                            <span class="frx-cat-tile-fallback" aria-hidden="true">{{ categoryName|first|upper }}</span>
+                        {% endif %}
+                        <span class="frx-cat-tile-label">
+                            <span class="frx-cat-tile-name">{{ categoryName }}</span>
+                            <svg class="frx-cat-tile-arrow" aria-hidden="true" width="18" height="18"
+                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                 stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14m-6-6 6 6-6 6"/>
+                            </svg>
+                        </span>
+                    </a>
+                {% endfor %}
+            </nav>
+        {% endif %}
+    </div>
+{% endblock %}

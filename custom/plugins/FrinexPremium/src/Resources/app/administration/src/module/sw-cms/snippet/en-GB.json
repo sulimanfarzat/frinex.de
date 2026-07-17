@@ -1,0 +1,118 @@
+{
+    "sw-cms": {
+        "blocks": {
+            "frinex": {
+                "hero": { "label": "FRINEX hero (home page)" },
+                "uspBar": { "label": "FRINEX USP bar (4 columns)" },
+                "categoryGrid": { "label": "FRINEX category grid" },
+                "productSlider": { "label": "FRINEX product slider (B2B)" },
+                "banner": { "label": "FRINEX campaign banner" },
+                "logoBar": { "label": "FRINEX logo bar (references)" },
+                "testimonials": { "label": "FRINEX testimonials" },
+                "cta": { "label": "FRINEX CTA section (registration)" }
+            }
+        },
+        "elements": {
+            "frinexHero": {
+                "label": "FRINEX hero",
+                "placeholder": {
+                    "headline": "Enter headline …",
+                    "subline": "Enter subline …",
+                    "ctaPrimary": "Create business account",
+                    "ctaSecondary": "Browse catalogue"
+                },
+                "config": {
+                    "headline": "Headline",
+                    "subline": "Subline",
+                    "ctaPrimaryLabel": "Primary CTA — label",
+                    "ctaPrimaryUrl": "Primary CTA — link",
+                    "ctaPrimaryUrlHelp": "Leave empty to link to the registration page (/account/register)",
+                    "ctaSecondaryLabel": "Secondary CTA — label",
+                    "ctaSecondaryUrl": "Secondary CTA — link",
+                    "ctaSecondaryUrlHelp": "Without a link the secondary CTA is hidden",
+                    "showTrustBar": "Show trust bar (net prices, invoice, 24 h dispatch, account manager)",
+                    "media": "Background image"
+                }
+            },
+            "frinexUspItem": {
+                "label": "FRINEX USP",
+                "placeholder": {
+                    "title": "USP title",
+                    "text": "Short text"
+                },
+                "config": {
+                    "icon": "Icon",
+                    "title": "Title",
+                    "text": "Short text"
+                },
+                "icons": {
+                    "truck": "Truck (shipping)",
+                    "invoice": "Invoice",
+                    "headset": "Headset (support)",
+                    "tag": "Price tag (conditions)",
+                    "shield": "Shield (quality/safety)",
+                    "box": "Package (stock/range)"
+                }
+            },
+            "frinexCategoryGrid": {
+                "label": "FRINEX category grid",
+                "placeholder": { "headline": "Our categories" },
+                "config": {
+                    "headline": "Headline (optional)",
+                    "categories": "Categories",
+                    "categoriesHelp": "6–8 categories recommended; selection order defines display order. Image = category media."
+                }
+            },
+            "frinexBanner": {
+                "label": "FRINEX campaign banner",
+                "placeholder": {
+                    "headline": "Banner headline",
+                    "cta": "Learn more"
+                },
+                "config": {
+                    "eyebrow": "Eyebrow (small line above the headline)",
+                    "headline": "Headline",
+                    "text": "Text",
+                    "ctaLabel": "CTA — label",
+                    "ctaUrl": "CTA — link",
+                    "ctaUrlHelp": "Without a link the button is hidden",
+                    "contentAlign": "Alignment",
+                    "media": "Background image"
+                },
+                "align": {
+                    "left": "Left",
+                    "center": "Centred"
+                }
+            },
+            "frinexTestimonial": {
+                "label": "FRINEX testimonial",
+                "placeholder": {
+                    "quote": "Enter quote …",
+                    "author": "Name"
+                },
+                "config": {
+                    "quote": "Quote",
+                    "authorName": "Name",
+                    "authorRole": "Role / company",
+                    "media": "Photo or company logo (optional)"
+                }
+            },
+            "frinexCta": {
+                "label": "FRINEX CTA section",
+                "placeholder": {
+                    "headline": "Open your B2B account now",
+                    "cta": "Register for free"
+                },
+                "config": {
+                    "headline": "Headline",
+                    "text": "Text",
+                    "benefits": "Benefits",
+                    "benefitsHelp": "One line = one benefit (rendered as a checklist)",
+                    "ctaLabel": "Button — label",
+                    "ctaUrl": "Button — link",
+                    "ctaUrlHelp": "Leave empty to link to the registration page (/account/register)"
+                }
+            }
+        }
+    }
+}

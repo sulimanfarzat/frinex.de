@@ -1,0 +1,93 @@
+/*
+FRINEX Premium — CTA-Sektion vor dem Footer (cms-block-frinex-cta)
+==================================================
+Registrierungsaufforderung auf Marken-Verlauf; Vorteile als Checkliste,
+Button bewusst in B2B-Amber (einziger Amber-Einsatz laut Farbregel).
+*/
+
+.frx-cta {
+    background: linear-gradient(135deg, var(--frx-accent) 0%, var(--frx-accent-strong) 100%);
+    border-radius: var(--frx-radius, .625rem);
+    color: #ffffff;
+    padding: clamp(2rem, 5vw, 4rem);
+}
+
+.frx-cta-inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--frx-s5);
+}
+
+@media (min-width: 992px) {
+    .frx-cta-inner {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--frx-s7);
+    }
+
+    .frx-cta-action {
+        flex-shrink: 0;
+        text-align: center;
+    }
+}
+
+.frx-cta-headline {
+    color: #ffffff;
+    margin-bottom: var(--frx-s2);
+}
+
+.frx-cta-text {
+    color: rgba(255, 255, 255, .85);
+    max-width: 36rem;
+    margin-bottom: var(--frx-s4);
+}
+
+.frx-cta-benefits {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--frx-s2) var(--frx-s5);
+    margin: 0;
+    padding: 0;
+}
+
+@media (min-width: 768px) {
+    .frx-cta-benefits {
+        grid-template-columns: repeat(2, auto);
+        justify-content: start;
+    }
+}
+
+.frx-cta-benefit {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    font-size: .92rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, .92);
+}
+
+.frx-cta-benefit svg {
+    flex-shrink: 0;
+    color: var(--frx-b2b);
+}
+
+.frx-cta-button {
+    background: var(--frx-b2b);
+    border-color: var(--frx-b2b);
+    color: var(--frx-ink);
+    font-weight: 700;
+}
+
+.frx-cta-button:hover {
+    background: #d99800;
+    border-color: #d99800;
+    color: var(--frx-ink);
+}
+
+.frx-cta-note {
+    margin: var(--frx-s2) 0 0;
+    font-size: .8rem;
+    color: rgba(255, 255, 255, .7);
+}

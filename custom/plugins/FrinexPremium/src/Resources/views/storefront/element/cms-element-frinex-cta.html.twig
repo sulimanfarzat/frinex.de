@@ -1,0 +1,43 @@
+{# FRINEX CTA-Sektion (vor dem Footer): Registrierungsaufforderung mit
+   B2B-Vorteilen. Vorteile werden im Admin als Textarea gepflegt
+   (eine Zeile = ein Punkt). #}
+{% block element_frinex_cta %}
+    {% set config = element.config %}
+    {% set benefits = (config.benefits.value ?: '')|split('\n')|map(line => line|trim)|filter(line => line != '') %}
+
+    <section class="cms-element-frinex-cta frx-cta" aria-labelledby="frx-cta-headline-{{ element.id }}">
+        <div class="frx-cta-inner">
+            <div class="frx-cta-copy">
+                <h2 class="frx-cta-headline" id="frx-cta-headline-{{ element.id }}">
+                    {{ config.headline.value ?: 'frinexPremium.cta.headlineFallback'|trans|sw_sanitize }}
+                </h2>
+                {% if config.text.value %}
+                    <p class="frx-cta-text">{{ config.text.value }}</p>
+                {% endif %}
+
+                {% if benefits|length > 0 %}
+                    <ul class="frx-cta-benefits">
+                        {% for benefit in benefits %}
+                            <li class="frx-cta-benefit">
+                                <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                     stroke-linejoin="round">
+                                    <path d="M20 6 9 17l-5-5"/>
+                                </svg>
+                                {{ benefit }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div class="frx-cta-action">
+                <a class="btn btn-lg frx-cta-button"
+                   href="{{ config.ctaUrl.value ?: path('frontend.account.register.page') }}">
+                    {{ config.ctaLabel.value ?: 'frinexPremium.cta.buttonFallback'|trans|sw_sanitize }}
+                </a>
+                <p class="frx-cta-note">{{ 'frinexPremium.cta.note'|trans|sw_sanitize }}</p>
+            </div>
+        </div>
+    </section>
+{% endblock %}

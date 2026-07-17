@@ -1,0 +1,101 @@
+/*
+FRINEX Premium — B2B-Bestellseite (/quickorder)
+==================================================
+Zeilenweise Artikelerfassung: Karte mit Tabelle (Produkt · Größe ·
+Menge), Fußzeile mit „Weiterer Artikel" und „In den Warenkorb".
+*/
+
+.quick-order-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: var(--frx-surface);
+    color: var(--frx-accent);
+    flex-shrink: 0;
+}
+
+.quick-order-card {
+    border: 1px solid var(--frx-line);
+    border-radius: .75rem;
+    box-shadow: var(--frx-shadow);
+    overflow: hidden;
+}
+
+.quick-order-table-wrapper {
+    overflow-x: auto;
+}
+
+.quick-order-table thead th {
+    background: var(--frx-surface);
+    color: var(--frx-muted);
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    border-bottom: 1px solid var(--frx-line);
+    padding: .75rem 1rem;
+    white-space: nowrap;
+}
+
+.quick-order-table td {
+    padding: .6rem 1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--frx-line);
+}
+
+.quick-order-col-index {
+    width: 3rem;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+}
+
+.quick-order-col-variant {
+    width: 12rem;
+}
+
+.quick-order-col-qty {
+    width: 10rem;
+}
+
+.quick-order-col-action {
+    width: 3.5rem;
+    text-align: center;
+}
+
+.quick-order-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 1rem;
+}
+
+.quick-order-actions {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.quick-order-hint {
+    display: flex;
+    align-items: flex-start;
+    gap: .35rem;
+    color: var(--frx-muted);
+    font-size: .85rem;
+}
+
+.btn-remove-row {
+    color: var(--frx-muted);
+    padding: .25rem .5rem;
+}
+
+.btn-remove-row:hover:not(:disabled) {
+    color: #cf4b3a;
+}
+
+.btn-remove-row:disabled {
+    opacity: .35;
+}

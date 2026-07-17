@@ -1,0 +1,16 @@
+{# FRINEX USP-Leiste: 4 Slots mit Element „frinex-usp-item".
+   Markup entspricht component/_usp.scss (.frx-usp-bar / .frx-usp). #}
+{% block block_frinex_usp_bar %}
+    <div class="col-12">
+        <div class="frx-usp-bar">
+            {% for slotName in ['first', 'second', 'third', 'fourth'] %}
+                {% set element = block.slots.getSlot(slotName) %}
+                {% if element %}
+                    <div data-cms-element-id="{{ element.id }}">
+                        {% sw_include '@Storefront/storefront/element/cms-element-' ~ element.type ~ '.html.twig' ignore missing %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

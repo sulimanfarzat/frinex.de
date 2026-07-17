@@ -1,0 +1,125 @@
+/*
+FRINEX Premium — Referenzen / Social Proof
+(cms-block-frinex-logo-bar + cms-block-frinex-testimonials)
+==================================================
+Logo-Leiste: entsättigte Kundenlogos, Farbe beim Hover.
+Testimonials: bis zu 3 ruhige Karten auf Flächengrau.
+*/
+
+// ---------------------------------------------------------------
+// Logo-Leiste
+// ---------------------------------------------------------------
+.frx-logo-bar-heading {
+    text-align: center;
+    font-size: .8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--frx-muted);
+    margin-bottom: var(--frx-s4);
+}
+
+.frx-logo-bar {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--frx-s4) var(--frx-s6);
+    margin: 0;
+    padding: 0;
+}
+
+.frx-logo-item .cms-image-container {
+    // Core-Image-Element neutralisieren: nur das Logo selbst zählt
+    display: inline-block;
+}
+
+.frx-logo-item img {
+    max-height: 2.75rem;
+    width: auto;
+    filter: grayscale(1);
+    opacity: .55;
+    transition:
+        filter var(--frx-t-med) var(--frx-ease),
+        opacity var(--frx-t-med) var(--frx-ease);
+}
+
+.frx-logo-item:hover img {
+    filter: grayscale(0);
+    opacity: 1;
+}
+
+// ---------------------------------------------------------------
+// Testimonial-Karten
+// ---------------------------------------------------------------
+.frx-testimonials {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--frx-s4);
+}
+
+@media (min-width: 992px) {
+    .frx-testimonials {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    // Bei nur 1–2 gepflegten Karten mittig statt linksbündig
+    .frx-testimonials > div:only-child {
+        grid-column: 2;
+    }
+}
+
+.frx-testimonial {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--frx-s3);
+    margin: 0;
+    padding: var(--frx-s5);
+    background: var(--frx-surface);
+    border-radius: var(--frx-radius, .625rem);
+}
+
+.frx-testimonial-mark {
+    color: var(--frx-accent);
+    opacity: .35;
+}
+
+.frx-testimonial-quote {
+    flex-grow: 1;
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--frx-ink);
+    text-wrap: pretty;
+}
+
+.frx-testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: var(--frx-s3);
+}
+
+.frx-testimonial-avatar {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.frx-testimonial-meta {
+    display: flex;
+    flex-direction: column;
+}
+
+.frx-testimonial-name {
+    font-weight: 700;
+    font-size: .9rem;
+    color: var(--frx-ink);
+}
+
+.frx-testimonial-role {
+    font-size: .8rem;
+    color: var(--frx-muted);
+}

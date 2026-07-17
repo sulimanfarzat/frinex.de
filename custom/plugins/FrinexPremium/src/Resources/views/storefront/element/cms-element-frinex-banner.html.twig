@@ -1,0 +1,40 @@
+{# FRINEX Kampagnen-Banner: Bild + Eyebrow + Headline + Text + CTA,
+   wiederverwendbar (mehrere Instanzen pro Seite möglich). #}
+{% block element_frinex_banner %}
+    {% set config = element.config %}
+    {% set media = element.data.media %}
+    {% set align = config.contentAlign.value ?: 'left' %}
+
+    <section class="cms-element-frinex-banner frx-banner frx-banner--{{ align }}{% if media %} frx-banner--has-image{% endif %}">
+        {% if media %}
+            <div class="frx-banner-media" aria-hidden="true">
+                {% sw_thumbnails 'frx-banner-image' with {
+                    media: media,
+                    sizes: { 'default': '100vw' },
+                    attributes: {
+                        'class': 'frx-banner-img',
+                        'alt': '',
+                        'loading': 'lazy'
+                    }
+                } %}
+            </div>
+        {% endif %}
+
+        <div class="frx-banner-content">
+            {% if config.eyebrow.value %}
+                <p class="frx-banner-eyebrow">{{ config.eyebrow.value }}</p>
+            {% endif %}
+            {% if config.headline.value %}
+                <h2 class="frx-banner-headline">{{ config.headline.value }}</h2>
+            {% endif %}
+            {% if config.text.value %}
+                <p class="frx-banner-text">{{ config.text.value }}</p>
+            {% endif %}
+            {% if config.ctaUrl.value %}
+                <a class="btn btn-primary frx-banner-cta" href="{{ config.ctaUrl.value }}">
+                    {{ config.ctaLabel.value ?: 'frinexPremium.banner.ctaFallback'|trans|sw_sanitize }}
+                </a>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

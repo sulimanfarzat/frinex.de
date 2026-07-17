@@ -1,0 +1,118 @@
+{
+    "sw-cms": {
+        "blocks": {
+            "frinex": {
+                "hero": { "label": "FRINEX Hero (Startseite)" },
+                "uspBar": { "label": "FRINEX USP-Leiste (4 Spalten)" },
+                "categoryGrid": { "label": "FRINEX Kategorien-Grid" },
+                "productSlider": { "label": "FRINEX Produkt-Slider (B2B)" },
+                "banner": { "label": "FRINEX Kampagnen-Banner" },
+                "logoBar": { "label": "FRINEX Logo-Leiste (Referenzen)" },
+                "testimonials": { "label": "FRINEX Testimonials" },
+                "cta": { "label": "FRINEX CTA-Sektion (Registrierung)" }
+            }
+        },
+        "elements": {
+            "frinexHero": {
+                "label": "FRINEX Hero",
+                "placeholder": {
+                    "headline": "Headline eingeben …",
+                    "subline": "Subline eingeben …",
+                    "ctaPrimary": "Geschäftskonto anlegen",
+                    "ctaSecondary": "Katalog ansehen"
+                },
+                "config": {
+                    "headline": "Headline",
+                    "subline": "Subline",
+                    "ctaPrimaryLabel": "Primärer CTA — Beschriftung",
+                    "ctaPrimaryUrl": "Primärer CTA — Link",
+                    "ctaPrimaryUrlHelp": "Leer lassen für die Registrierungsseite (/account/register)",
+                    "ctaSecondaryLabel": "Sekundärer CTA — Beschriftung",
+                    "ctaSecondaryUrl": "Sekundärer CTA — Link",
+                    "ctaSecondaryUrlHelp": "Ohne Link wird der sekundäre CTA ausgeblendet",
+                    "showTrustBar": "Trust-Leiste anzeigen (Nettopreise, Rechnung, 24-h-Versand, Ansprechpartner)",
+                    "media": "Hintergrundbild"
+                }
+            },
+            "frinexUspItem": {
+                "label": "FRINEX USP",
+                "placeholder": {
+                    "title": "USP-Titel",
+                    "text": "Kurztext"
+                },
+                "config": {
+                    "icon": "Icon",
+                    "title": "Titel",
+                    "text": "Kurztext"
+                },
+                "icons": {
+                    "truck": "LKW (Versand)",
+                    "invoice": "Rechnung",
+                    "headset": "Headset (Beratung)",
+                    "tag": "Preisschild (Konditionen)",
+                    "shield": "Schild (Qualität/Sicherheit)",
+                    "box": "Paket (Lager/Sortiment)"
+                }
+            },
+            "frinexCategoryGrid": {
+                "label": "FRINEX Kategorien-Grid",
+                "placeholder": { "headline": "Unsere Kategorien" },
+                "config": {
+                    "headline": "Überschrift (optional)",
+                    "categories": "Kategorien",
+                    "categoriesHelp": "6–8 Kategorien empfohlen; die Reihenfolge der Auswahl bestimmt die Anzeige. Bild = Kategorie-Medium."
+                }
+            },
+            "frinexBanner": {
+                "label": "FRINEX Kampagnen-Banner",
+                "placeholder": {
+                    "headline": "Banner-Headline",
+                    "cta": "Mehr erfahren"
+                },
+                "config": {
+                    "eyebrow": "Eyebrow (kleine Zeile über der Headline)",
+                    "headline": "Headline",
+                    "text": "Text",
+                    "ctaLabel": "CTA — Beschriftung",
+                    "ctaUrl": "CTA — Link",
+                    "ctaUrlHelp": "Ohne Link wird der Button ausgeblendet",
+                    "contentAlign": "Ausrichtung",
+                    "media": "Hintergrundbild"
+                },
+                "align": {
+                    "left": "Links",
+                    "center": "Zentriert"
+                }
+            },
+            "frinexTestimonial": {
+                "label": "FRINEX Testimonial",
+                "placeholder": {
+                    "quote": "Zitat eingeben …",
+                    "author": "Name"
+                },
+                "config": {
+                    "quote": "Zitat",
+                    "authorName": "Name",
+                    "authorRole": "Position / Firma",
+                    "media": "Foto oder Firmenlogo (optional)"
+                }
+            },
+            "frinexCta": {
+                "label": "FRINEX CTA-Sektion",
+                "placeholder": {
+                    "headline": "Jetzt B2B-Konto eröffnen",
+                    "cta": "Kostenlos registrieren"
+                },
+                "config": {
+                    "headline": "Headline",
+                    "text": "Text",
+                    "benefits": "Vorteile",
+                    "benefitsHelp": "Eine Zeile = ein Vorteil (wird als Checkliste dargestellt)",
+                    "ctaLabel": "Button — Beschriftung",
+                    "ctaUrl": "Button — Link",
+                    "ctaUrlHelp": "Leer lassen für die Registrierungsseite (/account/register)"
+                }
+            }
+        }
+    }
+}

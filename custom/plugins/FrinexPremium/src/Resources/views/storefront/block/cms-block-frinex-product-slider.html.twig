@@ -1,0 +1,12 @@
+{# FRINEX Produkt-Slider (Bestseller/Neuheiten): nutzt das Core-Element
+   „product-slider" (dynamische Produktgruppen etc. funktionieren wie
+   gewohnt), Wrapper-Klasse aktiviert das B2B-Styling aus
+   component/_product-slider.scss (Nettopreis prominent, Quick-Buy). #}
+{% block block_frinex_product_slider %}
+    {% set element = block.slots.getSlot('products') %}
+    {% if element %}
+        <div class="col-12 frx-product-slider" data-cms-element-id="{{ element.id }}">
+            {% sw_include '@Storefront/storefront/element/cms-element-' ~ element.type ~ '.html.twig' ignore missing %}
+        </div>
+    {% endif %}
+{% endblock %}

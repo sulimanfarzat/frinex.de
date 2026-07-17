@@ -1,0 +1,23 @@
+{
+  "base": "/bundles/frinexpremium/administration/",
+  "entryPoints": {
+    "frinex-premium": {
+      "css": [],
+      "dynamic": [],
+      "js": [
+        "/bundles/frinexpremium/administration/assets/frinex-premium-w9wjbumu.js"
+      ],
+      "legacy": false,
+      "preload": []
+    }
+  },
+  "legacy": false,
+  "metadatas": {},
+  "version": [
+    "7.1.0",
+    7,
+    1,
+    0
+  ],
+  "viteServer": null
+}

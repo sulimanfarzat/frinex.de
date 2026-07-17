@@ -1,0 +1,28 @@
+{
+    "frinexPremium": {
+        "hero": {
+            "ctaPrimary": "Geschäftskonto anlegen",
+            "ctaSecondary": "Katalog ansehen",
+            "trustAriaLabel": "Ihre Vorteile bei FRINEX",
+            "trust1": "Nettopreise für Geschäftskunden",
+            "trust2": "Kauf auf Rechnung",
+            "trust3": "Versand innerhalb von 24 h",
+            "trust4": "Persönlicher Ansprechpartner"
+        },
+        "categoryGrid": {
+            "ariaLabel": "Produktkategorien"
+        },
+        "banner": {
+            "ctaFallback": "Mehr erfahren"
+        },
+        "references": {
+            "heading": "Diese Unternehmen vertrauen auf FRINEX",
+            "ariaLabel": "Kundenlogos"
+        },
+        "cta": {
+            "headlineFallback": "Jetzt B2B-Konto eröffnen",
+            "buttonFallback": "Kostenlos registrieren",
+            "note": "Kostenlos & unverbindlich — Freischaltung werktags innerhalb von 24 h"
+        }
+    }
+}

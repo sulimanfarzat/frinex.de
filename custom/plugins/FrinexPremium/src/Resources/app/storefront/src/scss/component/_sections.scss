@@ -1,0 +1,38 @@
+/*
+FRINEX Premium — Gemeinsames für die FRINEX-CMS-Blöcke
+==================================================
+Sektions-Headline + dezente Scroll-Reveal-Animation. Die Animation
+nutzt CSS Scroll-Driven Animations (animation-timeline: view()) —
+reine Progressive Enhancement, kein JS: Browser ohne Support (und
+Nutzer mit prefers-reduced-motion) sehen die Inhalte einfach statisch.
+*/
+
+.frx-section-headline {
+    margin-bottom: 1.75rem;
+}
+
+@keyframes frx-rise-in {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+        .frx-usp,
+        .frx-cat-tile,
+        .frx-banner-content,
+        .frx-testimonial,
+        .frx-cta-inner {
+            animation: frx-rise-in linear both;
+            animation-timeline: view();
+            animation-range: entry 0% entry 40%;
+        }
+    }
+}

@@ -1,0 +1,18 @@
+{# FRINEX Logo-Leiste (Social Proof): 6 Slots mit Core-Element „image".
+   Logos werden entsättigt dargestellt und färben sich beim Hover ein
+   (component/_references.scss). #}
+{% block block_frinex_logo_bar %}
+    <div class="col-12">
+        <p class="frx-logo-bar-heading">{{ 'frinexPremium.references.heading'|trans|sw_sanitize }}</p>
+        <ul class="frx-logo-bar" aria-label="{{ 'frinexPremium.references.ariaLabel'|trans|striptags }}">
+            {% for slotName in ['logo-one', 'logo-two', 'logo-three', 'logo-four', 'logo-five', 'logo-six'] %}
+                {% set element = block.slots.getSlot(slotName) %}
+                {% if element and element.data.media %}
+                    <li class="frx-logo-item" data-cms-element-id="{{ element.id }}">
+                        {% sw_include '@Storefront/storefront/element/cms-element-' ~ element.type ~ '.html.twig' ignore missing %}
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

@@ -1,0 +1,71 @@
+/*
+FRINEX Premium — Kundenkonto
+==================================================
+Der Shopware-Core nullt das Karten-Padding global ($card-spacer-y/x)
+und kompensiert es nur auf einzelnen Seiten — im Kontobereich klebten
+Titel, Texte und Formularfelder deshalb an den Kartenrändern.
+Dazu: klare Kartentitel und eine aufgeräumte Seitenleiste.
+*/
+
+// ---------------------------------------------------------------
+// Karten: Innenabstand zurückgeben (gilt für alle Kontoseiten —
+// Übersicht, Profil, Adressen, Bestellungen)
+// ---------------------------------------------------------------
+.account-content .card-body {
+    padding: 1.25rem;
+}
+
+@media (min-width: 768px) {
+    .account-content .card-body {
+        padding: 1.5rem;
+    }
+}
+
+// Kartentitel: Trennlinie und Luft nach unten
+.account-content .card-title {
+    font-size: 1.05rem;
+    padding-bottom: .75rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--frx-line);
+}
+
+// Übersichtskarten: Abstand untereinander (auf Mobile stapeln sie)
+.account-overview-card {
+    margin-bottom: 1.5rem;
+}
+
+// ---------------------------------------------------------------
+// Seitenleiste: Kopf, Navigation, Abmelden
+// ---------------------------------------------------------------
+.account-content-aside .account-aside-header {
+    padding: 1rem 1.25rem;
+    font-weight: 700;
+}
+
+.account-content-aside .account-aside-item {
+    padding: .65rem 1.25rem;
+    color: var(--frx-ink);
+    border: 0;
+    transition:
+        background-color var(--frx-t-fast) var(--frx-ease),
+        color var(--frx-t-fast) var(--frx-ease);
+}
+
+.account-content-aside .account-aside-item:hover {
+    background: var(--frx-surface);
+    color: var(--frx-accent);
+}
+
+// aktiver Menüpunkt: Akzentbalken links statt Vollflächen-Highlight
+.account-content-aside .account-aside-item.is-active {
+    color: var(--frx-accent);
+    font-weight: 650;
+    background: transparent;
+    box-shadow: inset 3px 0 0 var(--frx-accent);
+}
+
+.account-content-aside .account-aside-footer {
+    padding: .75rem 1rem;
+    background: transparent;
+    border-top: 1px solid var(--frx-line);
+}

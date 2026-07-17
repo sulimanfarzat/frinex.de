@@ -1,0 +1,17 @@
+{# FRINEX Testimonials: 3 Slots mit Element „frinex-testimonial".
+   Nicht gepflegte Karten (ohne Zitat) werden übersprungen — der Block
+   funktioniert also auch mit 1 oder 2 Testimonials. #}
+{% block block_frinex_testimonials %}
+    <div class="col-12">
+        <div class="frx-testimonials">
+            {% for slotName in ['one', 'two', 'three'] %}
+                {% set element = block.slots.getSlot(slotName) %}
+                {% if element and element.config.quote.value %}
+                    <div data-cms-element-id="{{ element.id }}">
+                        {% sw_include '@Storefront/storefront/element/cms-element-' ~ element.type ~ '.html.twig' ignore missing %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

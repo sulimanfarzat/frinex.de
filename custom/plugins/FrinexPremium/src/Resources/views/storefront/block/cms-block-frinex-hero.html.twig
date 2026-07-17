@@ -1,0 +1,9 @@
+{# FRINEX Hero-Block: ein Slot, Element „frinex-hero" (Vollbreite empfohlen) #}
+{% block block_frinex_hero %}
+    {% set element = block.slots.getSlot('hero') %}
+    {% if element %}
+        <div class="col-12" data-cms-element-id="{{ element.id }}">
+            {% sw_include '@Storefront/storefront/element/cms-element-' ~ element.type ~ '.html.twig' ignore missing %}
+        </div>
+    {% endif %}
+{% endblock %}

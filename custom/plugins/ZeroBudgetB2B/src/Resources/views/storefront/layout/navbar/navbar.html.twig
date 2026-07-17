@@ -1,0 +1,21 @@
+{% sw_extends '@Storefront/storefront/layout/navbar/navbar.html.twig' %}
+
+{#
+    Menüpunkt „B2B-Bestellung" hinter den Kategorien — nur für
+    eingeloggte Kunden der B2B-Gruppe (gleiche Gruppen-ID wie die
+    Zugangsprüfung im QuickOrderController).
+#}
+
+{% block layout_navbar_menu_items %}
+    {{ parent() }}
+
+    {% if context.customer and context.customer.groupId == '019aadeaffb07664b610d2bf2752c1f8' %}
+        <li class="nav-item">
+            <a class="nav-link main-navigation-link frx-b2b-order-link"
+               href="{{ path('frontend.quickorder.page') }}"
+               title="B2B-Bestellung">
+                <span class="main-navigation-link-text">B2B-Bestellung</span>
+            </a>
+        </li>
+    {% endif %}
+{% endblock %}

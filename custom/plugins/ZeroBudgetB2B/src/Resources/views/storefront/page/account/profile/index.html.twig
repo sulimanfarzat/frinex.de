@@ -1,0 +1,63 @@
+{% sw_extends '@Storefront/storefront/page/account/profile/index.html.twig' %}
+
+{#
+    Wechsel auf „Gewerblich" im Profil: Upload-Pflicht für
+    Handelsregisterauszug/Gewerbeschein. Der Upload-Block steckt im
+    Umschalt-Container .js-field-toggle-contact-type-company — das
+    Core-JS blendet ihn nur bei Kontotyp „Gewerblich" ein und entfernt
+    bei „Privat" automatisch required/aktiviert (form-field-toggle).
+
+    Serverseitig erzwingt der B2bProfileUpdateSubscriber den Upload
+    beim Wechsel Privat → Gewerblich und legt Dokument + B2B-Antrag ab.
+
+    Block komplett überschrieben, weil das Core-Formular kein
+    enctype="multipart/form-data" hat — ohne das kämen keine Dateien an.
+#}
+
+{% block page_account_profile_personal_form %}
+    <form id="profilePersonalForm"
+          method="post"
+          action="{{ path('frontend.account.profile.save') }}"
+          enctype="multipart/form-data"
+          data-form-handler="true">
+        {% block page_account_profile_personal_fields %}
+            {{ parent() }}
+
+            {# Upload nur nötig, solange das Konto noch nicht gewerblich ist #}
+            {% if context.customer.accountType != constant('Shopware\\Core\\Checkout\\Customer\\CustomerEntity::ACCOUNT_TYPE_BUSINESS') %}
+                <div class="js-field-toggle-contact-type-company frx-b2b-document-upload mt-3 d-none">
+                    <label class="form-label" for="b2bDocumentUpload">
+                        Handelsregisterauszug oder Gewerbeschein *
+                    </label>
+                    <input type="file"
+                           name="b2b_document_upload"
+                           id="b2bDocumentUpload"
+                           class="form-control"
+                           accept="application/pdf,image/jpeg,image/png"
+                           required>
+                    <small class="form-text text-muted">
+                        Erforderlich beim Wechsel zu einem Gewerbekonto — PDF, JPG oder PNG, max. 5 MB.
+                    </small>
+                </div>
+            {% endif %}
+        {% endblock %}
+
+        {% block page_account_profile_personal_required %}
+            <p class="account-profile-required-info required-fields">
+                {{ 'general.requiredFields'|trans|sw_sanitize }}
+            </p>
+        {% endblock %}
+
+        {% block page_account_profile_personal_action_buttons %}
+            <div class="card-actions">
+                {% block page_account_profile_personal_action_button_send %}
+                    <button type="submit"
+                            class="profile-form-submit btn btn-light btn-sm"
+                            title="{{ 'account.profileSaveChanges'|trans|striptags }}">
+                        {{ 'account.profileSaveChanges'|trans|sw_sanitize }}
+                    </button>
+                {% endblock %}
+            </div>
+        {% endblock %}
+    </form>
+{% endblock %}

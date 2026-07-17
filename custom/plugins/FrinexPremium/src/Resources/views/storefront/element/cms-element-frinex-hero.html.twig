@@ -1,0 +1,71 @@
+{# FRINEX Hero (Above the Fold)
+   Konfiguration im Admin: Headline, Subline, 2 CTAs, Hintergrundbild
+   (media), Trust-Leiste ein/aus. Das Bild lädt eager mit hoher
+   Priorität (Above the Fold, kein Lazy Loading), die feste Mindesthöhe
+   in _hero.scss verhindert Layout Shifts. #}
+{% block element_frinex_hero %}
+    {% set config = element.config %}
+    {% set media = element.data.media %}
+
+    <section class="cms-element-frinex-hero frx-hero{% if media %} frx-hero--has-image{% endif %}"
+             aria-labelledby="frx-hero-headline-{{ element.id }}">
+
+        {% if media %}
+            <div class="frx-hero-media" aria-hidden="true">
+                {% sw_thumbnails 'frx-hero-image' with {
+                    media: media,
+                    sizes: { 'default': '100vw' },
+                    attributes: {
+                        'class': 'frx-hero-img',
+                        'alt': '',
+                        'loading': 'eager',
+                        'fetchpriority': 'high'
+                    }
+                } %}
+            </div>
+        {% endif %}
+
+        <div class="container frx-hero-inner">
+            <div class="frx-hero-content">
+                {% if config.headline.value %}
+                    <h1 class="frx-hero-headline" id="frx-hero-headline-{{ element.id }}">
+                        {{ config.headline.value }}
+                    </h1>
+                {% endif %}
+
+                {% if config.subline.value %}
+                    <p class="frx-hero-subline">{{ config.subline.value }}</p>
+                {% endif %}
+
+                <div class="frx-hero-actions">
+                    <a class="btn btn-primary btn-lg frx-hero-cta-primary"
+                       href="{{ config.ctaPrimaryUrl.value ?: path('frontend.account.register.page') }}">
+                        {{ config.ctaPrimaryLabel.value ?: 'frinexPremium.hero.ctaPrimary'|trans|sw_sanitize }}
+                    </a>
+
+                    {% if config.ctaSecondaryUrl.value %}
+                        <a class="btn btn-outline-light btn-lg frx-hero-cta-secondary"
+                           href="{{ config.ctaSecondaryUrl.value }}">
+                            {{ config.ctaSecondaryLabel.value ?: 'frinexPremium.hero.ctaSecondary'|trans|sw_sanitize }}
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if config.showTrustBar.value %}
+                <ul class="frx-hero-trust" aria-label="{{ 'frinexPremium.hero.trustAriaLabel'|trans|striptags }}">
+                    {% for trustKey in ['trust1', 'trust2', 'trust3', 'trust4'] %}
+                        <li class="frx-hero-trust-item">
+                            <svg class="frx-hero-trust-icon" aria-hidden="true" width="18" height="18"
+                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                 stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+                            {{ ('frinexPremium.hero.' ~ trustKey)|trans|sw_sanitize }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

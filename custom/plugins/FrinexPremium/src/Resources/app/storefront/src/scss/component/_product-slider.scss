@@ -1,0 +1,41 @@
+/*
+FRINEX Premium — Produkt-Slider „Bestseller/Neuheiten"
+(cms-block-frinex-product-slider)
+==================================================
+Nutzt das Core-Element product-slider; dieser Wrapper schärft die
+B2B-Optik: Nettopreis prominent, Quick-Buy (Stepper + Warenkorb aus
+component/product/card/action.html.twig) dauerhaft sichtbar statt
+erst beim Hover.
+*/
+
+.frx-product-slider {
+    // Nettopreis prominent: größer, schwerer, Markenfarbe
+    .product-price {
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: var(--frx-ink);
+    }
+
+    .product-price-info .product-tax-info,
+    .product-price-info .product-unit-price {
+        font-size: .78rem;
+        color: var(--frx-muted);
+    }
+
+    // Quick-Buy immer sichtbar und kompakt
+    .frx-card-buy {
+        margin-top: var(--frx-s2);
+    }
+
+    .frx-card-buy .btn-buy {
+        padding-top: .5rem;
+        padding-bottom: .5rem;
+        font-size: .875rem;
+    }
+
+    // Slider-Ränder: Karten bekommen Luft für den Hover-Schatten
+    .product-slider-item {
+        padding-top: var(--frx-s2);
+        padding-bottom: var(--frx-s3);
+    }
+}
