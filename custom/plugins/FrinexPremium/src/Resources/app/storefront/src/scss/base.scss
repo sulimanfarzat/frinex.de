@@ -44,9 +44,10 @@ sicher). Manrope liefert dieses Theme als Variable Font mit (latin,
     --frx-accent-strong: #0a3b65;
     --frx-b2b: #f2a900;
 
-    // Tiefe
+    // Tiefe & Form
     --frx-shadow: 0 1px 2px rgba(20, 24, 30, .05), 0 8px 24px rgba(20, 24, 30, .07);
     --frx-shadow-lift: 0 2px 4px rgba(20, 24, 30, .06), 0 16px 40px rgba(20, 24, 30, .12);
+    --frx-radius: .625rem;
 
     // Motion: drei Dauern, eine Kurve
     --frx-ease: cubic-bezier(.4, 0, .2, 1);
@@ -236,6 +237,19 @@ button:focus-visible {
 @import 'component/cms';
 @import 'component/usp';
 @import 'component/refinements';
+
+// ---------------------------------------------------------------
+// FRINEX-CMS-Blöcke für die Erlebniswelten (Phase 5)
+// ---------------------------------------------------------------
+@import 'component/sections';
+@import 'component/hero';
+@import 'component/category-grid';
+@import 'component/product-slider';
+@import 'component/banner';
+@import 'component/references';
+@import 'component/cta';
 @import 'page/listing';
 @import 'page/product-detail';
 @import 'page/checkout';
+@import 'page/quick-order';
+@import 'page/account';

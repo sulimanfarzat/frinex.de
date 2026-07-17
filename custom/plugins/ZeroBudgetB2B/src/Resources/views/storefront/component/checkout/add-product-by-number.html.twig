@@ -1,13 +1,22 @@
 {% sw_extends '@Storefront/storefront/component/checkout/add-product-by-number.html.twig' %}
 
 {#
-    „Produktnummer"-Formular der Warenkorbseite mit Mengenfeld.
-    Postet an die Plugin-Route add-by-number-qty (Nummer + Menge)
-    statt an die Core-Route (immer Menge 1).
+    „Produktnummer"-Formular der Warenkorbseite als Schnellerfassung:
+    Dropdown mit den angelegten Produkten, daneben Dropdown mit der
+    Größe/Ausführung, dazu Mengenfeld. Postet an die Plugin-Route
+    add-by-number-qty (Nummer + Menge) statt an die Core-Route.
+
+    Die Produktliste liefert der CartProductListSubscriber als
+    Page-Extension (gruppiert: Produkt → Varianten). Fehlt sie,
+    fällt das Formular auf das freie Nummernfeld zurück.
 #}
 
 {% block page_checkout_cart_add_product %}
-    <div class="col-md-5 cart-add-product-container">
+    {% set frxGroups = page is defined and page.getExtension('frxProductOptions')
+        ? page.getExtension('frxProductOptions').all
+        : null %}
+
+    <div class="col-md-6 cart-add-product-container">
         <form action="{{ path('frontend.checkout.product.add-by-number-qty') }}" method="post">
             {% block page_checkout_cart_add_product_redirect %}
                 <input type="hidden"
@@ -15,43 +24,106 @@
                        value="frontend.checkout.cart.page">
             {% endblock %}
 
-            {% block page_checkout_cart_add_product_label %}
+            {% if frxGroups %}
+                {% block page_checkout_cart_add_product_label %}
+                    <label class="mb-1" for="frxProductSelect">
+                        Produkt
+                    </label>
+                {% endblock %}
+
+                {% block page_checkout_cart_add_product_input_group %}
+                    <div class="input-group frx-add-by-number">
+                        {% block page_checkout_cart_add_product_input %}
+                            <select class="form-select"
+                                    id="frxProductSelect"
+                                    aria-label="Produkt wählen">
+                                {% for group in frxGroups %}
+                                    <option value="{{ loop.index0 }}">{{ group.label }}</option>
+                                {% endfor %}
+                            </select>
+
+                            <select class="form-select frx-add-by-number-variant"
+                                    id="frxVariantSelect"
+                                    name="number"
+                                    aria-label="Größe wählen">
+                                {% for variant in (frxGroups|first).variants %}
+                                    <option value="{{ variant.number }}">{{ variant.label }}</option>
+                                {% endfor %}
+                            </select>
+                        {% endblock %}
+
+                        {% block page_checkout_cart_add_product_quantity %}
+                            <input type="number"
+                                   name="quantity"
+                                   class="form-control frx-add-by-number-qty"
+                                   value="1"
+                                   min="1"
+                                   max="9999"
+                                   inputmode="numeric"
+                                   aria-label="{{ 'component.product.quantitySelect.label'|trans|striptags }}">
+                        {% endblock %}
+
+                        {% block page_checkout_cart_add_product_submit %}
+                            <button class="btn btn-outline-secondary add-product-button"
+                                    type="submit"
+                                    aria-label="{{ 'checkout.addProductLabel'|trans|striptags }}"
+                                    id="addProductButton">
+                                {% sw_icon 'checkmark' %}
+                            </button>
+                        {% endblock %}
+                    </div>
+                {% endblock %}
+
+                {# Produktwechsel füllt das Größen-Dropdown neu #}
+                <script type="application/json" id="frxProductData">{{ frxGroups|json_encode(constant('JSON_HEX_TAG'))|raw }}</script>
+                <script>
+                    (function () {
+                        var data = JSON.parse(document.getElementById('frxProductData').textContent);
+                        var productSelect = document.getElementById('frxProductSelect');
+                        var variantSelect = document.getElementById('frxVariantSelect');
+
+                        productSelect.addEventListener('change', function () {
+                            var group = data[productSelect.value] || { variants: [] };
+                            variantSelect.innerHTML = '';
+                            group.variants.forEach(function (variant) {
+                                var option = document.createElement('option');
+                                option.value = variant.number;
+                                option.textContent = variant.label;
+                                variantSelect.appendChild(option);
+                            });
+                        });
+                    })();
+                </script>
+            {% else %}
+                {# Fallback ohne Produktliste: freies Nummernfeld + Menge #}
                 <label class="mb-1" for="addProductInput">
                     {{ 'checkout.addProductLabel'|trans|sw_sanitize }}
                 </label>
-            {% endblock %}
 
-            {% block page_checkout_cart_add_product_input_group %}
                 <div class="input-group frx-add-by-number">
-                    {% block page_checkout_cart_add_product_input %}
-                        <input type="text"
-                               name="number"
-                               class="form-control"
-                               id="addProductInput"
-                               placeholder="{{ 'checkout.addProductPlaceholder'|trans|striptags }}">
-                    {% endblock %}
+                    <input type="text"
+                           name="number"
+                           class="form-control"
+                           id="addProductInput"
+                           placeholder="{{ 'checkout.addProductPlaceholder'|trans|striptags }}">
 
-                    {% block page_checkout_cart_add_product_quantity %}
-                        <input type="number"
-                               name="quantity"
-                               class="form-control frx-add-by-number-qty"
-                               value="1"
-                               min="1"
-                               max="9999"
-                               inputmode="numeric"
-                               aria-label="{{ 'component.product.quantitySelect.label'|trans|striptags }}">
-                    {% endblock %}
+                    <input type="number"
+                           name="quantity"
+                           class="form-control frx-add-by-number-qty"
+                           value="1"
+                           min="1"
+                           max="9999"
+                           inputmode="numeric"
+                           aria-label="{{ 'component.product.quantitySelect.label'|trans|striptags }}">
 
-                    {% block page_checkout_cart_add_product_submit %}
-                        <button class="btn btn-outline-secondary add-product-button"
-                                type="submit"
-                                aria-labelledby="addProductInput"
-                                id="addProductButton">
-                            {% sw_icon 'checkmark' %}
-                        </button>
-                    {% endblock %}
+                    <button class="btn btn-outline-secondary add-product-button"
+                            type="submit"
+                            aria-labelledby="addProductInput"
+                            id="addProductButton">
+                        {% sw_icon 'checkmark' %}
+                    </button>
                 </div>
-            {% endblock %}
+            {% endif %}
         </form>
     </div>
 {% endblock %}

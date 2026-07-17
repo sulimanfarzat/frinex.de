@@ -4,7 +4,9 @@ namespace ZeroBudgetB2B\Storefront\Controller;
 
 use Shopware\Core\Content\Product\SalesChannel\ProductAvailableFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsAnyFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
+use ZeroBudgetB2B\Service\ProductOptionsLoader;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Checkout\Cart\SalesChannel\CartService;
 use Shopware\Core\PlatformRequest;
@@ -30,15 +32,18 @@ class QuickOrderController extends StorefrontController
     private CartService $cartService;
     private EntityRepository $productRepository;
     private ProductDetailRoute $productDetailRoute;
+    private ProductOptionsLoader $productOptionsLoader;
 
     public function __construct(CartService $cartService,                  // Argument 1
     EntityRepository $productRepository,      // Argument 2 (jetzt aliast)
-    ProductDetailRoute $productDetailRoute    // Argument 3
+    ProductDetailRoute $productDetailRoute,   // Argument 3
+    ProductOptionsLoader $productOptionsLoader // Argument 4: Daten für die Produkt-/Größen-Dropdowns
 	)
     {
 	$this->productDetailRoute = $productDetailRoute;
         $this->cartService = $cartService;
         $this->productRepository = $productRepository;
+        $this->productOptionsLoader = $productOptionsLoader;
     }
 
     #[Route(path: '/quickorder', name: 'frontend.quickorder.page', methods: ['GET'])]
@@ -66,7 +71,81 @@ stomer_group_id;"*/
 
         return $this->renderStorefront('@ZeroBudgetB2B/storefront/page/quick-order/index.html.twig', [
             'quickOrderData' => [],
+            'frxProductGroups' => $this->productOptionsLoader->load($context),
         ]);
+    }
+
+    /**
+     * Mehrere Zeilen (Produkt + Menge) auf einmal in den Warenkorb —
+     * Ziel des Zeilen-Formulars der B2B-Bestellseite. Preise berechnet
+     * der CartService selbst (keine eigene PriceDefinition nötig).
+     */
+    #[Route(path: '/quickorder/add-items', name: 'frontend.quickorder.add.items', methods: ['POST'])]
+    public function addItems(Request $request, SalesChannelContext $context): Response
+    {
+        // gleiche Zugangsprüfung wie die Seite selbst
+        $b2bGroupId = '019aadeaffb07664b610d2bf2752c1f8';
+        $customer = $context->getCustomer();
+
+        if (!$customer) {
+            $this->addFlash('danger', $this->trans('Sie müssen eingeloggt sein'));
+            return $this->redirectToRoute('frontend.account.login.page');
+        }
+
+        if ($customer->getGroupId() !== $b2bGroupId) {
+            $this->addFlash('danger', $this->trans('Nur für Geschäftskunden erlaubt'));
+            return $this->redirectToRoute('frontend.home.page');
+        }
+
+        // Nummer => Menge einsammeln; leere Zeilen überspringen,
+        // doppelt erfasste Nummern aufsummieren
+        $wanted = [];
+        foreach ($request->request->all('items') as $item) {
+            $number = trim((string) ($item['number'] ?? ''));
+            $quantity = max(1, min(9999, (int) ($item['quantity'] ?? 1)));
+
+            if ($number === '') {
+                continue;
+            }
+
+            $wanted[$number] = ($wanted[$number] ?? 0) + $quantity;
+        }
+
+        if ($wanted === []) {
+            $this->addFlash('danger', 'Bitte mindestens einen Artikel auswählen.');
+            return $this->redirectToRoute('frontend.quickorder.page');
+        }
+
+        $criteria = (new Criteria())
+            ->addFilter(new EqualsAnyFilter('productNumber', array_keys($wanted)))
+            ->addFilter(new ProductAvailableFilter($context->getSalesChannelId()));
+
+        $byNumber = [];
+        foreach ($this->productRepository->search($criteria, $context->getContext()) as $product) {
+            $byNumber[$product->getProductNumber()] = $product->getId();
+        }
+
+        $lineItems = [];
+        foreach ($wanted as $number => $quantity) {
+            $productId = $byNumber[$number] ?? null;
+
+            if ($productId === null) {
+                $this->addFlash('danger', $this->trans('quickorder.productNotFound', ['%sku%' => $number]));
+                continue;
+            }
+
+            $lineItems[] = (new LineItem($productId, LineItem::PRODUCT_LINE_ITEM_TYPE, $productId, $quantity))
+                ->setStackable(true)
+                ->setRemovable(true);
+        }
+
+        if ($lineItems !== []) {
+            $cart = $this->cartService->getCart($context->getToken(), $context);
+            $this->cartService->add($cart, $lineItems, $context);
+            $this->addFlash('success', \count($lineItems) . ' Artikel in den Warenkorb gelegt.');
+        }
+
+        return $this->redirectToRoute('frontend.quickorder.page');
     }
 
     #[Route(path: '/quickorder/add', name: 'frontend.quickorder.add', methods: ['POST'])]

@@ -140,6 +140,28 @@ Runterscrollen, sofort wieder da beim Hochscrollen).
     flex-shrink: 0;
 }
 
+// Konto-Icon saß ~4px tiefer als Herz/Tasche: Herz- und Taschen-Icon
+// stecken in Wrapper-Spans (.header-wishlist-icon/.header-cart-icon),
+// die als blockifizierte Flex-Items eine Zeilenbox mit Schrift-
+// Unterlänge UNTER dem Icon bilden (~30px hoch bei 24px Icon) — das
+// Icon rutscht dadurch über die Buttonmitte. Der Avatar hat keinen
+// Wrapper und sitzt exakt mittig. Wrapper als Flex-Container:
+// Höhe = Icon-Höhe, Unterlänge weg, alle drei auf einer Linie.
+.header-actions-btn .header-wishlist-icon,
+.header-actions-btn .header-cart-icon {
+    display: flex;
+    align-items: center;
+}
+
+// Der Core schiebt jedes Button-SVG 6px nach unten (.btn .icon>svg
+// {top:6px} — Baseline-Trick für Inline-Buttons). In den flex-
+// zentrierten Rund-Buttons ist das nur ein Versatz nach unten:
+// neutralisieren, damit die Icons in der Kreis-/Buttonmitte stehen
+// und die Tasche mit dem Warenkorb-Betrag fluchtet.
+.header-actions-btn .icon > svg {
+    top: 0;
+}
+
 .header-actions-btn:focus-visible {
     color: var(--frx-ink);
     background: var(--frx-surface);

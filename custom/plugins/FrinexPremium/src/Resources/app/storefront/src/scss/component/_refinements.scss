@@ -149,6 +149,31 @@ Karten-Quick-Buy, ruhige Detail-Politur.
     font-variant-numeric: tabular-nums;
 }
 
+// Größen-Dropdown schmal halten — das Produkt-Dropdown davor
+// bekommt den restlichen Platz
+.frx-add-by-number .frx-add-by-number-variant {
+    flex: 0 0 8rem;
+    max-width: 8rem;
+}
+
+// ---------------------------------------------------------------
+// Login-/Registrierungskarten: der Shopware-Core nullt das Karten-
+// Padding global ($card-spacer-y/x: 0) und kompensiert es nur auf
+// einzelnen Seiten — auf der Anmelden/Registrieren-Seite kleben
+// Titel und Felder dadurch am Kartenrand
+// ---------------------------------------------------------------
+.login-card .card-body,
+.register-card .card-body {
+    padding: 1.25rem;
+}
+
+@media (min-width: 768px) {
+    .login-card .card-body,
+    .register-card .card-body {
+        padding: 1.75rem;
+    }
+}
+
 // ---------------------------------------------------------------
 // MwSt.-Hinweis im Footer sichtbar statt versteckt
 // ---------------------------------------------------------------
