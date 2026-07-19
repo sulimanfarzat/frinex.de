@@ -1,0 +1,336 @@
+/*
+FRINEX Premium — Internes Einkaufs-Dashboard + Kanal-Anpassungen
+==================================================
+Startseite von fritz.frinex.de (Body-Klasse .is-channel-internal,
+Markup aus @ZeroBudgetB2B/page/internal-home/dashboard.html.twig).
+Werkzeug-Charakter statt Marketing: Begrüßungs-Band auf Ink-Grund,
+Schnellzugriff-Kacheln, Tabelle der letzten Anforderungen.
+*/
+
+// ---------------------------------------------------------------
+// Interner Kanal: Header entschlacken — kein Sprach-/Währungsband,
+// keine Merkliste (die Anforderung hat eigene Favoriten)
+// ---------------------------------------------------------------
+.is-channel-internal {
+    .top-bar {
+        display: none !important;
+    }
+
+    .header-wishlist-btn,
+    .header-actions-btn:has(.header-wishlist-icon) {
+        display: none !important;
+    }
+}
+
+// ---------------------------------------------------------------
+// Dashboard
+// ---------------------------------------------------------------
+.frx-dash {
+    padding-top: var(--frx-s4);
+    padding-bottom: var(--frx-s7);
+}
+
+// Begrüßungs-Band: Ink→Akzent-Verlauf, weiche Kante
+.frx-dash-hero {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--frx-s4);
+    background:
+        radial-gradient(60rem 30rem at 110% -20%, rgba(15, 76, 129, .55), transparent 60%),
+        var(--frx-ink);
+    color: #fff;
+    border-radius: 1rem;
+    padding: clamp(1.5rem, 4vw, 2.75rem);
+    margin-bottom: var(--frx-s4);
+    box-shadow: var(--frx-shadow-lift);
+}
+
+.frx-dash-kicker {
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, .6);
+    margin-bottom: .4rem;
+}
+
+.frx-dash-title {
+    color: #fff;
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    margin-bottom: .3rem;
+}
+
+.frx-dash-sub {
+    color: rgba(255, 255, 255, .75);
+    margin-bottom: 1.1rem;
+    max-width: 34rem;
+}
+
+.frx-dash-hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+}
+
+.frx-dash-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    font-weight: 700;
+    background: #fff;
+    color: var(--frx-ink);
+
+    &:hover {
+        background: #fff;
+        color: var(--frx-accent);
+    }
+}
+
+.frx-dash-hero-link {
+    color: rgba(255, 255, 255, .85);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+
+    &:hover {
+        color: #fff;
+    }
+}
+
+// Hinweis auf offene Positionen der aktuellen Anforderung
+.frx-dash-hero-note {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    background: rgba(255, 255, 255, .1);
+    border: 1px solid rgba(255, 255, 255, .18);
+    border-radius: .75rem;
+    padding: .8rem 1rem;
+    font-size: .88rem;
+    color: rgba(255, 255, 255, .85);
+    backdrop-filter: blur(4px);
+
+    a {
+        color: #fff;
+        font-weight: 600;
+        text-decoration: none;
+        white-space: nowrap;
+
+        &:hover {
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+    }
+}
+
+.frx-dash-open-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50rem;
+    background: var(--frx-b2b);
+    color: var(--frx-ink);
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    padding: 0 .4rem;
+}
+
+// ---------------------------------------------------------------
+// Schnellzugriff-Kacheln
+// ---------------------------------------------------------------
+.frx-dash-tiles {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--frx-s3);
+    margin-bottom: var(--frx-s5);
+}
+
+@media (min-width: 992px) {
+    .frx-dash-tiles {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.frx-dash-tile {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+    background: var(--frx-paper);
+    border: 1px solid var(--frx-line);
+    border-radius: .75rem;
+    padding: 1rem;
+    text-decoration: none;
+    color: var(--frx-ink);
+    box-shadow: var(--frx-shadow);
+    transition:
+        transform var(--frx-t-med) var(--frx-ease),
+        box-shadow var(--frx-t-med) var(--frx-ease);
+
+    &:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--frx-shadow-lift);
+        color: var(--frx-ink);
+
+        .frx-dash-tile-arrow {
+            transform: translateX(3px);
+            opacity: 1;
+        }
+    }
+}
+
+.frx-dash-tile-icon {
+    flex-shrink: 0;
+    width: 2.75rem;
+    height: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: .6rem;
+    background: rgba(15, 76, 129, .1);
+    color: var(--frx-accent);
+
+    &.is-amber {
+        background: rgba(242, 169, 0, .14);
+        color: #8a5d00;
+    }
+
+    &.is-green {
+        background: rgba(31, 157, 85, .12);
+        color: #1f9d55;
+    }
+
+    &.is-ink {
+        background: var(--frx-surface);
+        color: var(--frx-ink);
+    }
+}
+
+.frx-dash-tile-body {
+    min-width: 0;
+
+    strong {
+        display: block;
+        font-size: .95rem;
+        line-height: 1.3;
+    }
+
+    span {
+        display: block;
+        font-size: .78rem;
+        color: var(--frx-muted);
+        font-variant-numeric: tabular-nums;
+    }
+}
+
+.frx-dash-tile-arrow {
+    margin-left: auto;
+    color: var(--frx-accent);
+    opacity: .5;
+    transition:
+        transform var(--frx-t-fast) var(--frx-ease),
+        opacity var(--frx-t-fast) var(--frx-ease);
+}
+
+// ---------------------------------------------------------------
+// Letzte Anforderungen
+// ---------------------------------------------------------------
+.frx-dash-orders-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: .75rem;
+
+    h2 {
+        font-size: 1.1rem;
+        margin: 0;
+    }
+
+    a {
+        font-size: .85rem;
+        text-decoration: none;
+        font-weight: 600;
+
+        &:hover {
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+    }
+}
+
+.frx-dash-orders-wrap {
+    background: var(--frx-paper);
+    border: 1px solid var(--frx-line);
+    border-radius: .75rem;
+    overflow: auto;
+    scrollbar-width: thin;
+}
+
+.frx-dash-orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .875rem;
+    font-variant-numeric: tabular-nums;
+
+    th {
+        font-size: .72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+        color: var(--frx-muted);
+        background: var(--frx-surface);
+        padding: .55rem .9rem;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    td {
+        padding: .55rem .9rem;
+        border-top: 1px solid var(--frx-line);
+        white-space: nowrap;
+    }
+
+    .is-num {
+        text-align: right;
+    }
+
+    .is-number {
+        font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+        font-size: .8rem;
+    }
+
+    tbody tr:hover {
+        background: var(--frx-surface);
+    }
+}
+
+.frx-dash-state {
+    display: inline-block;
+    background: rgba(15, 76, 129, .1);
+    color: var(--frx-accent);
+    border-radius: 50rem;
+    font-size: .72rem;
+    font-weight: 700;
+    padding: .15rem .6rem;
+}
+
+.frx-dash-orders-empty {
+    text-align: center;
+    color: var(--frx-muted);
+    padding: 1.5rem !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .frx-dash-tile,
+    .frx-dash-tile-arrow {
+        transition: none;
+    }
+
+    .frx-dash-tile:hover {
+        transform: none;
+    }
+}

@@ -5,6 +5,11 @@ Core-Verhalten (Slide-in, Ebenen-Navigation) bleibt; hier nur
 Typografie, Touch-Ziele und ruhige Zustände.
 */
 
+// Schmale Scrollbar im Panel — passend zur Scrollbar-Farbe (base.scss)
+.offcanvas {
+    scrollbar-width: thin;
+}
+
 .navigation-offcanvas-headline {
     font-family: 'Manrope', 'Inter', system-ui, sans-serif;
     font-weight: 800;

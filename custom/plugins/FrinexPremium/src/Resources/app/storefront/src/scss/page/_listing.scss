@@ -17,9 +17,31 @@ runde Pagination (Konzept 02/07).
     overflow: hidden;
 }
 
-// Bildfläche: heller, neutraler Grund statt Reinweiß-Kasten
+// Bildfläche: heller, neutraler Grund statt Reinweiß-Kasten;
+// overflow klippt den Hover-Zoom aufs Bildfeld
 .product-image-wrapper {
     background: var(--frx-surface);
+    overflow: hidden;
+}
+
+// Bild-Zoom im Kartenhover — gleiche Geste wie Kategorie-Kacheln
+// und Flyout-Teaser (scale 1.04, 400ms)
+.product-box .product-image {
+    transition: transform var(--frx-t-slow) var(--frx-ease);
+}
+
+.product-box .card:hover .product-image {
+    transform: scale(1.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .product-box .product-image {
+        transition: none;
+    }
+
+    .product-box .card:hover .product-image {
+        transform: none;
+    }
 }
 
 // Kompakte Karte: der Core reserviert feste Höhen (Name 2.75rem,

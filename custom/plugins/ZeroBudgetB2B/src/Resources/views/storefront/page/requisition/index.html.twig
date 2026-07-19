@@ -1,0 +1,563 @@
+{% sw_extends '@Storefront/storefront/base.html.twig' %}
+
+{#
+    Interne Bedarfsanforderung (BANF) — ERP-artige Bestellmaske:
+    Produkttabelle mit Livesuche, Filter-Tabs (Alle/Favoriten/Häufig),
+    Mengeneingabe direkt in der Zeile, Sticky-Anforderungspanel mit
+    Abteilungsdaten. Alle Interaktionen laufen per Fetch gegen den
+    RequisitionController — kein Seiten-Reload.
+#}
+
+{% block base_content %}
+<div class="frx-req container-xxl" id="frx-req">
+
+    {# Kopf: Titel + Suche #}
+    <header class="frx-req-head">
+        <div>
+            <h1 class="frx-req-title">Bedarfsanforderung</h1>
+            <p class="frx-req-subtitle">Artikel suchen, Menge eintragen, Enter — fertig. Tab springt von Menge zu Menge.</p>
+        </div>
+        <div class="frx-req-search">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
+            <input type="search" id="frx-req-q" class="form-control" autocomplete="off" spellcheck="false"
+                   placeholder="Suche: Artikelnummer, Name, Hersteller, EAN, Stichwort …" aria-label="Artikelsuche">
+        </div>
+    </header>
+
+    {# Filterleiste #}
+    <div class="frx-req-toolbar" role="toolbar" aria-label="Filter">
+        <div class="frx-req-views" role="tablist">
+            <button type="button" class="frx-req-view is-active" data-view="all" role="tab" aria-selected="true">Alle Artikel</button>
+            <button type="button" class="frx-req-view" data-view="favorites" role="tab" aria-selected="false">★ Favoriten</button>
+            <button type="button" class="frx-req-view" data-view="frequent" role="tab" aria-selected="false">Häufig bestellt</button>
+        </div>
+
+        <select id="frx-req-category" class="form-select" aria-label="Kategorie">
+            <option value="">Alle Kategorien</option>
+            {% for category in requisitionCategories %}
+                <option value="{{ category.id }}">{% if category.depth > 0 %}{% for i in 1..category.depth %}&nbsp;&nbsp;{% endfor %}{% endif %}{{ category.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label class="frx-req-instock">
+            <input type="checkbox" id="frx-req-instock" class="form-check-input">
+            <span>Nur lagernd</span>
+        </label>
+
+        <span class="frx-req-count" id="frx-req-count" aria-live="polite"></span>
+    </div>
+
+    <div class="frx-req-alert" id="frx-req-alert" hidden></div>
+
+    {# Hauptlayout: Tabelle + Sticky-Panel #}
+    <div class="frx-req-layout">
+
+        <div class="frx-req-main">
+            <div class="frx-req-tablewrap" tabindex="0">
+                <table class="frx-req-table" aria-label="Artikelliste">
+                    <thead>
+                        <tr>
+                            <th class="col-img" scope="col"><span class="visually-hidden">Bild</span></th>
+                            <th class="col-sku" scope="col">Artikel-Nr.</th>
+                            <th class="col-name" scope="col">Bezeichnung</th>
+                            <th class="col-cat" scope="col">Kategorie</th>
+                            <th class="col-stock" scope="col">Bestand</th>
+                            <th class="col-unit" scope="col">Einheit</th>
+                            <th class="col-price" scope="col">Preis</th>
+                            <th class="col-qty" scope="col">Menge</th>
+                            <th class="col-act" scope="col"><span class="visually-hidden">Aktionen</span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="frx-req-rows"></tbody>
+                </table>
+                <div class="frx-req-empty" id="frx-req-empty" hidden>Keine Artikel gefunden.</div>
+                <div class="frx-req-loading" id="frx-req-loading" hidden>Lade Artikel …</div>
+            </div>
+
+            <div class="frx-req-more">
+                <button type="button" class="btn btn-outline-secondary btn-sm" id="frx-req-more" hidden>Weitere Artikel laden</button>
+            </div>
+        </div>
+
+        {# Anforderungspanel #}
+        <aside class="frx-req-aside" id="frx-req-aside" aria-label="Aktuelle Anforderung">
+            <div class="frx-req-panel">
+                <div class="frx-req-panel-head">
+                    <strong>Anforderung</strong>
+                    <span class="frx-req-panel-badge" id="frx-req-panel-count">0</span>
+                    <button type="button" class="frx-req-panel-close" id="frx-req-panel-close" aria-label="Schließen">×</button>
+                </div>
+
+                <div id="frx-req-panel-body">
+                    <ul class="frx-req-items" id="frx-req-items"></ul>
+                    <p class="frx-req-items-empty" id="frx-req-items-empty">Noch keine Artikel erfasst.</p>
+
+                    <dl class="frx-req-totals">
+                        <div><dt>Positionen</dt><dd id="frx-req-t-pos">0</dd></div>
+                        <div><dt>Gesamtmenge</dt><dd id="frx-req-t-qty">0</dd></div>
+                        <div><dt>Netto</dt><dd id="frx-req-t-net">–</dd></div>
+                        <div class="is-total"><dt>Geschätzter Wert</dt><dd id="frx-req-t-total">–</dd></div>
+                    </dl>
+
+                    <form id="frx-req-form" autocomplete="off" novalidate>
+                        <div class="frx-req-grid2">
+                            <label>Abteilung *
+                                <input type="text" name="department" class="form-control" list="frx-req-departments" required>
+                                <datalist id="frx-req-departments">
+                                    <option value="Verwaltung"></option>
+                                    <option value="Produktion"></option>
+                                    <option value="Lager / Logistik"></option>
+                                    <option value="Vertrieb"></option>
+                                    <option value="IT"></option>
+                                    <option value="Werkstatt"></option>
+                                </datalist>
+                            </label>
+                            <label>Kostenstelle *
+                                <input type="text" name="costCenter" class="form-control" placeholder="z. B. 4711" required>
+                            </label>
+                        </div>
+                        <label>Projekt <span class="frx-req-opt">(optional)</span>
+                            <input type="text" name="project" class="form-control">
+                        </label>
+                        <div class="frx-req-grid2">
+                            <label>Liefertermin *
+                                <input type="date" name="deliveryDate" class="form-control" required>
+                            </label>
+                            <label>Priorität
+                                <select name="priority" class="form-select">
+                                    <option value="niedrig">Niedrig</option>
+                                    <option value="normal" selected>Normal</option>
+                                    <option value="hoch">Hoch</option>
+                                    <option value="dringend">Dringend</option>
+                                </select>
+                            </label>
+                        </div>
+                        <label>Anmerkungen
+                            <textarea name="notes" class="form-control" rows="2"></textarea>
+                        </label>
+
+                        <p class="frx-req-form-error" id="frx-req-form-error" hidden></p>
+
+                        <button type="submit" class="btn btn-primary frx-req-submit" id="frx-req-submit">
+                            Anforderung absenden
+                        </button>
+                    </form>
+                </div>
+
+                <div id="frx-req-panel-success" hidden>
+                    <div class="frx-req-success">
+                        <div class="frx-req-success-icon">✓</div>
+                        <p class="frx-req-success-title">Anforderung übermittelt</p>
+                        <p class="frx-req-success-number">Vorgangsnummer <strong id="frx-req-success-no"></strong></p>
+                        <p class="frx-req-success-hint">Der Einkauf hat die Anforderung erhalten.</p>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="frx-req-new">Neue Anforderung</button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    {# Mobile: Panel-Aufruf als Bottom-Bar #}
+    <button type="button" class="frx-req-fab" id="frx-req-fab">
+        <span>Anforderung</span>
+        <span class="frx-req-fab-count" id="frx-req-fab-count">0</span>
+    </button>
+</div>
+
+<script type="application/json" id="frx-req-config">{{ {
+    endpoints: {
+        products: path('frontend.requisition.products'),
+        add: path('frontend.requisition.lineitem.add'),
+        update: path('frontend.requisition.lineitem.update'),
+        remove: path('frontend.requisition.lineitem.remove'),
+        favorite: path('frontend.requisition.favorite'),
+        submit: path('frontend.requisition.submit')
+    },
+    currency: context.currency.isoCode,
+    favorites: requisitionFavorites,
+    panel: requisitionPanel
+}|json_encode(constant('JSON_HEX_TAG'))|raw }}</script>
+
+<script>
+(function () {
+    'use strict';
+
+    const cfg = JSON.parse(document.getElementById('frx-req-config').textContent);
+    const money = new Intl.NumberFormat('de-DE', { style: 'currency', currency: cfg.currency || 'EUR' });
+
+    const el = {
+        root: document.getElementById('frx-req'),
+        q: document.getElementById('frx-req-q'),
+        category: document.getElementById('frx-req-category'),
+        inStock: document.getElementById('frx-req-instock'),
+        views: Array.from(document.querySelectorAll('.frx-req-view')),
+        rows: document.getElementById('frx-req-rows'),
+        empty: document.getElementById('frx-req-empty'),
+        loading: document.getElementById('frx-req-loading'),
+        more: document.getElementById('frx-req-more'),
+        count: document.getElementById('frx-req-count'),
+        alert: document.getElementById('frx-req-alert'),
+        items: document.getElementById('frx-req-items'),
+        itemsEmpty: document.getElementById('frx-req-items-empty'),
+        panelCount: document.getElementById('frx-req-panel-count'),
+        tPos: document.getElementById('frx-req-t-pos'),
+        tQty: document.getElementById('frx-req-t-qty'),
+        tNet: document.getElementById('frx-req-t-net'),
+        tTotal: document.getElementById('frx-req-t-total'),
+        form: document.getElementById('frx-req-form'),
+        formError: document.getElementById('frx-req-form-error'),
+        submit: document.getElementById('frx-req-submit'),
+        panelBody: document.getElementById('frx-req-panel-body'),
+        panelSuccess: document.getElementById('frx-req-panel-success'),
+        successNo: document.getElementById('frx-req-success-no'),
+        newBtn: document.getElementById('frx-req-new'),
+        fab: document.getElementById('frx-req-fab'),
+        fabCount: document.getElementById('frx-req-fab-count'),
+        panelClose: document.getElementById('frx-req-panel-close')
+    };
+
+    const state = {
+        view: 'all',
+        page: 1,
+        pageCount: 1,
+        favorites: new Set(cfg.favorites || []),
+        seq: 0
+    };
+
+    function esc(value) {
+        const div = document.createElement('div');
+        div.textContent = value == null ? '' : String(value);
+        return div.innerHTML;
+    }
+
+    function debounce(fn, ms) {
+        let t;
+        return function () {
+            clearTimeout(t);
+            t = setTimeout(fn, ms);
+        };
+    }
+
+    function post(url, data) {
+        return fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: new URLSearchParams(data)
+        }).then(function (res) {
+            return res.json().catch(function () { return {}; }).then(function (json) {
+                if (!res.ok) { throw new Error(json.message || 'Aktion fehlgeschlagen.'); }
+                return json;
+            });
+        });
+    }
+
+    let alertTimer;
+    function notify(messages, type) {
+        const list = Array.isArray(messages) ? messages : [messages];
+        if (!list.length) { return; }
+        el.alert.textContent = list.join(' — ');
+        el.alert.className = 'frx-req-alert is-' + (type || 'info');
+        el.alert.hidden = false;
+        clearTimeout(alertTimer);
+        alertTimer = setTimeout(function () { el.alert.hidden = true; }, 5000);
+    }
+
+    // ---------------------------------------------------------------
+    // Produkttabelle
+    // ---------------------------------------------------------------
+
+    function stockCell(stock) {
+        if (stock > 10) { return '<span class="frx-req-stock is-ok"><i></i>' + stock + '</span>'; }
+        if (stock > 0) { return '<span class="frx-req-stock is-low"><i></i>' + stock + '</span>'; }
+        return '<span class="frx-req-stock is-out"><i></i>0</span>';
+    }
+
+    function renderRow(p) {
+        const tr = document.createElement('tr');
+        tr.dataset.id = p.id;
+        const img = p.image
+            ? '<img src="' + esc(p.image) + '" alt="" loading="lazy" width="36" height="36">'
+            : '<span class="frx-req-noimg" aria-hidden="true">' + esc((p.name || '?').charAt(0)) + '</span>';
+        const sub = [p.variation, p.manufacturer].filter(Boolean).join(' · ');
+
+        tr.innerHTML =
+            '<td class="col-img">' + img + '</td>' +
+            '<td class="col-sku">' + esc(p.number) + '</td>' +
+            '<td class="col-name"><span class="frx-req-name">' + esc(p.name) + '</span>' +
+                (sub ? '<span class="frx-req-sub">' + esc(sub) + '</span>' : '') + '</td>' +
+            '<td class="col-cat">' + esc(p.category) + '</td>' +
+            '<td class="col-stock">' + stockCell(p.stock) + '</td>' +
+            '<td class="col-unit">' + esc(p.unit) + '</td>' +
+            '<td class="col-price">' + money.format(p.price) + '</td>' +
+            '<td class="col-qty"><input type="number" class="frx-req-qty" value="' + p.minPurchase + '"' +
+                ' min="' + p.minPurchase + '" max="' + p.maxPurchase + '" step="' + p.purchaseSteps + '"' +
+                ' aria-label="Menge für ' + esc(p.name) + '"></td>' +
+            '<td class="col-act">' +
+                '<button type="button" class="frx-req-fav' + (state.favorites.has(p.id) ? ' is-active' : '') + '"' +
+                    ' tabindex="-1" title="Favorit" aria-label="Favorit umschalten">' +
+                    (state.favorites.has(p.id) ? '★' : '☆') + '</button>' +
+                '<button type="button" class="frx-req-add btn btn-primary btn-sm" tabindex="-1">Hinzufügen</button>' +
+            '</td>';
+        return tr;
+    }
+
+    function fetchProducts(append) {
+        const seq = ++state.seq;
+        if (!append) { state.page = 1; }
+
+        const params = new URLSearchParams({
+            q: el.q.value.trim(),
+            category: el.category.value,
+            view: state.view,
+            inStock: el.inStock.checked ? '1' : '0',
+            p: String(state.page)
+        });
+
+        el.loading.hidden = false;
+        el.empty.hidden = true;
+        if (!append) { el.rows.innerHTML = ''; }
+
+        fetch(cfg.endpoints.products + '?' + params, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+            .then(function (res) {
+                if (!res.ok) { throw new Error('Artikel konnten nicht geladen werden.'); }
+                return res.json();
+            })
+            .then(function (data) {
+                if (seq !== state.seq) { return; } // veraltete Antwort verwerfen
+                el.loading.hidden = true;
+                state.pageCount = data.pageCount;
+
+                const frag = document.createDocumentFragment();
+                data.items.forEach(function (p) { frag.appendChild(renderRow(p)); });
+                el.rows.appendChild(frag);
+
+                const shown = el.rows.children.length;
+                el.empty.hidden = shown > 0;
+                el.count.textContent = data.total + ' Artikel';
+                el.more.hidden = state.page >= data.pageCount;
+                if (!el.more.hidden) {
+                    el.more.textContent = 'Weitere Artikel laden (' + (data.total - shown) + ' verbleibend)';
+                }
+            })
+            .catch(function (err) {
+                if (seq !== state.seq) { return; }
+                el.loading.hidden = true;
+                notify(err.message, 'danger');
+            });
+    }
+
+    const search = debounce(function () { fetchProducts(false); }, 250);
+
+    el.q.addEventListener('input', search);
+    el.q.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { e.preventDefault(); fetchProducts(false); }
+    });
+    el.category.addEventListener('change', function () { fetchProducts(false); });
+    el.inStock.addEventListener('change', function () { fetchProducts(false); });
+    el.more.addEventListener('click', function () { state.page += 1; fetchProducts(true); });
+
+    el.views.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            state.view = btn.dataset.view;
+            el.views.forEach(function (b) {
+                b.classList.toggle('is-active', b === btn);
+                b.setAttribute('aria-selected', b === btn ? 'true' : 'false');
+            });
+            fetchProducts(false);
+        });
+    });
+
+    // ---------------------------------------------------------------
+    // Zeilen-Aktionen: Hinzufügen (Klick/Enter), Favorit
+    // ---------------------------------------------------------------
+
+    function addFromRow(tr) {
+        const qtyInput = tr.querySelector('.frx-req-qty');
+        const btn = tr.querySelector('.frx-req-add');
+        const quantity = Math.max(1, parseInt(qtyInput.value, 10) || 1);
+
+        btn.disabled = true;
+        post(cfg.endpoints.add, { productId: tr.dataset.id, quantity: quantity })
+            .then(function (data) {
+                renderPanel(data.panel);
+                notify(data.messages, 'warning');
+                btn.classList.add('is-done');
+                btn.textContent = '✓';
+                setTimeout(function () {
+                    btn.classList.remove('is-done');
+                    btn.textContent = 'Hinzufügen';
+                    btn.disabled = false;
+                }, 900);
+                tr.classList.add('is-flash');
+                setTimeout(function () { tr.classList.remove('is-flash'); }, 600);
+            })
+            .catch(function (err) {
+                btn.disabled = false;
+                notify(err.message, 'danger');
+            });
+    }
+
+    el.rows.addEventListener('click', function (e) {
+        const add = e.target.closest('.frx-req-add');
+        if (add) { addFromRow(add.closest('tr')); return; }
+
+        const fav = e.target.closest('.frx-req-fav');
+        if (fav) {
+            const tr = fav.closest('tr');
+            post(cfg.endpoints.favorite, { productId: tr.dataset.id })
+                .then(function (data) {
+                    state.favorites = new Set(data.favorites);
+                    const active = state.favorites.has(tr.dataset.id);
+                    fav.classList.toggle('is-active', active);
+                    fav.textContent = active ? '★' : '☆';
+                    if (state.view === 'favorites' && !active) { fetchProducts(false); }
+                })
+                .catch(function (err) { notify(err.message, 'danger'); });
+        }
+    });
+
+    // Enter in der Mengen-Spalte = Hinzufügen, Fokus bleibt im Fluss
+    el.rows.addEventListener('keydown', function (e) {
+        if (e.key !== 'Enter' || !e.target.classList.contains('frx-req-qty')) { return; }
+        e.preventDefault();
+        addFromRow(e.target.closest('tr'));
+    });
+
+    // ---------------------------------------------------------------
+    // Anforderungspanel
+    // ---------------------------------------------------------------
+
+    function renderPanel(panel) {
+        el.items.innerHTML = panel.items.map(function (item) {
+            return '<li data-line="' + esc(item.id) + '">' +
+                '<div class="frx-req-item-info">' +
+                    '<span class="frx-req-item-name">' + esc(item.label) + '</span>' +
+                    '<span class="frx-req-item-meta">' + esc(item.number) + ' · ' + money.format(item.unitPrice) + '</span>' +
+                '</div>' +
+                '<input type="number" class="frx-req-panel-qty" value="' + item.quantity + '" min="1" max="9999" aria-label="Menge">' +
+                '<span class="frx-req-item-total">' + money.format(item.total) + '</span>' +
+                '<button type="button" class="frx-req-item-remove" title="Entfernen" aria-label="Position entfernen">×</button>' +
+            '</li>';
+        }).join('');
+
+        el.itemsEmpty.hidden = panel.items.length > 0;
+        el.panelCount.textContent = panel.positionCount;
+        el.fabCount.textContent = panel.positionCount;
+        el.tPos.textContent = panel.positionCount;
+        el.tQty.textContent = panel.totalQuantity;
+        el.tNet.textContent = panel.positionCount ? money.format(panel.net) : '–';
+        el.tTotal.textContent = panel.positionCount ? money.format(panel.total) : '–';
+        el.submit.disabled = panel.positionCount === 0;
+    }
+
+    el.items.addEventListener('change', function (e) {
+        if (!e.target.classList.contains('frx-req-panel-qty')) { return; }
+        const li = e.target.closest('li');
+        const quantity = Math.max(1, parseInt(e.target.value, 10) || 1);
+        post(cfg.endpoints.update, { lineItemId: li.dataset.line, quantity: quantity })
+            .then(function (data) { renderPanel(data.panel); notify(data.messages, 'warning'); })
+            .catch(function (err) { notify(err.message, 'danger'); });
+    });
+
+    el.items.addEventListener('click', function (e) {
+        if (!e.target.classList.contains('frx-req-item-remove')) { return; }
+        const li = e.target.closest('li');
+        post(cfg.endpoints.remove, { lineItemId: li.dataset.line })
+            .then(function (data) { renderPanel(data.panel); })
+            .catch(function (err) { notify(err.message, 'danger'); });
+    });
+
+    // ---------------------------------------------------------------
+    // Absenden mit Abteilungsdaten
+    // ---------------------------------------------------------------
+
+    const dateInput = el.form.elements.deliveryDate;
+    dateInput.min = new Date().toISOString().slice(0, 10);
+
+    // Abteilung/Kostenstelle des Nutzers vorbelegen (localStorage)
+    try {
+        el.form.elements.department.value = localStorage.getItem('frxReqDepartment') || '';
+        el.form.elements.costCenter.value = localStorage.getItem('frxReqCostCenter') || '';
+    } catch (e) { /* Storage gesperrt — ohne Vorbelegung weiter */ }
+
+    el.form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        el.formError.hidden = true;
+
+        const data = {
+            department: el.form.elements.department.value.trim(),
+            costCenter: el.form.elements.costCenter.value.trim(),
+            project: el.form.elements.project.value.trim(),
+            deliveryDate: el.form.elements.deliveryDate.value,
+            priority: el.form.elements.priority.value,
+            notes: el.form.elements.notes.value.trim()
+        };
+
+        if (!data.department || !data.costCenter || !data.deliveryDate) {
+            el.formError.textContent = 'Bitte Abteilung, Kostenstelle und Liefertermin ausfüllen.';
+            el.formError.hidden = false;
+            return;
+        }
+
+        el.submit.disabled = true;
+        el.submit.textContent = 'Wird übermittelt …';
+
+        post(cfg.endpoints.submit, data)
+            .then(function (res) {
+                try {
+                    localStorage.setItem('frxReqDepartment', data.department);
+                    localStorage.setItem('frxReqCostCenter', data.costCenter);
+                } catch (e) { /* egal */ }
+                el.successNo.textContent = res.orderNumber || '—';
+                el.panelBody.hidden = true;
+                el.panelSuccess.hidden = false;
+                renderPanel({ items: [], positionCount: 0, totalQuantity: 0, net: 0, total: 0 });
+            })
+            .catch(function (err) {
+                el.formError.textContent = err.message;
+                el.formError.hidden = false;
+            })
+            .finally(function () {
+                el.submit.disabled = false;
+                el.submit.textContent = 'Anforderung absenden';
+            });
+    });
+
+    el.newBtn.addEventListener('click', function () {
+        el.panelSuccess.hidden = true;
+        el.panelBody.hidden = false;
+        el.form.elements.project.value = '';
+        el.form.elements.notes.value = '';
+    });
+
+    // ---------------------------------------------------------------
+    // Mobile-Panel
+    // ---------------------------------------------------------------
+
+    el.fab.addEventListener('click', function () { el.root.classList.add('is-panel-open'); });
+    el.panelClose.addEventListener('click', function () { el.root.classList.remove('is-panel-open'); });
+
+    // ---------------------------------------------------------------
+    // Init — ?view=favorites|frequent erlaubt Deep-Links vom Dashboard
+    // ---------------------------------------------------------------
+
+    const initView = new URLSearchParams(location.search).get('view');
+    if (initView === 'favorites' || initView === 'frequent') {
+        state.view = initView;
+        el.views.forEach(function (b) {
+            b.classList.toggle('is-active', b.dataset.view === initView);
+            b.setAttribute('aria-selected', b.dataset.view === initView ? 'true' : 'false');
+        });
+    }
+
+    renderPanel(cfg.panel);
+    fetchProducts(false);
+    el.q.focus();
+}());
+</script>
+{% endblock %}

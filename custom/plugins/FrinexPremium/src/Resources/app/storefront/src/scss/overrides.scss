@@ -54,13 +54,14 @@ $headings-line-height:  1.15;
 // ---------------------------------------------------------------
 // Form & Tiefe
 // ---------------------------------------------------------------
-$border-radius:    .625rem;   // 10px
-$border-radius-sm: .375rem;   //  6px
-$border-radius-lg: .75rem;    // 12px
+$border-radius:    .75rem;    // 12px
+$border-radius-sm: .5rem;     //  8px
+$border-radius-lg: 1rem;      // 16px
 
-$box-shadow:    0 1px 2px rgba(20, 24, 30, .05), 0 8px 24px rgba(20, 24, 30, .07);
-$box-shadow-sm: 0 1px 2px rgba(20, 24, 30, .06);
-$box-shadow-lg: 0 2px 4px rgba(20, 24, 30, .06), 0 16px 40px rgba(20, 24, 30, .12);
+// Schatten leicht ins Markenblau getönt — wirkt wärmer als reines Grau
+$box-shadow:    0 1px 2px rgba(13, 40, 66, .05), 0 8px 24px rgba(13, 40, 66, .08);
+$box-shadow-sm: 0 1px 2px rgba(13, 40, 66, .06);
+$box-shadow-lg: 0 2px 4px rgba(13, 40, 66, .06), 0 18px 48px rgba(13, 40, 66, .14);
 
 $focus-ring-width:   3px;
 $focus-ring-opacity: .18;
@@ -86,9 +87,9 @@ $btn-focus-width:      3px;
 // ---------------------------------------------------------------
 $input-border-width:       1.5px;
 $input-border-color:       $frx-line;
-$input-border-radius:      .375rem;
+$input-border-radius:      .5rem;
 $input-border-radius-sm:   .375rem;
-$input-border-radius-lg:   .5rem;
+$input-border-radius-lg:   .625rem;
 $input-padding-y:          .7rem;
 $input-padding-x:          .9rem;
 $input-color:              $frx-ink;
@@ -110,9 +111,9 @@ $badge-padding-x:     .9em;
 // Karten & Modals
 // ---------------------------------------------------------------
 $card-border-color:   $frx-line;
-$card-border-radius:  .625rem;
+$card-border-radius:  .75rem;
 $card-cap-bg:         $frx-surface;
-$modal-content-border-radius: .75rem;
+$modal-content-border-radius: 1rem;
 
 // ---------------------------------------------------------------
 // Breadcrumb

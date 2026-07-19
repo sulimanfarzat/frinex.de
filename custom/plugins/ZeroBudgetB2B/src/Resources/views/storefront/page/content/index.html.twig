@@ -1,0 +1,16 @@
+{% sw_extends '@Storefront/storefront/page/content/index.html.twig' %}
+
+{#
+    Startseite des internen Einkaufskanals: statt CMS-/Marketing-Inhalt
+    ein Arbeits-Dashboard für Mitarbeitende. Alle anderen Kanäle und
+    alle Kategorie-/Landingpages rendern unverändert das CMS.
+#}
+
+{% block page_content %}
+    {% if context.salesChannel.id == '216e9e38b0656b4b3280e0b3b11270f9'
+        and app.request.attributes.get('_route') == 'frontend.home.page' %}
+        {% sw_include '@ZeroBudgetB2B/storefront/page/internal-home/dashboard.html.twig' %}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}

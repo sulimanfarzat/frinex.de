@@ -27,6 +27,28 @@
             </call>
         </service>
 
+        <service id="ZeroBudgetB2B\Service\InternalPriceCalculator"
+                 decorates="Shopware\Core\Content\Product\SalesChannel\Price\ProductPriceCalculator">
+            <argument type="service" id="ZeroBudgetB2B\Service\InternalPriceCalculator.inner"/>
+            <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
+        </service>
+
+        <service id="ZeroBudgetB2B\Service\RequisitionFavorites">
+            <argument type="service" id="customer.repository"/>
+        </service>
+
+        <service id="ZeroBudgetB2B\Storefront\Controller\RequisitionController" public="true">
+            <argument type="service" id="Shopware\Core\Checkout\Cart\SalesChannel\CartService"/>
+            <argument type="service" id="sales_channel.product.repository"/>
+            <argument type="service" id="category.repository"/>
+            <argument type="service" id="order.repository"/>
+            <argument type="service" id="Doctrine\DBAL\Connection"/>
+            <argument type="service" id="ZeroBudgetB2B\Service\RequisitionFavorites"/>
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
+
         <service id="ZeroBudgetB2B\Subscriber\CartProductListSubscriber">
             <argument type="service" id="ZeroBudgetB2B\Service\ProductOptionsLoader"/>
             <tag name="kernel.event_subscriber"/>
@@ -43,6 +65,11 @@
         <service id="ZeroBudgetB2B\Subscriber\B2bRegistrationSubscriber">
             <argument type="service" id="ZeroBudgetB2B\Service\B2bDocumentStorage"/>
             <argument type="service" id="request_stack"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="ZeroBudgetB2B\Subscriber\InternalChannelAccessSubscriber">
+            <argument type="service" id="router"/>
             <tag name="kernel.event_subscriber"/>
         </service>
 

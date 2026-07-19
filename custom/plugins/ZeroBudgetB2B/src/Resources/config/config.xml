@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/shopware/shopware/trunk/src/Core/System/SystemConfig/Schema/config.xsd">
+
+    <card>
+        <title>Interner Einkauf</title>
+        <title lang="de-DE">Interner Einkauf</title>
+
+        <input-field type="float">
+            <name>internalDiscountPercent</name>
+            <label>Internal price discount (%)</label>
+            <label lang="de-DE">Interner Preisnachlass (%)</label>
+            <helpText>Percentage discount applied to all product prices on the internal purchasing sales channel.</helpText>
+            <helpText lang="de-DE">Prozentualer Nachlass auf alle Produktpreise im Verkaufskanal „Einkauf intern" (fritz.frinex.de). 0 = deaktiviert.</helpText>
+            <defaultValue>15</defaultValue>
+        </input-field>
+    </card>
+</config>

@@ -18,4 +18,15 @@
             </a>
         </li>
     {% endif %}
+
+    {# Bedarfsanforderung: interner Einkauf + B2B-Kunden #}
+    {% if context.customer and context.customer.groupId in ['704ff13a705bd0278c17e434a34ca1de', '019aadeaffb07664b610d2bf2752c1f8'] %}
+        <li class="nav-item">
+            <a class="nav-link main-navigation-link frx-requisition-link"
+               href="{{ path('frontend.requisition.page') }}"
+               title="Bedarfsanforderung">
+                <span class="main-navigation-link-text">Bedarfsanforderung</span>
+            </a>
+        </li>
+    {% endif %}
 {% endblock %}

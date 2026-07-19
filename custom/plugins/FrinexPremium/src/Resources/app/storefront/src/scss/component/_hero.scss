@@ -11,7 +11,11 @@ Ohne Bild fällt der Hero auf einen Marken-Verlauf zurück.
     position: relative;
     display: flex;
     min-height: clamp(30rem, 62vh, 40rem);
-    background: linear-gradient(135deg, var(--frx-accent) 0%, var(--frx-accent-strong) 100%);
+    // Marken-Verlauf + warmer Glow oben rechts (Amber, stark abgesenkt)
+    // — wirkt wie Studiolicht statt flacher Fläche
+    background:
+        radial-gradient(55rem 32rem at 88% 8%, rgba(242, 169, 0, .16), transparent 62%),
+        linear-gradient(135deg, var(--frx-accent) 0%, var(--frx-accent-strong) 100%);
     color: #ffffff;
     overflow: hidden;
     isolation: isolate;

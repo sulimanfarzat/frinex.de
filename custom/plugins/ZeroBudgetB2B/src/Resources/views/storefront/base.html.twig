@@ -1,0 +1,4 @@
+{% sw_extends '@Storefront/storefront/base.html.twig' %}
+
+{# Kanal-Kennung am Body: erlaubt internes Styling (Header, Dashboard) #}
+{% block base_body_classes %}{{ parent() }}{% if context.salesChannel.id == '216e9e38b0656b4b3280e0b3b11270f9' %} is-channel-internal{% endif %}{% endblock %}

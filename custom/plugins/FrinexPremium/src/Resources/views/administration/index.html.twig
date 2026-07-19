@@ -1,0 +1,26 @@
+{% sw_extends '@Administration/administration/index.html.twig' %}
+
+{# FRINEX Admin-Branding: Titel, Favicons und Branding-Stylesheet.
+   Das Stylesheet muss hier im <head> geladen werden, damit es auch auf der
+   Login-Seite greift — die bootet ohne Plugin-Bundles. #}
+
+{% block administration_title %}
+    <title>FRINEX Administration</title>
+{% endblock %}
+
+{% block administration_favicons %}
+    <link rel="apple-touch-icon" href="{{ asset('admin-branding/img/apple-touch-icon.png', '@FrinexPremium') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('admin-branding/img/favicon-16x16.png', '@FrinexPremium') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('admin-branding/img/favicon-32x32.png', '@FrinexPremium') }}" id="dynamic-favicon">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('admin-branding/img/favicon-192x192.png', '@FrinexPremium') }}">
+    <link rel="icon" type="image/png" sizes="256x256" href="{{ asset('admin-branding/img/favicon-256x256.png', '@FrinexPremium') }}">
+    <meta name="msapplication-TileImage" content="{{ asset('admin-branding/img/mstile-150x150.png', '@FrinexPremium') }}">
+    <meta name="msapplication-TileColor" content="#0f4c81">
+    <meta name="theme-color" content="#0f4c81">
+    <meta name="referrer" content="always">
+{% endblock %}
+
+{% block administration_head_scripts %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('admin-branding/frinex-admin-branding.css', '@FrinexPremium') }}">
+{% endblock %}

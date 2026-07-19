@@ -2,6 +2,8 @@
  * FRINEX Premium — Admin-Einstiegspunkt
  * Registriert die FRINEX-CMS-Elemente und -Blöcke für die
  * Erlebniswelten. Elemente zuerst, da die Blöcke sie referenzieren.
+ * (Das Admin-Branding lädt als statisches CSS über das Template-Override
+ * von administration/index.html.twig, damit es auch am Login greift.)
  */
 
 import './module/sw-cms/elements/frinex-hero';

@@ -6,10 +6,14 @@ Button bewusst in B2B-Amber (einziger Amber-Einsatz laut Farbregel).
 */
 
 .frx-cta {
-    background: linear-gradient(135deg, var(--frx-accent) 0%, var(--frx-accent-strong) 100%);
-    border-radius: var(--frx-radius, .625rem);
+    // gleiche Licht-Dramaturgie wie der Hero: Verlauf + Amber-Glow
+    background:
+        radial-gradient(42rem 26rem at 92% -12%, rgba(242, 169, 0, .18), transparent 62%),
+        linear-gradient(135deg, var(--frx-accent) 0%, var(--frx-accent-strong) 100%);
+    border-radius: 1rem;
     color: #ffffff;
     padding: clamp(2rem, 5vw, 4rem);
+    box-shadow: var(--frx-shadow-lift);
 }
 
 .frx-cta-inner {
