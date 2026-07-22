@@ -1,0 +1,53 @@
+{% sw_extends '@Storefront/storefront/layout/footer/footer.html.twig' %}
+
+{#
+    Footer-Spalte „Interner Bereich" neben den CMS-Spalten (Richtlinien
+    usw.) — Absprung zum login-pflichtigen Einkaufsportal fritz.frinex.de.
+    Markup identisch zu den Core-Spalten, damit Styling und das
+    Mobile-Akkordeon (js-footer-column) genauso funktionieren.
+    Nur im öffentlichen Shop, nicht auf dem internen Kanal selbst.
+#}
+
+{% block layout_footer_navigation_columns %}
+    {{ parent() }}
+
+    {% if context.salesChannel.id != '216e9e38b0656b4b3280e0b3b11270f9' %}
+        <div class="col-md-4 footer-column js-footer-column" role="listitem">
+            <div class="footer-column-headline footer-headline js-footer-column-headline"
+                 id="collapseFooterTitleInternal">
+                Interner Bereich
+
+                <button class="footer-column-toggle btn btn-link btn-link-inline js-collapse-footer-column-trigger"
+                        data-bs-target="#collapseFooterInternal"
+                        data-bs-toggle="collapse"
+                        aria-controls="collapseFooterInternal"
+                        aria-labelledby="collapseFooterTitleInternal"
+                        aria-expanded="true">
+                    {% sw_icon 'plus' style { class: 'footer-plus' } %}
+                    {% sw_icon 'minus' style { class: 'footer-minus' } %}
+                </button>
+            </div>
+
+            <div id="collapseFooterInternal"
+                 class="footer-column-content collapse js-footer-column-content"
+                 aria-labelledby="collapseFooterTitleInternal">
+                <div class="footer-column-content-inner">
+                    <ul class="list-unstyled">
+                        <li class="footer-link-item">
+                            <a class="footer-link" href="https://fritz.frinex.de" rel="noopener"
+                               title="Zum internen Einkaufsportal">
+                                Interner Einkauf
+                            </a>
+                        </li>
+                        <li class="footer-link-item">
+                            <a class="footer-link" href="https://fritz.frinex.de/requisition" rel="noopener"
+                               title="Bedarfsanforderung (Login erforderlich)">
+                                Bedarfsanforderung
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

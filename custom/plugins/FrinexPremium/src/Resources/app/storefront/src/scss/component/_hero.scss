@@ -1,16 +1,20 @@
 /*
 FRINEX Premium — Hero-Block (cms-block-frinex-hero)
 ==================================================
-Vollbreiter Above-the-Fold-Hero: Bild als Cover, dunkler Verlauf für
-Lesbarkeit (WCAG), Inhalt links auf Containerbreite, Trust-Leiste am
-unteren Rand. Feste Mindesthöhe → kein Layout Shift beim Bild-Load.
-Ohne Bild fällt der Hero auf einen Marken-Verlauf zurück.
+Vollbreiter Above-the-Fold-Hero: Bild als Cover mit ruhigem Scrim,
+Textinhalt in einer Glass-Panel-Box (backdrop-filter; Browser ohne
+Support bekommen eine dunklere Solidfläche — Lesbarkeit nach WCAG
+bleibt in beiden Fällen erhalten). Beim Laden: gestaffelte
+Entrance-Animation, das Bild „setzt sich" mit sanftem Zoom-Out.
+Feste Mindesthöhe → kein Layout Shift beim Bild-Load. Ohne Bild
+fällt der Hero auf einen Marken-Verlauf zurück.
 */
 
 .frx-hero {
     position: relative;
     display: flex;
-    min-height: clamp(30rem, 62vh, 40rem);
+    min-height: clamp(32rem, 72vh, 46rem);
+    min-height: clamp(32rem, 78svh, 46rem);
     // Marken-Verlauf + warmer Glow oben rechts (Amber, stark abgesenkt)
     // — wirkt wie Studiolicht statt flacher Fläche
     background:
@@ -33,27 +37,47 @@ Ohne Bild fällt der Hero auf einen Marken-Verlauf zurück.
     object-fit: cover;
 }
 
-// Verlauf über dem Bild: links dunkel (Text), rechts Bild sichtbar
+// Ruhiger Scrim: Das Glass-Panel trägt die Lesbarkeit, der Verlauf
+// muss das Bild nur leicht beruhigen — das Motiv bleibt sichtbar
 .frx-hero--has-image .frx-hero-media::after {
     content: '';
     position: absolute;
     inset: 0;
     background:
-        linear-gradient(90deg, rgba(10, 22, 34, .82) 0%, rgba(10, 22, 34, .55) 45%, rgba(10, 22, 34, .18) 100%),
-        linear-gradient(0deg, rgba(10, 22, 34, .55) 0%, transparent 35%);
+        linear-gradient(90deg, rgba(10, 22, 34, .5) 0%, rgba(10, 22, 34, .26) 45%, rgba(10, 22, 34, .08) 100%),
+        linear-gradient(0deg, rgba(10, 22, 34, .4) 0%, transparent 30%);
 }
 
 .frx-hero-inner {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: var(--frx-s6);
+    align-items: flex-start;
+    gap: var(--frx-s5);
     padding-top: var(--frx-s7);
     padding-bottom: var(--frx-s5);
 }
 
-.frx-hero-content {
-    max-width: 38rem;
+// ---------------------------------------------------------------
+// Glass-Panel: halbtransparente, geblurte Box hinter dem Text
+// ---------------------------------------------------------------
+.frx-hero-panel {
+    max-width: 40rem;
+    padding: clamp(1.5rem, 4vw, 2.75rem);
+    border-radius: 1.25rem;
+    background: rgba(10, 22, 34, .72); // Fallback ohne backdrop-filter
+    border: 1px solid rgba(255, 255, 255, .16);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .12), // Lichtkante oben
+        0 24px 60px rgba(5, 15, 25, .35);
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    .frx-hero-panel {
+        background: rgba(10, 22, 34, .38);
+        -webkit-backdrop-filter: blur(16px) saturate(150%);
+        backdrop-filter: blur(16px) saturate(150%);
+    }
 }
 
 .frx-hero-headline {
@@ -67,7 +91,7 @@ Ohne Bild fällt der Hero auf einen Marken-Verlauf zurück.
     font-size: clamp(1.05rem, calc(1rem + .35vw), 1.25rem);
     line-height: 1.55;
     color: rgba(255, 255, 255, .88);
-    margin-bottom: var(--frx-s5);
+    margin-bottom: var(--frx-s4);
     max-width: 34rem;
 }
 
@@ -75,6 +99,26 @@ Ohne Bild fällt der Hero auf einen Marken-Verlauf zurück.
     display: flex;
     flex-wrap: wrap;
     gap: var(--frx-s3);
+}
+
+// Primär-CTA: Weiß auf Glas — maximaler Kontrast zum dunklen Panel
+.frx-hero-cta-primary {
+    --bs-btn-bg: #ffffff;
+    --bs-btn-border-color: #ffffff;
+    --bs-btn-color: var(--frx-accent-strong);
+    --bs-btn-hover-bg: #eef3f8;
+    --bs-btn-hover-border-color: #eef3f8;
+    --bs-btn-hover-color: var(--frx-accent-strong);
+    --bs-btn-active-bg: #e2eaf2;
+    --bs-btn-active-border-color: #e2eaf2;
+    --bs-btn-active-color: var(--frx-accent-strong);
+    background-image: none; // Sheen der Marken-Buttons hier nicht nötig
+}
+
+.frx-hero-cta-primary:hover {
+    background-color: var(--bs-btn-hover-bg);
+    border-color: var(--bs-btn-hover-border-color);
+    box-shadow: 0 6px 18px rgba(5, 15, 25, .35);
 }
 
 .frx-hero-cta-secondary {
@@ -86,23 +130,15 @@ Ohne Bild fällt der Hero auf einen Marken-Verlauf zurück.
 }
 
 // ---------------------------------------------------------------
-// Trust-Leiste: 4 Punkte, mobil 2 × 2
+// Trust-Leiste: Glass-Pills, umbrechen frei nach Platz
 // ---------------------------------------------------------------
 .frx-hero-trust {
     list-style: none;
-    display: grid;
-    grid-template-columns: repeat(2, auto);
-    justify-content: start;
-    gap: var(--frx-s2) var(--frx-s5);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--frx-s2) var(--frx-s3);
     margin: 0;
-    padding: var(--frx-s3) 0 0;
-    border-top: 1px solid rgba(255, 255, 255, .22);
-}
-
-@media (min-width: 992px) {
-    .frx-hero-trust {
-        grid-template-columns: repeat(4, auto);
-    }
+    padding: 0;
 }
 
 .frx-hero-trust-item {
@@ -111,7 +147,19 @@ Ohne Bild fällt der Hero auf einen Marken-Verlauf zurück.
     gap: .5rem;
     font-size: .875rem;
     font-weight: 600;
-    color: rgba(255, 255, 255, .92);
+    color: rgba(255, 255, 255, .94);
+    padding: .5rem 1rem;
+    border-radius: 50rem;
+    background: rgba(10, 22, 34, .55); // Fallback ohne backdrop-filter
+    border: 1px solid rgba(255, 255, 255, .18);
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    .frx-hero-trust-item {
+        background: rgba(255, 255, 255, .12);
+        -webkit-backdrop-filter: blur(12px) saturate(140%);
+        backdrop-filter: blur(12px) saturate(140%);
+    }
 }
 
 .frx-hero-trust-icon {
@@ -119,9 +167,47 @@ Ohne Bild fällt der Hero auf einen Marken-Verlauf zurück.
     color: var(--frx-b2b);
 }
 
-// Eager geladenes Hero-Bild sanft einblenden (nur einmalig beim Load)
+// ---------------------------------------------------------------
+// Lade-Dramaturgie: Bild setzt sich (Zoom-Out), Panel steigt auf,
+// Inhalte folgen gestaffelt — nur einmalig beim Load, und nur
+// ohne prefers-reduced-motion
+// ---------------------------------------------------------------
+@keyframes frx-hero-settle {
+    from {
+        transform: scale(1.06);
+    }
+
+    to {
+        transform: none;
+    }
+}
+
 @media (prefers-reduced-motion: no-preference) {
-    .frx-hero-content {
+    .frx-hero--has-image .frx-hero-img {
+        animation: frx-hero-settle 1.6s var(--frx-ease) both;
+    }
+
+    .frx-hero-panel,
+    .frx-hero-headline,
+    .frx-hero-subline,
+    .frx-hero-actions,
+    .frx-hero-trust {
         animation: frx-rise-in var(--frx-t-slow) var(--frx-ease) both;
+    }
+
+    .frx-hero-headline {
+        animation-delay: 120ms;
+    }
+
+    .frx-hero-subline {
+        animation-delay: 220ms;
+    }
+
+    .frx-hero-actions {
+        animation-delay: 320ms;
+    }
+
+    .frx-hero-trust {
+        animation-delay: 420ms;
     }
 }

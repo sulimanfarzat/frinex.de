@@ -10,7 +10,12 @@ Hero (Bild-Text-Cover), Produkt-Slider, Bild-Text, Formulare.
 // Vertikaler Rhythmus der Startseite: Sektionen atmen
 // ---------------------------------------------------------------
 .is-act-home .cms-section + .cms-section {
-    margin-top: clamp(3rem, 7vw, 7rem);
+    margin-top: clamp(3.5rem, 8vw, 8.5rem);
+}
+
+// Gleiche Luft vor dem Footer wie zwischen den Sektionen
+.is-act-home .cms-section:last-of-type {
+    margin-bottom: clamp(3.5rem, 8vw, 8.5rem);
 }
 
 // Hero randlos an die Menüleiste: das 20-px-Top-Padding des

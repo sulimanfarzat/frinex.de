@@ -1,0 +1,9 @@
+{% sw_extends '@Storefront/storefront/layout/footer/footer.html.twig' %}
+
+{#
+    „Realisiert mit Shopware" (Shopware-Icon + footer.copyrightInfo)
+    aus dem Footer entfernen — der Copyright-Block wird bewusst leer
+    überschrieben. Core-Markup und die ZeroBudgetB2B-Spalte bleiben
+    unberührt (anderer Block, Vererbungskette greift für beide).
+#}
+{% block layout_footer_copyright %}{% endblock %}

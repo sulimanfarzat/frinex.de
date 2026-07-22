@@ -2,7 +2,8 @@
    Konfiguration im Admin: Headline, Subline, 2 CTAs, Hintergrundbild
    (media), Trust-Leiste ein/aus. Das Bild lädt eager mit hoher
    Priorität (Above the Fold, kein Lazy Loading), die feste Mindesthöhe
-   in _hero.scss verhindert Layout Shifts. #}
+   in _hero.scss verhindert Layout Shifts. Der Text sitzt in einer
+   Glass-Panel-Box (Optik + Fallback: _hero.scss). #}
 {% block element_frinex_hero %}
     {% set config = element.config %}
     {% set media = element.data.media %}
@@ -26,7 +27,7 @@
         {% endif %}
 
         <div class="container frx-hero-inner">
-            <div class="frx-hero-content">
+            <div class="frx-hero-panel">
                 {% if config.headline.value %}
                     <h1 class="frx-hero-headline" id="frx-hero-headline-{{ element.id }}">
                         {{ config.headline.value }}

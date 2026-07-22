@@ -1,24 +1,60 @@
 /*
-FRINEX Premium — Footer (Phase 2)
+FRINEX Premium — Footer (Redesign)
 ==================================================
-Anthrazit-Grund (Konzept 05: Ink trägt Text UND Footer), mehrspaltig,
-auf Mobile klappen die Spalten als Akkordeon (Core-Verhalten
-.js-footer-column bleibt erhalten, nur restyled).
+Anthrazit-Grund (Konzept 05: Ink trägt Text UND Footer) — bleibt als
+Markenentscheidung erhalten, wird aber deutlich gehoben:
+
+  · Marken-Akzentkante oben (Verlauf Accent → B2B-Gold)
+  · ruhige Tiefe im Grund statt flachem Ink (weicher Radial-Schimmer)
+  · Headlines mit dezentem Akzent-Tick (nur Desktop)
+  · Links ohne Unterstrich-Jitter — Farb- + Indent-Hover
+  · Zahlungs-/Versandlogos als weiße Chips mit Schatten, feste Höhe
+  · klar abgesetzte, ruhige Bottom-Zeile mit Punkt-Trennern
+
+Das Core-Markup bleibt unberührt: die Spalten, das Mobile-Akkordeon
+(.js-footer-column) und die ZeroBudgetB2B-Spalte „Interner Bereich"
+erben das Styling. Der interne Bereich bekommt zusätzlich einen
+dezenten B2B-Gold-Akzent (Zielgruppen-Signal Einkaufsportal).
 */
 
+// ---------------------------------------------------------------
+// Grund + Marken-Akzentkante
+// ---------------------------------------------------------------
 .footer-main {
-    background: var(--frx-ink);
-    color: rgba(255, 255, 255, .72);
+    position: relative;
+    background:
+        radial-gradient(120% 130% at 50% 0, rgba(15, 76, 129, .20), transparent 62%),
+        var(--frx-ink);
+    color: rgba(255, 255, 255, .70);
     border-top: 0;
-    padding-top: 3.5rem;
+    padding-top: var(--frx-s7);
     font-size: .9rem;
+}
+
+// Schmaler Verlauf über die volle Breite: kappt den Footer premium ab.
+.footer-main::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background: linear-gradient(
+        90deg,
+        var(--frx-accent) 0%,
+        var(--frx-accent-strong) 45%,
+        var(--frx-b2b) 100%
+    );
 }
 
 // ---------------------------------------------------------------
 // Spalten & Headlines
 // ---------------------------------------------------------------
+.footer-main .footer-columns {
+    row-gap: var(--frx-s5);
+}
+
 .footer-main .footer-headline,
 .footer-main .footer-column-headline {
+    position: relative;
     font-family: 'Manrope', 'Inter', system-ui, sans-serif;
     font-weight: 800;
     font-size: .75rem;
@@ -26,24 +62,63 @@ auf Mobile klappen die Spalten als Akkordeon (Core-Verhalten
     text-transform: uppercase;
     color: #ffffff;
     border-bottom: 0;
+    margin-bottom: .85rem;
 }
 
+.footer-main .footer-headline a,
+.footer-main .footer-column-headline a {
+    color: inherit;
+    text-decoration: none;
+}
+
+// Akzent-Tick unter der Headline — nur Desktop, wo die Spalten offen
+// stehen. Auf Mobile ist die Headline eine Akkordeon-Klickzeile, dort
+// stört der Tick, also ausgeblendet.
+@media (min-width: 768px) {
+    .footer-main .footer-headline::after,
+    .footer-main .footer-column-headline::after {
+        content: "";
+        display: block;
+        width: 1.75rem;
+        height: 2px;
+        margin-top: .6rem;
+        border-radius: 2px;
+        background: var(--frx-accent);
+    }
+}
+
+// ---------------------------------------------------------------
+// Links: Farb- + Indent-Hover, kein Layout-Sprung
+// ---------------------------------------------------------------
 .footer-main .footer-link,
 .footer-main .footer-contact a {
-    color: rgba(255, 255, 255, .72);
+    display: inline-block;
+    color: rgba(255, 255, 255, .70);
     text-decoration: none;
-    transition: color var(--frx-t-fast) var(--frx-ease);
+    transition:
+        color var(--frx-t-fast) var(--frx-ease),
+        transform var(--frx-t-fast) var(--frx-ease);
 }
 
 .footer-main .footer-link:hover,
-.footer-main .footer-contact a:hover {
+.footer-main .footer-link:focus-visible,
+.footer-main .footer-contact a:hover,
+.footer-main .footer-contact a:focus-visible {
     color: #ffffff;
-    text-decoration: underline;
-    text-underline-offset: 3px;
+    transform: translateX(3px);
 }
 
 .footer-main .footer-link-item {
     padding: .3rem 0;
+}
+
+// Kontakt-Hotline etwas hervorgehoben
+.footer-main .footer-contact-hotline {
+    font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #ffffff;
+    margin-bottom: .5rem;
 }
 
 // Mobile-Akkordeon: Hairline zwischen Spalten, heller Toggle
@@ -52,29 +127,97 @@ auf Mobile klappen die Spalten als Akkordeon (Core-Verhalten
 }
 
 .footer-main .footer-column-toggle {
-    color: rgba(255, 255, 255, .72);
+    color: rgba(255, 255, 255, .70);
+    transition: color var(--frx-t-fast) var(--frx-ease);
+}
+
+.footer-main .footer-column-toggle:hover {
+    color: #ffffff;
+}
+
+// ---------------------------------------------------------------
+// Interner Bereich (ZeroBudgetB2B) — dezenter B2B-Gold-Akzent
+// ---------------------------------------------------------------
+@media (min-width: 768px) {
+    #collapseFooterTitleInternal::after {
+        background: var(--frx-b2b);
+    }
+}
+
+#collapseFooterInternal .footer-link {
+    position: relative;
+    padding-left: 1rem;
+}
+
+#collapseFooterInternal .footer-link::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 5px;
+    height: 5px;
+    margin-top: -2.5px;
+    border-radius: 50%;
+    background: var(--frx-b2b);
+    opacity: .85;
+}
+
+#collapseFooterInternal .footer-link:hover {
+    color: var(--frx-b2b);
 }
 
 // ---------------------------------------------------------------
 // Zahlungs-/Versandlogos: weiße Chips auf dunklem Grund
 // ---------------------------------------------------------------
 .footer-main .footer-logos {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .6rem;
+    margin-top: var(--frx-s5);
+    padding-top: var(--frx-s4);
+    border-top: 1px solid rgba(255, 255, 255, .12);
     border-color: rgba(255, 255, 255, .12);
 }
 
 .footer-main .footer-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.25rem;
+    padding: .25rem .6rem;
     background: #ffffff;
-    border-radius: .375rem;
-    padding: .25rem .5rem;
+    border-radius: .5rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .18);
+}
+
+.footer-main .footer-logo-image {
+    max-height: 1.5rem;
+    width: auto;
+    object-fit: contain;
 }
 
 // ---------------------------------------------------------------
-// Service-Menü + Copyright: abgesetzte Bottom-Zeile
+// Service-Menü + Copyright: abgesetzte, ruhige Bottom-Zeile
 // ---------------------------------------------------------------
 .footer-main .footer-bottom {
     border-top: 1px solid rgba(255, 255, 255, .12);
-    margin-top: 2.5rem;
+    margin-top: var(--frx-s6);
+    padding-top: var(--frx-s4);
+    padding-bottom: var(--frx-s5);
     background: transparent;
+}
+
+.footer-main .footer-service-menu-list {
+    gap: .35rem 0;
+    margin-bottom: .75rem;
+}
+
+// Punkt-Trenner zwischen den Service-Links (nicht vor dem ersten)
+.footer-main .footer-service-menu-item + .footer-service-menu-item::before {
+    content: "·";
+    margin: 0 .75rem;
+    color: rgba(255, 255, 255, .35);
 }
 
 .footer-main .footer-service-menu-link,
@@ -84,13 +227,48 @@ auf Mobile klappen die Spalten als Akkordeon (Core-Verhalten
     font-size: .8rem;
 }
 
-.footer-main .footer-service-menu-link:hover {
+.footer-main .footer-service-menu-link {
+    text-decoration: none;
+    transition: color var(--frx-t-fast) var(--frx-ease);
+}
+
+.footer-main .footer-service-menu-link:hover,
+.footer-main .footer-service-menu-link:focus-visible {
     color: #ffffff;
 }
 
+.footer-main .footer-vat,
+.footer-main .footer-copyright {
+    text-align: center;
+}
+
+.footer-main .footer-copyright {
+    margin-top: .35rem;
+}
+
+// ---------------------------------------------------------------
 // Fokus-Sichtbarkeit auf dunklem Grund: heller Ring
+// ---------------------------------------------------------------
 .footer-main a:focus-visible,
 .footer-main button:focus-visible {
     outline: 2px solid rgba(255, 255, 255, .8);
     outline-offset: 2px;
+    border-radius: 2px;
+}
+
+// ---------------------------------------------------------------
+// Reduzierte Bewegung: keine Hover-Verschiebung
+// ---------------------------------------------------------------
+@media (prefers-reduced-motion: reduce) {
+    .footer-main .footer-link,
+    .footer-main .footer-contact a {
+        transition: color var(--frx-t-fast) var(--frx-ease);
+    }
+
+    .footer-main .footer-link:hover,
+    .footer-main .footer-link:focus-visible,
+    .footer-main .footer-contact a:hover,
+    .footer-main .footer-contact a:focus-visible {
+        transform: none;
+    }
 }

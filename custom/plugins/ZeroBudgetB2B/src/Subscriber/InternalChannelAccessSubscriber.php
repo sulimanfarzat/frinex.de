@@ -6,6 +6,7 @@ use Shopware\Core\PlatformRequest;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
@@ -47,6 +48,10 @@ class InternalChannelAccessSubscriber implements EventSubscriberInterface
         // Seiten-Rendering mit HTTP 500 ab (EsiDecoration erwartet Status 200).
         'frontend.header',
         'frontend.footer',
+        // Warenkorb-Widget im Header (XHR /widgets/checkout/info): eine
+        // Umleitung zur Login-SEITE knallt hier mit „can't be requested via
+        // XmlHttpRequest" und das JS injiziert die Fehlerseite in den Header
+        'frontend.checkout.info',
     ];
 
     public function __construct(private readonly RouterInterface $router)
@@ -87,6 +92,15 @@ class InternalChannelAccessSubscriber implements EventSubscriberInterface
         $customer = $context->getCustomer();
 
         if ($customer === null) {
+            // XHR nie auf die Login-Seite umleiten — Page-Routen sind per
+            // XmlHttpRequest nicht aufrufbar (500); stattdessen leerer 401,
+            // damit Widgets still leer bleiben statt Fehlerseiten einzubetten
+            if ($request->isXmlHttpRequest()) {
+                $event->setController(static fn (): Response => new Response('', Response::HTTP_UNAUTHORIZED));
+
+                return;
+            }
+
             $url = $this->router->generate('frontend.account.login.page', [
                 'redirectTo' => 'frontend.home.page',
             ]);
@@ -96,6 +110,12 @@ class InternalChannelAccessSubscriber implements EventSubscriberInterface
         }
 
         if ($customer->getGroupId() !== self::ALLOWED_CUSTOMER_GROUP_ID) {
+            if ($request->isXmlHttpRequest()) {
+                $event->setController(static fn (): Response => new Response('', Response::HTTP_FORBIDDEN));
+
+                return;
+            }
+
             $event->setController(static fn (): RedirectResponse => new RedirectResponse(self::FALLBACK_URL));
         }
     }
