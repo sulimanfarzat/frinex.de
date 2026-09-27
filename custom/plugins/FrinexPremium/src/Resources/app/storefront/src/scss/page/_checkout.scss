@@ -14,7 +14,7 @@ sticky Karte, ein dominanter CTA pro Schritt (Konzept 02/09/11).
 
 .line-item-img,
 .line-item-img-link {
-    border-radius: .375rem;
+    border-radius: var(--frx-radius);
     background: var(--frx-surface);
 }
 
@@ -24,7 +24,7 @@ sticky Karte, ein dominanter CTA pro Schritt (Konzept 02/09/11).
 }
 
 .line-item-label:hover {
-    color: var(--frx-accent);
+    color: var(--frx-accent-ink);
 }
 
 .line-item-price,
@@ -98,7 +98,7 @@ sticky Karte, ein dominanter CTA pro Schritt (Konzept 02/09/11).
 
 .confirm-tos .card-title,
 .checkout-card .card-title {
-    font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+    font-family: #{$headings-font-family};
     font-weight: 800;
     letter-spacing: -.01em;
 }
@@ -120,7 +120,7 @@ sticky Karte, ein dominanter CTA pro Schritt (Konzept 02/09/11).
 // Bestellabschluss: Erfolg ruhig, nicht schrill
 // ---------------------------------------------------------------
 .finish-header {
-    font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+    font-family: #{$headings-font-family};
     font-weight: 800;
     letter-spacing: -.02em;
 }

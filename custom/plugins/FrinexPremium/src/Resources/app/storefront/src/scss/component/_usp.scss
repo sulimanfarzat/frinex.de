@@ -52,9 +52,9 @@ Markup (Block/Element liefern es):
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: 1rem;
-    background: linear-gradient(135deg, rgba(15, 76, 129, .12), rgba(15, 76, 129, .04));
-    color: var(--frx-accent);
+    border-radius: var(--frx-radius);
+    background: linear-gradient(135deg, rgba(255, 140, 0, .18), rgba(255, 140, 0, .06));
+    color: var(--frx-accent-ink);
     margin-bottom: .5rem;
 }
 

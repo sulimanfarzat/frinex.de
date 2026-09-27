@@ -11,7 +11,7 @@ Typografie, Touch-Ziele und ruhige Zustände.
 }
 
 .navigation-offcanvas-headline {
-    font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+    font-family: #{$headings-font-family};
     font-weight: 800;
     letter-spacing: -.01em;
     color: var(--frx-ink);
@@ -30,11 +30,11 @@ Typografie, Touch-Ziele und ruhige Zustände.
 .navigation-offcanvas-link.nav-link:hover,
 .navigation-offcanvas-link.nav-link:focus-visible {
     background: var(--frx-surface);
-    color: var(--frx-accent);
+    color: var(--frx-accent-ink);
 }
 
 .navigation-offcanvas-link.is-current-category {
-    color: var(--frx-accent);
+    color: var(--frx-accent-ink);
     font-weight: 600;
 }
 

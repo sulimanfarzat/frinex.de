@@ -3,117 +3,149 @@ FRINEX Premium — Variable Overrides
 ==================================================
 Lädt VOR dem Storefront-Core (siehe theme.json). Setzt die
 Bootstrap-/Shopware-!default-Variablen auf das FRINEX-Token-System.
-Quelle der Werte: Frontend-Konzept v1.0, Abschnitte 04–06.
+Quelle der Werte: Industrial-Entwurf (Stitch), Material-Tonalpalette
+aus dem Orange-Seed.
 
-Farbregel 90/7/3: Weiß/Hellgrau tragen die Fläche, Anthrazit den Text,
-Industrialblau ist die einzige Akzentfarbe. Amber ist dem B2B-Kontext
-vorbehalten und wird bewusst NICHT als Bootstrap-$warning verwendet.
+Farbregel: Weiß/Steel-Gray tragen die Fläche, Industrial-Black den
+Text und die schweren Blöcke, Safety-Orange ist die einzige
+Signalfarbe. Corporate-Blue bleibt als ruhiger Zweitakzent (ESD,
+Info-Flächen) erhalten. Form: eckig statt Pill, Hairlines statt
+Schatten.
 */
 
 // ---------------------------------------------------------------
 // Farbpalette
 // ---------------------------------------------------------------
-$frx-paper:         #ffffff;
-$frx-surface:       #f4f5f7;
-$frx-ink:           #14181e;
+// Drei helle Stufen, wie im Light-Mode-Entwurf getrennt:
+// canvas trägt die Seite (warm), paper die Karten (rein weiß, hebt
+// sich dadurch minimal ab), surface die stummen Flächen.
+$frx-canvas:        #fcf9f8;  // Seitengrund
+$frx-paper:         #ffffff;  // Karten, Galerie, Kaufbox
+$frx-surface:       #f2f4f7;  // steel-gray — Thumbnails, Inaktives
+
+// Charcoal statt Kühlschwarz: wärmer, passt zu Linien (#ddc1ae)
+// und Fließtext-Grau des Entwurfs. 13,95:1 auf dem Canvas.
+$frx-ink:           #2c2825;  // charcoal
 $frx-muted:         #5b6470;
-$frx-line:          #e4e7eb;
-$frx-accent:        #0f4c81;
-$frx-accent-strong: #0a3b65;
-$frx-b2b-amber:     #f2a900;
+// Zwei Linienstärken, wie im Entwurf getrennt gehalten:
+// outline-variant = dekorative Hairline (1,7:1, reicht dafür),
+// outline = Grenze von Bedienelementen (4,5:1, WCAG 1.4.11 fordert
+// hier 3:1 — die Hairline würde durchfallen).
+$frx-line:          #ddc1ae;  // outline-variant — Trenner, Karten
+$frx-outline:       #897362;  // outline — Inputs, Schalter, Selects
+
+// Orange in zwei Rollen: FLÄCHE (#ff8c00, nur mit schwarzem Text —
+// 7,6:1) und SCHRIFT (#904d00 — 6,5:1 auf Weiß). Reines Safety-
+// Orange als Text auf Weiß wären 2,3:1 und damit unlesbar.
+$frx-accent:        #ff8c00;  // safety-orange — Füllung
+$frx-accent-ink:    #904d00;  // Orange als Schrift auf hellem Grund
+$frx-accent-strong: #6e3900;  // Hover für Schrift/Outline
+
+$frx-blue:          #0f4c81;  // corporate-blue — Zweitakzent
+$frx-b2b:           $frx-ink; // B2B-Kontext trägt jetzt Schwarz, nicht Amber
 
 $primary:   $frx-accent;
 $secondary: $frx-muted;
-$success:   #1f9d55;
-$warning:   #b97d00;
-$danger:    #cf4b3a;
-$info:      $frx-accent;
+$success:   #2e7d32;
+$warning:   #b97d00;  // lesbares Amber; das helle #fbc02d ist reine Füllfarbe
+$danger:    #ba1a1a;
+$info:      $frx-blue;
 $light:     $frx-surface;
 $dark:      $frx-ink;
 
-$body-bg:      $frx-paper;
+$body-bg:      $frx-canvas;
 $body-color:   $frx-ink;
 $border-color: $frx-line;
 
-$link-color:            $frx-accent;
-$link-hover-color:      $frx-accent-strong;
+// Links tragen Ink, Orange ist der Hover — so im Entwurf
+// (text-industrial-black hover:text-safety-orange)
+$link-color:            $frx-ink;
+$link-hover-color:      $frx-accent-ink;
 $link-decoration:       underline;
 $link-underline-offset: 3px;
 
 // ---------------------------------------------------------------
-// Typografie (Inter = UI/Fließtext, Manrope = Headlines, s. base.scss)
+// Typografie (Inter = Fließtext, Hanken Grotesk = Headlines,
+// JetBrains Mono = Versal-Labels; alle drei selbst gehostet,
+// siehe base.scss)
 // ---------------------------------------------------------------
 $font-family-base:      'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-$headings-font-family:  'Manrope', 'Inter', system-ui, sans-serif;
+$headings-font-family:  'Hanken Grotesk', 'Inter', system-ui, sans-serif;
 $headings-font-weight:  800;
 $headings-color:        $frx-ink;
 $font-size-base:        1rem;
-$line-height-base:      1.65;
-$headings-line-height:  1.15;
+$line-height-base:      1.5;   // body-md 16/24
+$headings-line-height:  1.2;
 
 // ---------------------------------------------------------------
-// Form & Tiefe
+// Form & Tiefe: eckig, flach. Radien aus dem Entwurf
+// (DEFAULT 2px, lg 4px, xl 8px) — Buttons laufen ohne Radius.
 // ---------------------------------------------------------------
-$border-radius:    .75rem;    // 12px
-$border-radius-sm: .5rem;     //  8px
-$border-radius-lg: 1rem;      // 16px
+$border-radius:    .125rem;   // 2px
+$border-radius-sm: .125rem;   // 2px
+$border-radius-lg: .25rem;    // 4px
 
-// Schatten leicht ins Markenblau getönt — wirkt wärmer als reines Grau
-$box-shadow:    0 1px 2px rgba(13, 40, 66, .05), 0 8px 24px rgba(13, 40, 66, .08);
-$box-shadow-sm: 0 1px 2px rgba(13, 40, 66, .06);
-$box-shadow-lg: 0 2px 4px rgba(13, 40, 66, .06), 0 18px 48px rgba(13, 40, 66, .14);
+// Schatten fast nur noch als Kante — Tiefe entsteht über Hairlines
+// und dunkle Flächen, nicht über Weichzeichnung. Aus $frx-ink
+// abgeleitet, damit sie den warmen Ton mitnehmen.
+$box-shadow:    0 1px 2px rgba($frx-ink, .06);
+$box-shadow-sm: 0 1px 1px rgba($frx-ink, .05);
+$box-shadow-lg: 0 8px 24px rgba($frx-ink, .12);  // Modals/Offcanvas
 
+// Fokus: schwarzer Ring (15:1) mit orangem Glow. Reines Orange
+// erreicht auf Weiß keine 3:1 und ist als Indikator allein nicht
+// WCAG-2.2-konform.
 $focus-ring-width:   3px;
-$focus-ring-opacity: .18;
-$focus-ring-color:   rgba(15, 76, 129, .18);
+$focus-ring-opacity: .45;
+$focus-ring-color:   rgba(255, 140, 0, .45);
 
 // ---------------------------------------------------------------
-// Buttons: Pill-Form, 44-px-Touchziel, Gewicht 600
+// Buttons: rechteckig, versal, 44-px-Touchziel
 // ---------------------------------------------------------------
-$btn-border-radius:    50rem;
-$btn-border-radius-sm: 50rem;
-$btn-border-radius-lg: 50rem;
-$btn-font-weight:      600;
-$btn-padding-y:        .7rem;
-$btn-padding-x:        1.5rem;
-$btn-padding-y-sm:     .45rem;
+$btn-border-radius:    0;
+$btn-border-radius-sm: 0;
+$btn-border-radius-lg: 0;
+$btn-font-weight:      700;
+$btn-padding-y:        .8rem;
+$btn-padding-x:        1.6rem;
+$btn-padding-y-sm:     .5rem;
 $btn-padding-x-sm:     1.1rem;
-$btn-padding-y-lg:     .85rem;
-$btn-padding-x-lg:     1.9rem;
+$btn-padding-y-lg:     1rem;
+$btn-padding-x-lg:     2rem;
 $btn-focus-width:      3px;
 
 // ---------------------------------------------------------------
-// Formulare: 1,5-px-Rahmen, blauer Fokusring
+// Formulare: 1,5-px-Rahmen, kantig, oranger Fokus
 // ---------------------------------------------------------------
 $input-border-width:       1.5px;
-$input-border-color:       $frx-line;
-$input-border-radius:      .5rem;
-$input-border-radius-sm:   .375rem;
-$input-border-radius-lg:   .625rem;
+$input-border-color:       $frx-outline;  // Bedienelement-Grenze, nicht die Hairline
+$input-border-radius:      .125rem;
+$input-border-radius-sm:   .125rem;
+$input-border-radius-lg:   .125rem;
 $input-padding-y:          .7rem;
 $input-padding-x:          .9rem;
 $input-color:              $frx-ink;
 $input-placeholder-color:  $frx-muted;
 $input-focus-border-color: $frx-accent;
-$input-focus-box-shadow:   0 0 0 3px rgba(15, 76, 129, .18);
-$form-label-font-weight:   600;
-$form-select-border-radius: .375rem;
+$input-focus-box-shadow:   0 0 0 3px rgba(255, 140, 0, .35);
+$form-label-font-weight:   700;
+$form-select-border-radius: .125rem;
 
 // ---------------------------------------------------------------
-// Badges: Pill, Versal (Text-Transform in base.scss)
+// Badges: eckige Versal-Marker (Text-Transform in base.scss)
 // ---------------------------------------------------------------
 $badge-font-weight:   700;
-$badge-border-radius: 50rem;
+$badge-border-radius: 0;
 $badge-padding-y:     .35em;
-$badge-padding-x:     .9em;
+$badge-padding-x:     .75em;
 
 // ---------------------------------------------------------------
 // Karten & Modals
 // ---------------------------------------------------------------
 $card-border-color:   $frx-line;
-$card-border-radius:  .75rem;
+$card-border-radius:  .125rem;
 $card-cap-bg:         $frx-surface;
-$modal-content-border-radius: 1rem;
+$modal-content-border-radius: .25rem;
 
 // ---------------------------------------------------------------
 // Breadcrumb
@@ -122,12 +154,12 @@ $breadcrumb-divider-color: $frx-line;
 $breadcrumb-active-color:  $frx-ink;
 
 // ---------------------------------------------------------------
-// Raster: Inhaltsbreite 1360px (Konzept 04)
+// Raster: Inhaltsbreite 1280px (container-max aus dem Entwurf)
 // ---------------------------------------------------------------
 $container-max-widths: (
     sm: 540px,
     md: 720px,
     lg: 960px,
     xl: 1140px,
-    xxl: 1360px
+    xxl: 1280px
 );

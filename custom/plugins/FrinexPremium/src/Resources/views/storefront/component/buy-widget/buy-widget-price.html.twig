@@ -6,6 +6,18 @@
     B2C (Brutto-Anzeige): Netto klein darunter.
 #}
 
+{#
+    Eyebrow über dem Preis — nur wenn ein Streichpreis existiert.
+    Gleiche Bedingung wie der Core für .with-list-price.
+#}
+{% block buy_widget_price_content %}
+    {% if page.product.calculatedPrice.listPrice.percentage > 0 %}
+        <span class="frx-price-eyebrow">Sonderangebot</span>
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}
+
 {% block page_product_detail_price_inner %}
     {{ parent() }}
 

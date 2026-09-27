@@ -65,7 +65,7 @@ runde Pagination (Konzept 02/07).
 }
 
 .product-name:hover {
-    color: var(--frx-accent);
+    color: var(--frx-accent-ink);
 }
 
 .product-box .product-rating {
@@ -146,7 +146,7 @@ runde Pagination (Konzept 02/07).
 // ---------------------------------------------------------------
 .filter-panel-item-toggle {
     border: 1.5px solid var(--frx-line);
-    border-radius: 50rem;
+    border-radius: var(--frx-radius);
     font-weight: 600;
     font-size: .88rem;
     color: var(--frx-ink);
@@ -161,15 +161,15 @@ runde Pagination (Konzept 02/07).
 }
 
 .filter-panel-item-toggle[aria-expanded='true'] {
-    border-color: var(--frx-accent);
-    color: var(--frx-accent);
+    border-color: var(--frx-accent-ink);
+    color: var(--frx-accent-ink);
 }
 
 // Aktive Filter: entfernbare Chips über dem Grid
 .filter-active {
     background: var(--frx-surface);
     border: 1px solid var(--frx-line);
-    border-radius: 50rem;
+    border-radius: var(--frx-radius);
     font-size: .8rem;
     font-weight: 600;
 }
@@ -179,7 +179,7 @@ runde Pagination (Konzept 02/07).
 // ---------------------------------------------------------------
 .pagination .page-link {
     border: 0;
-    border-radius: 50rem;
+    border-radius: var(--frx-radius);
     min-width: 2.4rem;
     text-align: center;
     font-weight: 600;
@@ -196,5 +196,5 @@ runde Pagination (Konzept 02/07).
 
 .pagination .page-item.active .page-link {
     background: var(--frx-accent);
-    color: #ffffff;
+    color: var(--frx-ink);
 }

@@ -1,0 +1,30 @@
+{% sw_extends '@Storefront/storefront/component/product/properties.html.twig' %}
+
+{#
+    FRINEX Premium — Technische Daten als Karten-Raster (Industrial-
+    Entwurf) statt der Core-Tabelle.
+
+    Semantisch eine Definitionsliste: die Merkmalsgruppe ist der
+    Begriff, die zugehörigen Optionen sind der Wert. Das trägt die
+    Label-Wert-Beziehung genauso wie die Tabelle, lässt sich aber
+    frei als Raster anordnen.
+
+    Die Karten im Entwurf zeigen zusätzlich Icon und Marketing-Tag
+    ("FEATHERWEIGHT") — dafür gibt es in den Produktmerkmalen keine
+    Datenquelle. Sie bleiben deshalb weg; siehe Styling in
+    scss/page/_product-detail.scss.
+#}
+
+{% block component_product_properties_container %}
+    <dl class="frx-specs product-detail-properties-container">
+        {# @var product \Shopware\Core\Content\Product\SalesChannel\SalesChannelProductEntity #}
+        {% for group in product.sortedProperties %}
+            <div class="frx-spec">
+                <dt class="frx-spec-label">{{ group.translated.name }}</dt>
+                <dd class="frx-spec-value">
+                    {{ group.options|map(option => "#{option.translated.name}")|join(', ') }}
+                </dd>
+            </div>
+        {% endfor %}
+    </dl>
+{% endblock %}

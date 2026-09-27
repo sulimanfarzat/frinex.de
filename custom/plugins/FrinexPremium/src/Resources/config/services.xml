@@ -9,6 +9,10 @@
             <tag name="shopware.cms.data_resolver"/>
         </service>
 
+        <service id="FrinexPremium\Cms\FrinexHeroSliderCmsElementResolver">
+            <tag name="shopware.cms.data_resolver"/>
+        </service>
+
         <service id="FrinexPremium\Cms\FrinexBannerCmsElementResolver">
             <tag name="shopware.cms.data_resolver"/>
         </service>

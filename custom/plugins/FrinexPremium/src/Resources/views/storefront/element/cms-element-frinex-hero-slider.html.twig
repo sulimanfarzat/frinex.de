@@ -1,0 +1,126 @@
+{# FRINEX Hero-Slider (Above the Fold)
+   Wie der einfache Hero (Headline, Subline, 2 CTAs, Trust-Leiste in der
+   Glass-Panel-Box), aber mit mehreren, im Admin pflegbaren Bildern, die
+   automatisch durchrotieren. Der Slider nutzt Shopwares eingebautes
+   [data-base-slider] (tiny-slider) — Autoplay, klickbare Punkte und Swipe
+   kommen aus dem Core, kein eigenes Storefront-JS nötig.
+
+   Schichtung (siehe _hero.scss):
+     .frx-hero-media  → Bilder (Slider)
+     .frx-hero-scrim  → Abdunklung für Lesbarkeit
+     .frx-hero-inner  → Textpanel + Trust-Leiste + Punkte-Navigation
+   Die Punkte liegen bewusst in der obersten Schicht (navContainer), damit
+   sie über dem Scrim sichtbar und klickbar bleiben. Ohne Bilder fällt der
+   Hero auf den Marken-Verlauf zurück. #}
+{% block element_frinex_hero_slider %}
+    {% set config = element.config %}
+    {% set items = element.data.sliderItems ?? [] %}
+    {% set hasImages = items|length > 0 %}
+    {% set hasNav = items|length > 1 %}
+    {% set dotsId = 'frx-hero-dots-' ~ element.id %}
+
+    {% set autoplay = config.autoplay.value is same as(false) ? false : true %}
+    {% set interval = ((config.interval.value ?: 6) * 1000)|round %}
+
+    {% set sliderOptions = {
+        slider: {
+            controls: false,
+            nav: hasNav,
+            navContainer: hasNav ? '#' ~ dotsId : false,
+            navPosition: 'bottom',
+            items: 1,
+            loop: true,
+            mouseDrag: true,
+            autoHeight: false,
+            speed: 800,
+            autoplay: autoplay,
+            autoplayButtonOutput: false,
+            autoplayHoverPause: true,
+            autoplayTimeout: interval,
+            ariaLive: false
+        }
+    } %}
+
+    <section class="cms-element-frinex-hero-slider frx-hero frx-hero--slider{% if hasImages %} frx-hero--has-image{% endif %}"
+             aria-labelledby="frx-hero-headline-{{ element.id }}">
+
+        {% if hasImages %}
+            <div class="frx-hero-media" aria-hidden="true">
+                <div class="frx-hero-slider base-slider"
+                     data-base-slider="true"
+                     data-base-slider-options='{{ sliderOptions|json_encode }}'>
+                    <div class="frx-hero-slider-container" data-base-slider-container="true">
+                        {% for item in items %}
+                            <div class="frx-hero-slide">
+                                {% sw_thumbnails 'frx-hero-image' with {
+                                    media: item.media,
+                                    sizes: { 'default': '100vw' },
+                                    attributes: {
+                                        'class': 'frx-hero-img',
+                                        'alt': '',
+                                        'loading': loop.first ? 'eager' : 'lazy',
+                                        'fetchpriority': loop.first ? 'high' : 'auto'
+                                    }
+                                } %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="frx-hero-scrim" aria-hidden="true"></div>
+        {% endif %}
+
+        <div class="container frx-hero-inner">
+            <div class="frx-hero-panel">
+                {% if config.headline.value %}
+                    <h1 class="frx-hero-headline" id="frx-hero-headline-{{ element.id }}">
+                        {{ config.headline.value }}
+                    </h1>
+                {% endif %}
+
+                {% if config.subline.value %}
+                    <p class="frx-hero-subline">{{ config.subline.value }}</p>
+                {% endif %}
+
+                <div class="frx-hero-actions">
+                    <a class="btn btn-primary btn-lg frx-hero-cta-primary"
+                       href="{{ config.ctaPrimaryUrl.value ?: path('frontend.account.register.page') }}">
+                        {{ config.ctaPrimaryLabel.value ?: 'frinexPremium.hero.ctaPrimary'|trans|sw_sanitize }}
+                    </a>
+
+                    {% if config.ctaSecondaryUrl.value %}
+                        <a class="btn btn-outline-light btn-lg frx-hero-cta-secondary"
+                           href="{{ config.ctaSecondaryUrl.value }}">
+                            {{ config.ctaSecondaryLabel.value ?: 'frinexPremium.hero.ctaSecondary'|trans|sw_sanitize }}
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if config.showTrustBar.value %}
+                <ul class="frx-hero-trust" aria-label="{{ 'frinexPremium.hero.trustAriaLabel'|trans|striptags }}">
+                    {% for trustKey in ['trust1', 'trust2', 'trust3', 'trust4'] %}
+                        <li class="frx-hero-trust-item">
+                            <svg class="frx-hero-trust-icon" aria-hidden="true" width="18" height="18"
+                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                 stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+                            {{ ('frinexPremium.hero.' ~ trustKey)|trans|sw_sanitize }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {% if hasNav %}
+                <div class="frx-hero-dots" id="{{ dotsId }}"
+                     aria-label="{{ 'frinexPremium.heroSlider.dotsAriaLabel'|trans|striptags }}">
+                    {% for item in items %}
+                        <button type="button" class="frx-hero-dot"
+                                aria-label="{{ 'frinexPremium.heroSlider.gotoSlide'|trans({ '%index%': loop.index })|striptags }}"></button>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

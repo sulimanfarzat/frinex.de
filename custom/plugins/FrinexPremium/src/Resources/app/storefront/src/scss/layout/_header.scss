@@ -29,7 +29,7 @@ Runterscrollen, sofort wieder da beim Hochscrollen).
 }
 
 .frx-header-sticky.frx-scrolled {
-    box-shadow: 0 1px 0 var(--frx-line), 0 8px 24px rgba(20, 24, 30, .06);
+    box-shadow: 0 1px 0 var(--frx-line), 0 8px 24px rgba(#{$frx-ink}, .06);
 }
 
 // Beim Runterscrollen gleitet der ganze Header per transform raus,
@@ -89,7 +89,7 @@ Runterscrollen, sofort wieder da beim Hochscrollen).
 .header-search-input.form-control {
     background: var(--frx-surface);
     border-color: transparent;
-    border-radius: 50rem;
+    border-radius: var(--frx-radius);
     padding: .65rem 1.25rem;
     font-size: .95rem;
 }
@@ -100,7 +100,7 @@ Runterscrollen, sofort wieder da beim Hochscrollen).
 
 .header-search-input.form-control:focus {
     background: var(--frx-paper);
-    border-color: var(--frx-accent);
+    border-color: var(--frx-accent-ink);
 }
 
 .header-search-btn {
@@ -108,7 +108,7 @@ Runterscrollen, sofort wieder da beim Hochscrollen).
 }
 
 .header-search-btn:hover {
-    color: var(--frx-accent);
+    color: var(--frx-accent-ink);
 }
 
 // Aktions-Buttons: runde 44-px-Ziele, ruhiger Hover.
@@ -118,8 +118,8 @@ Runterscrollen, sofort wieder da beim Hochscrollen).
 // Deshalb alle Zustands-Variablen explizit auf Markenfarben pinnen.
 .header-actions-btn {
     --bs-btn-color: var(--frx-ink);
-    --bs-btn-hover-color: var(--frx-accent);
-    --bs-btn-active-color: var(--frx-accent);
+    --bs-btn-hover-color: var(--frx-accent-ink);
+    --bs-btn-active-color: var(--frx-accent-ink);
     width: 2.75rem;
     height: 2.75rem;
     // Bootstrap-Buttons bringen 1.5rem Padding-x mit — im 2.75rem-Kreis
@@ -197,7 +197,7 @@ Runterscrollen, sofort wieder da beim Hochscrollen).
 
 .header-actions-btn:hover {
     background: var(--frx-surface);
-    color: var(--frx-accent);
+    color: var(--frx-accent-ink);
     transform: none;
     box-shadow: none;
 }
@@ -209,7 +209,7 @@ Runterscrollen, sofort wieder da beim Hochscrollen).
     min-width: 2.75rem;
     padding-left: .65rem;
     padding-right: .8rem;
-    border-radius: 50rem;
+    border-radius: var(--frx-radius);
 }
 
 .header-cart-total {
@@ -224,6 +224,6 @@ Runterscrollen, sofort wieder da beim Hochscrollen).
 .header-cart-badge,
 .header-wishlist-badge {
     background: var(--frx-accent);
-    color: #ffffff;
+    color: var(--frx-ink); // schwarz auf Orange (7,6:1) — weiß wäre 2,3:1
     font-variant-numeric: tabular-nums;
 }

@@ -41,7 +41,7 @@ Schnellzugriff-Kacheln, Tabelle der letzten Anforderungen.
         radial-gradient(60rem 30rem at 110% -20%, rgba(15, 76, 129, .55), transparent 60%),
         var(--frx-ink);
     color: #fff;
-    border-radius: 1rem;
+    border-radius: var(--frx-radius);
     padding: clamp(1.5rem, 4vw, 2.75rem);
     margin-bottom: var(--frx-s4);
     box-shadow: var(--frx-shadow-lift);
@@ -85,7 +85,7 @@ Schnellzugriff-Kacheln, Tabelle der letzten Anforderungen.
 
     &:hover {
         background: #fff;
-        color: var(--frx-accent);
+        color: var(--frx-accent-ink);
     }
 }
 
@@ -106,7 +106,7 @@ Schnellzugriff-Kacheln, Tabelle der letzten Anforderungen.
     gap: .6rem;
     background: rgba(255, 255, 255, .1);
     border: 1px solid rgba(255, 255, 255, .18);
-    border-radius: .75rem;
+    border-radius: var(--frx-radius);
     padding: .8rem 1rem;
     font-size: .88rem;
     color: rgba(255, 255, 255, .85);
@@ -131,7 +131,7 @@ Schnellzugriff-Kacheln, Tabelle der letzten Anforderungen.
     justify-content: center;
     min-width: 1.75rem;
     height: 1.75rem;
-    border-radius: 50rem;
+    border-radius: var(--frx-radius);
     background: var(--frx-b2b);
     color: var(--frx-ink);
     font-weight: 800;
@@ -161,7 +161,7 @@ Schnellzugriff-Kacheln, Tabelle der letzten Anforderungen.
     gap: .8rem;
     background: var(--frx-paper);
     border: 1px solid var(--frx-line);
-    border-radius: .75rem;
+    border-radius: var(--frx-radius);
     padding: 1rem;
     text-decoration: none;
     color: var(--frx-ink);
@@ -189,13 +189,15 @@ Schnellzugriff-Kacheln, Tabelle der letzten Anforderungen.
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: .6rem;
-    background: rgba(15, 76, 129, .1);
-    color: var(--frx-accent);
+    border-radius: var(--frx-radius);
+    background: rgba(255, 140, 0, .14);
+    color: var(--frx-accent-ink);
 
-    &.is-amber {
-        background: rgba(242, 169, 0, .14);
-        color: #8a5d00;
+    // Zweitakzent Corporate-Blue — muss sich vom orangen Standard
+    // deutlich unterscheiden, sonst sind die Kacheln nicht lesbar
+    &.is-blue {
+        background: rgba(15, 76, 129, .12);
+        color: var(--frx-blue);
     }
 
     &.is-green {
@@ -228,7 +230,7 @@ Schnellzugriff-Kacheln, Tabelle der letzten Anforderungen.
 
 .frx-dash-tile-arrow {
     margin-left: auto;
-    color: var(--frx-accent);
+    color: var(--frx-accent-ink);
     opacity: .5;
     transition:
         transform var(--frx-t-fast) var(--frx-ease),
@@ -265,7 +267,7 @@ Schnellzugriff-Kacheln, Tabelle der letzten Anforderungen.
 .frx-dash-orders-wrap {
     background: var(--frx-paper);
     border: 1px solid var(--frx-line);
-    border-radius: .75rem;
+    border-radius: var(--frx-radius);
     overflow: auto;
     scrollbar-width: thin;
 }
@@ -310,9 +312,9 @@ Schnellzugriff-Kacheln, Tabelle der letzten Anforderungen.
 
 .frx-dash-state {
     display: inline-block;
-    background: rgba(15, 76, 129, .1);
-    color: var(--frx-accent);
-    border-radius: 50rem;
+    background: rgba(255, 140, 0, .14);
+    color: var(--frx-accent-ink);
+    border-radius: var(--frx-radius);
     font-size: .72rem;
     font-weight: 700;
     padding: .15rem .6rem;

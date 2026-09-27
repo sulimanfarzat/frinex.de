@@ -58,7 +58,93 @@ Shopware.Component.register("sw-cms-el-frinex-hero",{template:`
             <div style="width: 75%; height: 5px; background: rgba(255,255,255,.5); border-radius: 4px; margin-bottom: 10px;"></div>
             <div style="width: 34%; height: 10px; background: #f2a900; border-radius: 99px;"></div>
         </div>
-    `});Shopware.Service("cmsService").registerCmsElement({name:"frinex-hero",label:"sw-cms.elements.frinexHero.label",component:"sw-cms-el-frinex-hero",configComponent:"sw-cms-el-config-frinex-hero",previewComponent:"sw-cms-el-preview-frinex-hero",defaultConfig:{headline:{source:"static",value:""},subline:{source:"static",value:""},ctaPrimaryLabel:{source:"static",value:""},ctaPrimaryUrl:{source:"static",value:""},ctaSecondaryLabel:{source:"static",value:""},ctaSecondaryUrl:{source:"static",value:""},showTrustBar:{source:"static",value:!0},media:{source:"static",value:null,entity:{name:"media"}}}});Shopware.Component.register("sw-cms-el-frinex-usp-item",{template:`
+    `});Shopware.Service("cmsService").registerCmsElement({name:"frinex-hero",label:"sw-cms.elements.frinexHero.label",component:"sw-cms-el-frinex-hero",configComponent:"sw-cms-el-config-frinex-hero",previewComponent:"sw-cms-el-preview-frinex-hero",defaultConfig:{headline:{source:"static",value:""},subline:{source:"static",value:""},ctaPrimaryLabel:{source:"static",value:""},ctaPrimaryUrl:{source:"static",value:""},ctaSecondaryLabel:{source:"static",value:""},ctaSecondaryUrl:{source:"static",value:""},showTrustBar:{source:"static",value:!0},media:{source:"static",value:null,entity:{name:"media"}}}});Shopware.Component.register("sw-cms-el-frinex-hero-slider",{template:`
+        <div class="sw-cms-el-frinex-hero-slider"
+             style="position: relative; min-height: 340px; display: flex; align-items: center;
+                    border-radius: 4px; overflow: hidden;
+                    background: linear-gradient(135deg, #0f4c81 0%, #0a3b65 100%);">
+            <div style="padding: 40px; max-width: 65%; position: relative; z-index: 2;">
+                <h2 style="color: #fff; font-weight: 800; margin: 0 0 8px;">
+                    {{ element.config.headline.value || $tc('sw-cms.elements.frinexHeroSlider.placeholder.headline') }}
+                </h2>
+                <p style="color: rgba(255,255,255,.85); margin: 0 0 20px;">
+                    {{ element.config.subline.value || $tc('sw-cms.elements.frinexHeroSlider.placeholder.subline') }}
+                </p>
+                <span style="display: inline-block; background: #fff; color: #0f4c81; border-radius: 99px;
+                             padding: 8px 22px; font-weight: 700; margin-right: 8px;">
+                    {{ element.config.ctaPrimaryLabel.value || $tc('sw-cms.elements.frinexHeroSlider.placeholder.ctaPrimary') }}
+                </span>
+                <div style="display: flex; gap: 6px; margin-top: 24px;">
+                    <span v-for="n in imageCount" :key="n"
+                          :style="{ width: n === 1 ? '26px' : '11px', height: '11px', borderRadius: '99px',
+                                    background: n === 1 ? '#fff' : 'rgba(255,255,255,.4)' }"></span>
+                </div>
+            </div>
+            <div style="position: absolute; inset: 0; z-index: 1;
+                        background: linear-gradient(90deg, rgba(10,22,34,.55) 0%, rgba(10,22,34,.1) 70%);"></div>
+        </div>
+    `,mixins:[Shopware.Mixin.getByName("cms-element")],computed:{imageCount(){const t=["media1","media2","media3","media4","media5","media6"].filter(i=>this.element.config[i]&&this.element.config[i].value).length;return Math.max(t,3)}},created(){this.initElementConfig("frinex-hero-slider"),this.initElementData("frinex-hero-slider")}});Shopware.Component.register("sw-cms-el-config-frinex-hero-slider",{template:`
+        <div class="sw-cms-el-config-frinex-hero-slider">
+            <mt-text-field
+                v-model="element.config.headline.value"
+                :label="$tc('sw-cms.elements.frinexHeroSlider.config.headline')" />
+            <mt-textarea
+                v-model="element.config.subline.value"
+                :label="$tc('sw-cms.elements.frinexHeroSlider.config.subline')" />
+            <mt-text-field
+                v-model="element.config.ctaPrimaryLabel.value"
+                :label="$tc('sw-cms.elements.frinexHeroSlider.config.ctaPrimaryLabel')"
+                :placeholder="$tc('sw-cms.elements.frinexHeroSlider.placeholder.ctaPrimary')" />
+            <mt-text-field
+                v-model="element.config.ctaPrimaryUrl.value"
+                :label="$tc('sw-cms.elements.frinexHeroSlider.config.ctaPrimaryUrl')"
+                :help-text="$tc('sw-cms.elements.frinexHeroSlider.config.ctaPrimaryUrlHelp')"
+                placeholder="/account/register" />
+            <mt-text-field
+                v-model="element.config.ctaSecondaryLabel.value"
+                :label="$tc('sw-cms.elements.frinexHeroSlider.config.ctaSecondaryLabel')"
+                :placeholder="$tc('sw-cms.elements.frinexHeroSlider.placeholder.ctaSecondary')" />
+            <mt-text-field
+                v-model="element.config.ctaSecondaryUrl.value"
+                :label="$tc('sw-cms.elements.frinexHeroSlider.config.ctaSecondaryUrl')"
+                :help-text="$tc('sw-cms.elements.frinexHeroSlider.config.ctaSecondaryUrlHelp')" />
+            <mt-switch
+                v-model="element.config.showTrustBar.value"
+                :label="$tc('sw-cms.elements.frinexHeroSlider.config.showTrustBar')" />
+
+            <hr />
+            <mt-switch
+                v-model="element.config.autoplay.value"
+                :label="$tc('sw-cms.elements.frinexHeroSlider.config.autoplay')" />
+            <mt-number-field
+                v-model="element.config.interval.value"
+                :label="$tc('sw-cms.elements.frinexHeroSlider.config.interval')"
+                :help-text="$tc('sw-cms.elements.frinexHeroSlider.config.intervalHelp')"
+                :min="2" :max="20" number-type="int" />
+
+            <hr />
+            <p class="sw-cms-el-config-frinex-hero-slider__hint"
+               style="margin: 0 0 12px; color: #52667a; font-size: 13px;">
+                {{ $tc('sw-cms.elements.frinexHeroSlider.config.imagesHelp') }}
+            </p>
+            <sw-media-field
+                v-for="n in 6" :key="n"
+                v-model:value="element.config['media' + n].value"
+                :label="$tc('sw-cms.elements.frinexHeroSlider.config.image', 0, { index: n })" />
+        </div>
+    `,mixins:[Shopware.Mixin.getByName("cms-element")],created(){this.initElementConfig("frinex-hero-slider")}});Shopware.Component.register("sw-cms-el-preview-frinex-hero-slider",{template:`
+        <div style="position: relative; padding: 12px; overflow: hidden;
+                    background: linear-gradient(135deg, #0f4c81, #0a3b65); border-radius: 4px;">
+            <div style="width: 55%; height: 8px; background: rgba(255,255,255,.9); border-radius: 4px; margin-bottom: 6px;"></div>
+            <div style="width: 75%; height: 5px; background: rgba(255,255,255,.5); border-radius: 4px; margin-bottom: 10px;"></div>
+            <div style="width: 34%; height: 10px; background: #f2a900; border-radius: 99px; margin-bottom: 12px;"></div>
+            <div style="display: flex; gap: 5px;">
+                <span style="width: 20px; height: 5px; background: #fff; border-radius: 99px;"></span>
+                <span style="width: 8px; height: 5px; background: rgba(255,255,255,.45); border-radius: 99px;"></span>
+                <span style="width: 8px; height: 5px; background: rgba(255,255,255,.45); border-radius: 99px;"></span>
+            </div>
+        </div>
+    `});Shopware.Service("cmsService").registerCmsElement({name:"frinex-hero-slider",label:"sw-cms.elements.frinexHeroSlider.label",component:"sw-cms-el-frinex-hero-slider",configComponent:"sw-cms-el-config-frinex-hero-slider",previewComponent:"sw-cms-el-preview-frinex-hero-slider",defaultConfig:{headline:{source:"static",value:""},subline:{source:"static",value:""},ctaPrimaryLabel:{source:"static",value:""},ctaPrimaryUrl:{source:"static",value:""},ctaSecondaryLabel:{source:"static",value:""},ctaSecondaryUrl:{source:"static",value:""},showTrustBar:{source:"static",value:!0},autoplay:{source:"static",value:!0},interval:{source:"static",value:6},media1:{source:"static",value:null,entity:{name:"media"}},media2:{source:"static",value:null,entity:{name:"media"}},media3:{source:"static",value:null,entity:{name:"media"}},media4:{source:"static",value:null,entity:{name:"media"}},media5:{source:"static",value:null,entity:{name:"media"}},media6:{source:"static",value:null,entity:{name:"media"}}}});Shopware.Component.register("sw-cms-el-frinex-usp-item",{template:`
         <div style="text-align: center; padding: 24px 12px;">
             <div style="width: 48px; height: 48px; border-radius: 50%; background: #f4f5f7; color: #0f4c81;
                         display: inline-flex; align-items: center; justify-content: center;
@@ -102,7 +188,7 @@ Shopware.Component.register("sw-cms-el-frinex-hero",{template:`
                 </div>
             </div>
         </div>
-    `,mixins:[Shopware.Mixin.getByName("cms-element")],computed:{tileCount(){var i,t,n;const e=((n=(t=(i=this.element)==null?void 0:i.config)==null?void 0:t.categories)==null?void 0:n.value)??[];return Math.min(Math.max(e.length,4),8)}},created(){this.initElementConfig("frinex-category-grid"),this.initElementData("frinex-category-grid")}});Shopware.Component.register("sw-cms-el-config-frinex-category-grid",{template:`
+    `,mixins:[Shopware.Mixin.getByName("cms-element")],computed:{tileCount(){var t,i,r;const e=((r=(i=(t=this.element)==null?void 0:t.config)==null?void 0:i.categories)==null?void 0:r.value)??[];return Math.min(Math.max(e.length,4),8)}},created(){this.initElementConfig("frinex-category-grid"),this.initElementData("frinex-category-grid")}});Shopware.Component.register("sw-cms-el-config-frinex-category-grid",{template:`
         <div class="sw-cms-el-config-frinex-category-grid">
             <mt-text-field
                 v-model="element.config.headline.value"
@@ -234,8 +320,8 @@ Shopware.Component.register("sw-cms-el-frinex-hero",{template:`
                 {{ element.config.ctaLabel.value || $tc('sw-cms.elements.frinexCta.placeholder.cta') }}
             </span>
         </div>
-    `,mixins:[Shopware.Mixin.getByName("cms-element")],computed:{benefits(){var e,i,t;return(((t=(i=(e=this.element)==null?void 0:e.config)==null?void 0:i.benefits)==null?void 0:t.value)||"").split(`
-`).map(n=>n.trim()).filter(n=>n.length>0)}},created(){this.initElementConfig("frinex-cta")}});Shopware.Component.register("sw-cms-el-config-frinex-cta",{template:`
+    `,mixins:[Shopware.Mixin.getByName("cms-element")],computed:{benefits(){var e,t,i;return(((i=(t=(e=this.element)==null?void 0:e.config)==null?void 0:t.benefits)==null?void 0:i.value)||"").split(`
+`).map(r=>r.trim()).filter(r=>r.length>0)}},created(){this.initElementConfig("frinex-cta")}});Shopware.Component.register("sw-cms-el-config-frinex-cta",{template:`
         <div class="sw-cms-el-config-frinex-cta">
             <mt-text-field
                 v-model="element.config.headline.value"
@@ -281,7 +367,25 @@ Shopware.Component.register("sw-cms-el-frinex-hero",{template:`
                 <div v-for="n in 4" :key="n" style="width: 20%; height: 4px; background: rgba(255,255,255,.45); border-radius: 2px;"></div>
             </div>
         </div>
-    `});Shopware.Service("cmsService").registerCmsBlock({name:"frinex-hero",label:"sw-cms.blocks.frinex.hero.label",category:"image",component:"sw-cms-block-frinex-hero",previewComponent:"sw-cms-preview-frinex-hero",defaultConfig:{marginBottom:null,marginTop:null,marginLeft:null,marginRight:null,sizingMode:"full_width"},slots:{hero:"frinex-hero"}});Shopware.Component.register("sw-cms-block-frinex-usp-bar",{template:`
+    `});Shopware.Service("cmsService").registerCmsBlock({name:"frinex-hero",label:"sw-cms.blocks.frinex.hero.label",category:"image",component:"sw-cms-block-frinex-hero",previewComponent:"sw-cms-preview-frinex-hero",defaultConfig:{marginBottom:null,marginTop:null,marginLeft:null,marginRight:null,sizingMode:"full_width"},slots:{hero:"frinex-hero"}});Shopware.Component.register("sw-cms-block-frinex-hero-slider",{template:`
+        <div class="sw-cms-block-frinex-hero-slider">
+            <slot name="heroSlider"></slot>
+        </div>
+    `});Shopware.Component.register("sw-cms-preview-frinex-hero-slider",{template:`
+        <div style="position: relative; padding: 14px; overflow: hidden;
+                    background: linear-gradient(135deg, #0f4c81, #0a3b65); border-radius: 4px;">
+            <div style="width: 55%; height: 9px; background: rgba(255,255,255,.95); border-radius: 4px; margin-bottom: 6px;"></div>
+            <div style="width: 75%; height: 5px; background: rgba(255,255,255,.5); border-radius: 4px; margin-bottom: 10px;"></div>
+            <div style="display: flex; gap: 6px; margin-bottom: 12px;">
+                <div style="width: 30%; height: 11px; background: #ffffff; border-radius: 99px;"></div>
+                <div style="width: 26%; height: 11px; border: 1px solid rgba(255,255,255,.7); border-radius: 99px;"></div>
+            </div>
+            <div style="display: flex; gap: 5px;">
+                <div style="width: 22px; height: 5px; background: #fff; border-radius: 99px;"></div>
+                <div v-for="n in 3" :key="n" style="width: 8px; height: 5px; background: rgba(255,255,255,.45); border-radius: 99px;"></div>
+            </div>
+        </div>
+    `});Shopware.Service("cmsService").registerCmsBlock({name:"frinex-hero-slider",label:"sw-cms.blocks.frinex.heroSlider.label",category:"image",component:"sw-cms-block-frinex-hero-slider",previewComponent:"sw-cms-preview-frinex-hero-slider",defaultConfig:{marginBottom:null,marginTop:null,marginLeft:null,marginRight:null,sizingMode:"full_width"},slots:{heroSlider:"frinex-hero-slider"}});Shopware.Component.register("sw-cms-block-frinex-usp-bar",{template:`
         <div class="sw-cms-block-frinex-usp-bar"
              style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
             <slot name="first"></slot>
@@ -297,7 +401,7 @@ Shopware.Component.register("sw-cms-el-frinex-hero",{template:`
                 <div style="width: 95%; height: 3px; background: #e4e7eb; border-radius: 2px; margin: 0 auto;"></div>
             </div>
         </div>
-    `});const a=(e,i,t)=>({type:"frinex-usp-item",default:{config:{icon:{source:"static",value:t},title:{source:"static",value:e},text:{source:"static",value:i}}}});Shopware.Service("cmsService").registerCmsBlock({name:"frinex-usp-bar",label:"sw-cms.blocks.frinex.uspBar.label",category:"text-image",component:"sw-cms-block-frinex-usp-bar",previewComponent:"sw-cms-preview-frinex-usp-bar",defaultConfig:{marginBottom:null,marginTop:null,marginLeft:null,marginRight:null,sizingMode:"boxed"},slots:{first:a("Nettopreise","Transparente B2B-Konditionen","tag"),second:a("Kauf auf Rechnung","Zahlungsziel für Geschäftskunden","invoice"),third:a("Versand in 24 h","Heute bestellt, morgen versandt","truck"),fourth:a("Persönlicher Ansprechpartner","Direkter Draht statt Hotline","headset")}});Shopware.Component.register("sw-cms-block-frinex-category-grid",{template:`
+    `});const a=(e,t,i)=>({type:"frinex-usp-item",default:{config:{icon:{source:"static",value:i},title:{source:"static",value:e},text:{source:"static",value:t}}}});Shopware.Service("cmsService").registerCmsBlock({name:"frinex-usp-bar",label:"sw-cms.blocks.frinex.uspBar.label",category:"text-image",component:"sw-cms-block-frinex-usp-bar",previewComponent:"sw-cms-preview-frinex-usp-bar",defaultConfig:{marginBottom:null,marginTop:null,marginLeft:null,marginRight:null,sizingMode:"boxed"},slots:{first:a("Nettopreise","Transparente B2B-Konditionen","tag"),second:a("Kauf auf Rechnung","Zahlungsziel für Geschäftskunden","invoice"),third:a("Versand in 24 h","Heute bestellt, morgen versandt","truck"),fourth:a("Persönlicher Ansprechpartner","Direkter Draht statt Hotline","headset")}});Shopware.Component.register("sw-cms-block-frinex-category-grid",{template:`
         <div class="sw-cms-block-frinex-category-grid">
             <slot name="grid"></slot>
         </div>
@@ -346,7 +450,7 @@ Shopware.Component.register("sw-cms-el-frinex-hero",{template:`
         <div style="padding: 14px; display: flex; justify-content: center; gap: 10px; align-items: center;">
             <div v-for="n in 6" :key="n" style="width: 13%; height: 12px; background: #d0d5db; border-radius: 3px; opacity: .7;"></div>
         </div>
-    `});const r={type:"image",default:{config:{displayMode:{source:"static",value:"standard"}}}};Shopware.Service("cmsService").registerCmsBlock({name:"frinex-logo-bar",label:"sw-cms.blocks.frinex.logoBar.label",category:"image",component:"sw-cms-block-frinex-logo-bar",previewComponent:"sw-cms-preview-frinex-logo-bar",defaultConfig:{marginBottom:null,marginTop:null,marginLeft:null,marginRight:null,sizingMode:"boxed"},slots:{"logo-one":r,"logo-two":r,"logo-three":r,"logo-four":r,"logo-five":r,"logo-six":r}});Shopware.Component.register("sw-cms-block-frinex-testimonials",{template:`
+    `});const n={type:"image",default:{config:{displayMode:{source:"static",value:"standard"}}}};Shopware.Service("cmsService").registerCmsBlock({name:"frinex-logo-bar",label:"sw-cms.blocks.frinex.logoBar.label",category:"image",component:"sw-cms-block-frinex-logo-bar",previewComponent:"sw-cms-preview-frinex-logo-bar",defaultConfig:{marginBottom:null,marginTop:null,marginLeft:null,marginRight:null,sizingMode:"boxed"},slots:{"logo-one":n,"logo-two":n,"logo-three":n,"logo-four":n,"logo-five":n,"logo-six":n}});Shopware.Component.register("sw-cms-block-frinex-testimonials",{template:`
         <div class="sw-cms-block-frinex-testimonials"
              style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
             <slot name="one"></slot>
@@ -378,5 +482,5 @@ Shopware.Component.register("sw-cms-el-frinex-hero",{template:`
             </div>
             <div style="width: 34px; height: 13px; background: #f2a900; border-radius: 99px; flex-shrink: 0;"></div>
         </div>
-    `});Shopware.Service("cmsService").registerCmsBlock({name:"frinex-cta",label:"sw-cms.blocks.frinex.cta.label",category:"text-image",component:"sw-cms-block-frinex-cta",previewComponent:"sw-cms-preview-frinex-cta",defaultConfig:{marginBottom:null,marginTop:null,marginLeft:null,marginRight:null,sizingMode:"boxed"},slots:{cta:"frinex-cta"}});const l={"sw-cms":{blocks:{frinex:{hero:{label:"FRINEX Hero (Startseite)"},uspBar:{label:"FRINEX USP-Leiste (4 Spalten)"},categoryGrid:{label:"FRINEX Kategorien-Grid"},productSlider:{label:"FRINEX Produkt-Slider (B2B)"},banner:{label:"FRINEX Kampagnen-Banner"},logoBar:{label:"FRINEX Logo-Leiste (Referenzen)"},testimonials:{label:"FRINEX Testimonials"},cta:{label:"FRINEX CTA-Sektion (Registrierung)"}}},elements:{frinexHero:{label:"FRINEX Hero",placeholder:{headline:"Headline eingeben …",subline:"Subline eingeben …",ctaPrimary:"Geschäftskonto anlegen",ctaSecondary:"Katalog ansehen"},config:{headline:"Headline",subline:"Subline",ctaPrimaryLabel:"Primärer CTA — Beschriftung",ctaPrimaryUrl:"Primärer CTA — Link",ctaPrimaryUrlHelp:"Leer lassen für die Registrierungsseite (/account/register)",ctaSecondaryLabel:"Sekundärer CTA — Beschriftung",ctaSecondaryUrl:"Sekundärer CTA — Link",ctaSecondaryUrlHelp:"Ohne Link wird der sekundäre CTA ausgeblendet",showTrustBar:"Trust-Leiste anzeigen (Nettopreise, Rechnung, 24-h-Versand, Ansprechpartner)",media:"Hintergrundbild"}},frinexUspItem:{label:"FRINEX USP",placeholder:{title:"USP-Titel",text:"Kurztext"},config:{icon:"Icon",title:"Titel",text:"Kurztext"},icons:{truck:"LKW (Versand)",invoice:"Rechnung",headset:"Headset (Beratung)",tag:"Preisschild (Konditionen)",shield:"Schild (Qualität/Sicherheit)",box:"Paket (Lager/Sortiment)"}},frinexCategoryGrid:{label:"FRINEX Kategorien-Grid",placeholder:{headline:"Unsere Kategorien"},config:{headline:"Überschrift (optional)",categories:"Kategorien",categoriesHelp:"6–8 Kategorien empfohlen; die Reihenfolge der Auswahl bestimmt die Anzeige. Bild = Kategorie-Medium."}},frinexBanner:{label:"FRINEX Kampagnen-Banner",placeholder:{headline:"Banner-Headline",cta:"Mehr erfahren"},config:{eyebrow:"Eyebrow (kleine Zeile über der Headline)",headline:"Headline",text:"Text",ctaLabel:"CTA — Beschriftung",ctaUrl:"CTA — Link",ctaUrlHelp:"Ohne Link wird der Button ausgeblendet",contentAlign:"Ausrichtung",media:"Hintergrundbild"},align:{left:"Links",center:"Zentriert"}},frinexTestimonial:{label:"FRINEX Testimonial",placeholder:{quote:"Zitat eingeben …",author:"Name"},config:{quote:"Zitat",authorName:"Name",authorRole:"Position / Firma",media:"Foto oder Firmenlogo (optional)"}},frinexCta:{label:"FRINEX CTA-Sektion",placeholder:{headline:"Jetzt B2B-Konto eröffnen",cta:"Kostenlos registrieren"},config:{headline:"Headline",text:"Text",benefits:"Vorteile",benefitsHelp:"Eine Zeile = ein Vorteil (wird als Checkliste dargestellt)",ctaLabel:"Button — Beschriftung",ctaUrl:"Button — Link",ctaUrlHelp:"Leer lassen für die Registrierungsseite (/account/register)"}}}}},o={"sw-cms":{blocks:{frinex:{hero:{label:"FRINEX hero (home page)"},uspBar:{label:"FRINEX USP bar (4 columns)"},categoryGrid:{label:"FRINEX category grid"},productSlider:{label:"FRINEX product slider (B2B)"},banner:{label:"FRINEX campaign banner"},logoBar:{label:"FRINEX logo bar (references)"},testimonials:{label:"FRINEX testimonials"},cta:{label:"FRINEX CTA section (registration)"}}},elements:{frinexHero:{label:"FRINEX hero",placeholder:{headline:"Enter headline …",subline:"Enter subline …",ctaPrimary:"Create business account",ctaSecondary:"Browse catalogue"},config:{headline:"Headline",subline:"Subline",ctaPrimaryLabel:"Primary CTA — label",ctaPrimaryUrl:"Primary CTA — link",ctaPrimaryUrlHelp:"Leave empty to link to the registration page (/account/register)",ctaSecondaryLabel:"Secondary CTA — label",ctaSecondaryUrl:"Secondary CTA — link",ctaSecondaryUrlHelp:"Without a link the secondary CTA is hidden",showTrustBar:"Show trust bar (net prices, invoice, 24 h dispatch, account manager)",media:"Background image"}},frinexUspItem:{label:"FRINEX USP",placeholder:{title:"USP title",text:"Short text"},config:{icon:"Icon",title:"Title",text:"Short text"},icons:{truck:"Truck (shipping)",invoice:"Invoice",headset:"Headset (support)",tag:"Price tag (conditions)",shield:"Shield (quality/safety)",box:"Package (stock/range)"}},frinexCategoryGrid:{label:"FRINEX category grid",placeholder:{headline:"Our categories"},config:{headline:"Headline (optional)",categories:"Categories",categoriesHelp:"6–8 categories recommended; selection order defines display order. Image = category media."}},frinexBanner:{label:"FRINEX campaign banner",placeholder:{headline:"Banner headline",cta:"Learn more"},config:{eyebrow:"Eyebrow (small line above the headline)",headline:"Headline",text:"Text",ctaLabel:"CTA — label",ctaUrl:"CTA — link",ctaUrlHelp:"Without a link the button is hidden",contentAlign:"Alignment",media:"Background image"},align:{left:"Left",center:"Centred"}},frinexTestimonial:{label:"FRINEX testimonial",placeholder:{quote:"Enter quote …",author:"Name"},config:{quote:"Quote",authorName:"Name",authorRole:"Role / company",media:"Photo or company logo (optional)"}},frinexCta:{label:"FRINEX CTA section",placeholder:{headline:"Open your B2B account now",cta:"Register for free"},config:{headline:"Headline",text:"Text",benefits:"Benefits",benefitsHelp:"One line = one benefit (rendered as a checklist)",ctaLabel:"Button — label",ctaUrl:"Button — link",ctaUrlHelp:"Leave empty to link to the registration page (/account/register)"}}}}};Shopware.Locale.extend("de-DE",l);Shopware.Locale.extend("en-GB",o);
-//# sourceMappingURL=frinex-premium-w9wjbumu.js.map
+    `});Shopware.Service("cmsService").registerCmsBlock({name:"frinex-cta",label:"sw-cms.blocks.frinex.cta.label",category:"text-image",component:"sw-cms-block-frinex-cta",previewComponent:"sw-cms-preview-frinex-cta",defaultConfig:{marginBottom:null,marginTop:null,marginLeft:null,marginRight:null,sizingMode:"boxed"},slots:{cta:"frinex-cta"}});const l={"sw-cms":{blocks:{frinex:{hero:{label:"FRINEX Hero (Startseite)"},heroSlider:{label:"FRINEX Hero-Slider (mehrere Bilder)"},uspBar:{label:"FRINEX USP-Leiste (4 Spalten)"},categoryGrid:{label:"FRINEX Kategorien-Grid"},productSlider:{label:"FRINEX Produkt-Slider (B2B)"},banner:{label:"FRINEX Kampagnen-Banner"},logoBar:{label:"FRINEX Logo-Leiste (Referenzen)"},testimonials:{label:"FRINEX Testimonials"},cta:{label:"FRINEX CTA-Sektion (Registrierung)"}}},elements:{frinexHero:{label:"FRINEX Hero",placeholder:{headline:"Headline eingeben …",subline:"Subline eingeben …",ctaPrimary:"Geschäftskonto anlegen",ctaSecondary:"Katalog ansehen"},config:{headline:"Headline",subline:"Subline",ctaPrimaryLabel:"Primärer CTA — Beschriftung",ctaPrimaryUrl:"Primärer CTA — Link",ctaPrimaryUrlHelp:"Leer lassen für die Registrierungsseite (/account/register)",ctaSecondaryLabel:"Sekundärer CTA — Beschriftung",ctaSecondaryUrl:"Sekundärer CTA — Link",ctaSecondaryUrlHelp:"Ohne Link wird der sekundäre CTA ausgeblendet",showTrustBar:"Trust-Leiste anzeigen (Nettopreise, Rechnung, 24-h-Versand, Ansprechpartner)",media:"Hintergrundbild"}},frinexHeroSlider:{label:"FRINEX Hero-Slider",placeholder:{headline:"Headline eingeben …",subline:"Subline eingeben …",ctaPrimary:"Geschäftskonto anlegen",ctaSecondary:"Katalog ansehen"},config:{headline:"Headline",subline:"Subline",ctaPrimaryLabel:"Primärer CTA — Beschriftung",ctaPrimaryUrl:"Primärer CTA — Link",ctaPrimaryUrlHelp:"Leer lassen für die Registrierungsseite (/account/register)",ctaSecondaryLabel:"Sekundärer CTA — Beschriftung",ctaSecondaryUrl:"Sekundärer CTA — Link",ctaSecondaryUrlHelp:"Ohne Link wird der sekundäre CTA ausgeblendet",showTrustBar:"Trust-Leiste anzeigen (Nettopreise, Rechnung, 24-h-Versand, Ansprechpartner)",autoplay:"Bilder automatisch wechseln",interval:"Wechsel-Intervall (Sekunden)",intervalHelp:"Nur aktiv bei automatischem Wechsel",imagesHelp:"Bis zu 6 Bilder — die Reihenfolge unten ist die Reihenfolge im Slider. Leere Felder werden übersprungen. Bild 1 wird zuerst gezeigt.",image:"Bild {index}"}},frinexUspItem:{label:"FRINEX USP",placeholder:{title:"USP-Titel",text:"Kurztext"},config:{icon:"Icon",title:"Titel",text:"Kurztext"},icons:{truck:"LKW (Versand)",invoice:"Rechnung",headset:"Headset (Beratung)",tag:"Preisschild (Konditionen)",shield:"Schild (Qualität/Sicherheit)",box:"Paket (Lager/Sortiment)"}},frinexCategoryGrid:{label:"FRINEX Kategorien-Grid",placeholder:{headline:"Unsere Kategorien"},config:{headline:"Überschrift (optional)",categories:"Kategorien",categoriesHelp:"6–8 Kategorien empfohlen; die Reihenfolge der Auswahl bestimmt die Anzeige. Bild = Kategorie-Medium."}},frinexBanner:{label:"FRINEX Kampagnen-Banner",placeholder:{headline:"Banner-Headline",cta:"Mehr erfahren"},config:{eyebrow:"Eyebrow (kleine Zeile über der Headline)",headline:"Headline",text:"Text",ctaLabel:"CTA — Beschriftung",ctaUrl:"CTA — Link",ctaUrlHelp:"Ohne Link wird der Button ausgeblendet",contentAlign:"Ausrichtung",media:"Hintergrundbild"},align:{left:"Links",center:"Zentriert"}},frinexTestimonial:{label:"FRINEX Testimonial",placeholder:{quote:"Zitat eingeben …",author:"Name"},config:{quote:"Zitat",authorName:"Name",authorRole:"Position / Firma",media:"Foto oder Firmenlogo (optional)"}},frinexCta:{label:"FRINEX CTA-Sektion",placeholder:{headline:"Jetzt B2B-Konto eröffnen",cta:"Kostenlos registrieren"},config:{headline:"Headline",text:"Text",benefits:"Vorteile",benefitsHelp:"Eine Zeile = ein Vorteil (wird als Checkliste dargestellt)",ctaLabel:"Button — Beschriftung",ctaUrl:"Button — Link",ctaUrlHelp:"Leer lassen für die Registrierungsseite (/account/register)"}}}}},o={"sw-cms":{blocks:{frinex:{hero:{label:"FRINEX hero (home page)"},heroSlider:{label:"FRINEX hero slider (multiple images)"},uspBar:{label:"FRINEX USP bar (4 columns)"},categoryGrid:{label:"FRINEX category grid"},productSlider:{label:"FRINEX product slider (B2B)"},banner:{label:"FRINEX campaign banner"},logoBar:{label:"FRINEX logo bar (references)"},testimonials:{label:"FRINEX testimonials"},cta:{label:"FRINEX CTA section (registration)"}}},elements:{frinexHero:{label:"FRINEX hero",placeholder:{headline:"Enter headline …",subline:"Enter subline …",ctaPrimary:"Create business account",ctaSecondary:"Browse catalogue"},config:{headline:"Headline",subline:"Subline",ctaPrimaryLabel:"Primary CTA — label",ctaPrimaryUrl:"Primary CTA — link",ctaPrimaryUrlHelp:"Leave empty to link to the registration page (/account/register)",ctaSecondaryLabel:"Secondary CTA — label",ctaSecondaryUrl:"Secondary CTA — link",ctaSecondaryUrlHelp:"Without a link the secondary CTA is hidden",showTrustBar:"Show trust bar (net prices, invoice, 24 h dispatch, account manager)",media:"Background image"}},frinexHeroSlider:{label:"FRINEX hero slider",placeholder:{headline:"Enter headline …",subline:"Enter subline …",ctaPrimary:"Create business account",ctaSecondary:"Browse catalogue"},config:{headline:"Headline",subline:"Subline",ctaPrimaryLabel:"Primary CTA — label",ctaPrimaryUrl:"Primary CTA — link",ctaPrimaryUrlHelp:"Leave empty to link to the registration page (/account/register)",ctaSecondaryLabel:"Secondary CTA — label",ctaSecondaryUrl:"Secondary CTA — link",ctaSecondaryUrlHelp:"Without a link the secondary CTA is hidden",showTrustBar:"Show trust bar (net prices, invoice, 24 h dispatch, account manager)",autoplay:"Rotate images automatically",interval:"Rotation interval (seconds)",intervalHelp:"Only active when auto-rotation is on",imagesHelp:"Up to 6 images — the order below is the order in the slider. Empty fields are skipped. Image 1 is shown first.",image:"Image {index}"}},frinexUspItem:{label:"FRINEX USP",placeholder:{title:"USP title",text:"Short text"},config:{icon:"Icon",title:"Title",text:"Short text"},icons:{truck:"Truck (shipping)",invoice:"Invoice",headset:"Headset (support)",tag:"Price tag (conditions)",shield:"Shield (quality/safety)",box:"Package (stock/range)"}},frinexCategoryGrid:{label:"FRINEX category grid",placeholder:{headline:"Our categories"},config:{headline:"Headline (optional)",categories:"Categories",categoriesHelp:"6–8 categories recommended; selection order defines display order. Image = category media."}},frinexBanner:{label:"FRINEX campaign banner",placeholder:{headline:"Banner headline",cta:"Learn more"},config:{eyebrow:"Eyebrow (small line above the headline)",headline:"Headline",text:"Text",ctaLabel:"CTA — label",ctaUrl:"CTA — link",ctaUrlHelp:"Without a link the button is hidden",contentAlign:"Alignment",media:"Background image"},align:{left:"Left",center:"Centred"}},frinexTestimonial:{label:"FRINEX testimonial",placeholder:{quote:"Enter quote …",author:"Name"},config:{quote:"Quote",authorName:"Name",authorRole:"Role / company",media:"Photo or company logo (optional)"}},frinexCta:{label:"FRINEX CTA section",placeholder:{headline:"Open your B2B account now",cta:"Register for free"},config:{headline:"Headline",text:"Text",benefits:"Benefits",benefitsHelp:"One line = one benefit (rendered as a checklist)",ctaLabel:"Button — label",ctaUrl:"Button — link",ctaUrlHelp:"Leave empty to link to the registration page (/account/register)"}}}}};Shopware.Locale.extend("de-DE",l);Shopware.Locale.extend("en-GB",o);
+//# sourceMappingURL=frinex-premium-DMeiom4a.js.map

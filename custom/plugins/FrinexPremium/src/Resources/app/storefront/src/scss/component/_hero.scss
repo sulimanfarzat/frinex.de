@@ -64,7 +64,7 @@ fällt der Hero auf einen Marken-Verlauf zurück.
 .frx-hero-panel {
     max-width: 40rem;
     padding: clamp(1.5rem, 4vw, 2.75rem);
-    border-radius: 1.25rem;
+    border-radius: var(--frx-radius);
     background: rgba(10, 22, 34, .72); // Fallback ohne backdrop-filter
     border: 1px solid rgba(255, 255, 255, .16);
     box-shadow:
@@ -149,7 +149,7 @@ fällt der Hero auf einen Marken-Verlauf zurück.
     font-weight: 600;
     color: rgba(255, 255, 255, .94);
     padding: .5rem 1rem;
-    border-radius: 50rem;
+    border-radius: var(--frx-radius);
     background: rgba(10, 22, 34, .55); // Fallback ohne backdrop-filter
     border: 1px solid rgba(255, 255, 255, .18);
 }
@@ -210,4 +210,117 @@ fällt der Hero auf einen Marken-Verlauf zurück.
     .frx-hero-trust {
         animation-delay: 420ms;
     }
+}
+
+// ===============================================================
+// Hero-Slider-Variante (.frx-hero--slider)
+// ---------------------------------------------------------------
+// Mehrere Bilder rotieren über Shopwares [data-base-slider]
+// (tiny-slider). Deterministische Schichtung per z-index:
+//   Bilder (.frx-hero-media, z0) → Scrim (.frx-hero-scrim, z1)
+//   → Inhalt inkl. Punkte (.frx-hero-inner, z2).
+// Der Inhalts-Layer ist pointer-events-transparent, damit Swipe/
+// Drag über den freien Flächen den Slider darunter erreicht; nur
+// die interaktiven Kinder (Panel, CTAs, Trust, Punkte) fangen
+// Klicks wieder ein.
+// ===============================================================
+.frx-hero--slider .frx-hero-media {
+    z-index: 0;
+}
+
+// Der Standard-Hero-Scrim (::after) entfällt hier — der Slider
+// bekommt einen eigenen, z-index-definierten Scrim als Element,
+// damit die Punkte-Navigation zuverlässig darüber liegt.
+.frx-hero--slider .frx-hero-media::after {
+    content: none;
+}
+
+.frx-hero-scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background:
+        linear-gradient(90deg, rgba(10, 22, 34, .5) 0%, rgba(10, 22, 34, .26) 45%, rgba(10, 22, 34, .08) 100%),
+        linear-gradient(0deg, rgba(10, 22, 34, .4) 0%, transparent 30%);
+}
+
+.frx-hero--slider .frx-hero-inner {
+    position: relative;
+    z-index: 2;
+    pointer-events: none; // freie Flächen an den Slider (Swipe) durchreichen
+}
+
+.frx-hero--slider .frx-hero-inner > * {
+    pointer-events: auto; // Panel, CTAs, Trust-Leiste, Punkte klickbar
+}
+
+// Slider + tiny-slider-Wrapper auf volle Hero-Höhe strecken
+.frx-hero-slider,
+.frx-hero-slider .tns-outer,
+.frx-hero-slider .tns-ovh,
+.frx-hero-slider .tns-inner,
+.frx-hero-slider-container,
+.frx-hero-slide {
+    height: 100%;
+}
+
+.frx-hero-slide {
+    position: relative;
+    overflow: hidden;
+}
+
+.frx-hero--slider .frx-hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    animation: none; // ruhiger Wechsel — kein Settle-Zoom je Slide
+}
+
+// Vor der Slider-Initialisierung (auch ohne JS) nur das erste Bild
+// zeigen — verhindert ein kurzes Stapeln aller Bilder untereinander.
+.frx-hero-slider:not(.js-slider-initialized) .frx-hero-slide + .frx-hero-slide {
+    display: none;
+}
+
+// ---------------------------------------------------------------
+// Punkte-Navigation (tiny-slider navContainer)
+// ---------------------------------------------------------------
+.frx-hero-dots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin-top: var(--frx-s4);
+    padding: 0;
+}
+
+.frx-hero-dot {
+    width: 11px;
+    height: 11px;
+    padding: 0;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, .75);
+    background: rgba(255, 255, 255, .22);
+    cursor: pointer;
+    transition:
+        width var(--frx-t, .2s) var(--frx-ease),
+        background-color var(--frx-t, .2s) var(--frx-ease),
+        border-color var(--frx-t, .2s) var(--frx-ease);
+}
+
+.frx-hero-dot:hover {
+    background: rgba(255, 255, 255, .55);
+}
+
+.frx-hero-dot:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+
+// tiny-slider markiert den aktiven Punkt mit .tns-nav-active
+.frx-hero-dot.tns-nav-active {
+    width: 28px;
+    background: #ffffff;
+    border-color: #ffffff;
 }

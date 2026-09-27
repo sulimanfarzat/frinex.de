@@ -25,11 +25,11 @@ Hero (Bild-Text-Cover), Produkt-Slider, Bild-Text, Formulare.
 }
 
 // ---------------------------------------------------------------
-// Sektions-/Block-Titel: Manrope, große klare Hierarchie
+// Sektions-/Block-Titel: Hanken Grotesk, große klare Hierarchie
 // ---------------------------------------------------------------
 .cms-block .cms-element-title,
 .cms-block h2.cms-element-title {
-    font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+    font-family: #{$headings-font-family};
     font-weight: 800;
     letter-spacing: -.015em;
     text-wrap: balance;
@@ -69,7 +69,7 @@ Hero (Bild-Text-Cover), Produkt-Slider, Bild-Text, Formulare.
 
 .base-slider-controls-prev:hover,
 .base-slider-controls-next:hover {
-    color: var(--frx-accent);
+    color: var(--frx-accent-ink);
     box-shadow: var(--frx-shadow-lift);
 }
 
@@ -116,17 +116,31 @@ Hero (Bild-Text-Cover), Produkt-Slider, Bild-Text, Formulare.
 }
 
 // ---------------------------------------------------------------
-// Scroll-up-Button: rund, weiß, Akzent-Hover
+// Scroll-up-Button: quadratischer Akzentblock.
+//
+// .scroll-up-button ist nur der Wrapper — sichtbar ist der innere
+// .btn.btn-primary. Wird der Wrapper dekoriert (runder Rahmen,
+// eigener Grund), ragt der jetzt eckige Button darüber hinaus und
+// die Rundung schaut an den Ecken hervor. Also: Wrapper neutral,
+// Gestaltung auf den Button.
 // ---------------------------------------------------------------
 .scroll-up-button {
-    background: var(--frx-paper);
-    color: var(--frx-ink);
-    border: 1px solid var(--frx-line);
-    border-radius: 50%;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.scroll-up-button .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    padding: 0;
     box-shadow: var(--frx-shadow);
 }
 
-.scroll-up-button:hover {
-    color: var(--frx-accent);
+.scroll-up-button .btn:hover {
     box-shadow: var(--frx-shadow-lift);
 }

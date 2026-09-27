@@ -60,12 +60,12 @@ das Bootstrap-.dropdown-menu.w-100 mit .navigation-flyout-*-Inhalten.
 
 .navigation-flyout-link:hover,
 .navigation-flyout-link:focus-visible {
-    color: var(--frx-accent);
+    color: var(--frx-accent-ink);
 }
 
-// Ebene 0 = Spaltentitel: Manrope, Versal-Label wie im Konzept
+// Ebene 0 = Spaltentitel: Hanken Grotesk, Versal-Label wie im Konzept
 .navigation-flyout-link.is-level-0 {
-    font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+    font-family: #{$headings-font-family};
     font-weight: 800;
     font-size: .78rem;
     letter-spacing: .12em;
@@ -75,7 +75,7 @@ das Bootstrap-.dropdown-menu.w-100 mit .navigation-flyout-*-Inhalten.
 }
 
 .navigation-flyout-link.is-level-0:hover {
-    color: var(--frx-accent);
+    color: var(--frx-accent-ink);
 }
 
 // Bildteaser rechts: abgerundet, sanfter Zoom

@@ -22,27 +22,21 @@ dezenten B2B-Gold-Akzent (Zielgruppen-Signal Einkaufsportal).
 // ---------------------------------------------------------------
 .footer-main {
     position: relative;
-    background:
-        radial-gradient(120% 130% at 50% 0, rgba(15, 76, 129, .20), transparent 62%),
-        var(--frx-ink);
+    background: var(--frx-ink);
     color: rgba(255, 255, 255, .70);
     border-top: 0;
     padding-top: var(--frx-s7);
     font-size: .9rem;
 }
 
-// Schmaler Verlauf über die volle Breite: kappt den Footer premium ab.
+// Harte Signalkante statt Verlauf — der Footer setzt sich als
+// schwarzer Block ab, die Kante ist die einzige Farbe darin.
 .footer-main::before {
     content: "";
     position: absolute;
     inset: 0 0 auto 0;
-    height: 3px;
-    background: linear-gradient(
-        90deg,
-        var(--frx-accent) 0%,
-        var(--frx-accent-strong) 45%,
-        var(--frx-b2b) 100%
-    );
+    height: 8px;
+    background: var(--frx-accent);
 }
 
 // ---------------------------------------------------------------
@@ -55,7 +49,7 @@ dezenten B2B-Gold-Akzent (Zielgruppen-Signal Einkaufsportal).
 .footer-main .footer-headline,
 .footer-main .footer-column-headline {
     position: relative;
-    font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+    font-family: #{$headings-font-family};
     font-weight: 800;
     font-size: .75rem;
     letter-spacing: .14em;
@@ -74,15 +68,21 @@ dezenten B2B-Gold-Akzent (Zielgruppen-Signal Einkaufsportal).
 // Akzent-Tick unter der Headline — nur Desktop, wo die Spalten offen
 // stehen. Auf Mobile ist die Headline eine Akkordeon-Klickzeile, dort
 // stört der Tick, also ausgeblendet.
+//
+// MUSS absolut positioniert sein: die Headline ist im Core ein
+// Flex-Container (Titel links, Akkordeon-Toggle rechts). Als
+// display:block-Pseudo würde der Tick zum dritten Flex-Item und
+// landete rechts neben dem Toggle statt unter dem Titel.
 @media (min-width: 768px) {
     .footer-main .footer-headline::after,
     .footer-main .footer-column-headline::after {
         content: "";
-        display: block;
+        position: absolute;
+        left: 0;
+        top: 100%;
+        margin-top: .35rem;
         width: 1.75rem;
         height: 2px;
-        margin-top: .6rem;
-        border-radius: 2px;
         background: var(--frx-accent);
     }
 }
@@ -90,6 +90,21 @@ dezenten B2B-Gold-Akzent (Zielgruppen-Signal Einkaufsportal).
 // ---------------------------------------------------------------
 // Links: Farb- + Indent-Hover, kein Layout-Sprung
 // ---------------------------------------------------------------
+
+// Auffangregel ZUERST: die globale Linkfarbe ist Ink (Entwurf:
+// dunkler Text, oranger Hover). Auf dem Ink-Grund des Footers wäre
+// jeder Link ohne eigene Klasse damit unsichtbar — und der Core
+// liefert genau solche: „Versandkosten" in .footer-vat und
+// „Mehr Informationen" im Hinweistext tragen keine Klasse.
+.footer-main a {
+    color: rgba(255, 255, 255, .70);
+}
+
+.footer-main a:hover,
+.footer-main a:focus-visible {
+    color: #ffffff;
+}
+
 .footer-main .footer-link,
 .footer-main .footer-contact a {
     display: inline-block;
@@ -114,11 +129,28 @@ dezenten B2B-Gold-Akzent (Zielgruppen-Signal Einkaufsportal).
 
 // Kontakt-Hotline etwas hervorgehoben
 .footer-main .footer-contact-hotline {
-    font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+    font-family: #{$headings-font-family};
     font-weight: 700;
     font-size: 1.05rem;
     color: #ffffff;
     margin-bottom: .5rem;
+}
+
+// Die Rufnummer ist die eigentliche Information der Spalte — sie
+// darf nicht blasser sein als ihr Fließtext-Label. Orange auf Ink
+// sind 6,3:1.
+.footer-main .footer-contact-hotline a {
+    color: var(--frx-accent);
+    font-weight: 800;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.footer-main .footer-contact-hotline a:hover,
+.footer-main .footer-contact-hotline a:focus-visible {
+    color: #ffffff;
+    text-decoration: underline;
+    text-underline-offset: 3px;
 }
 
 // Mobile-Akkordeon: Hairline zwischen Spalten, heller Toggle
@@ -187,7 +219,7 @@ dezenten B2B-Gold-Akzent (Zielgruppen-Signal Einkaufsportal).
     height: 2.25rem;
     padding: .25rem .6rem;
     background: #ffffff;
-    border-radius: .5rem;
+    border-radius: var(--frx-radius);
     box-shadow: 0 1px 2px rgba(0, 0, 0, .18);
 }
 
@@ -211,6 +243,19 @@ dezenten B2B-Gold-Akzent (Zielgruppen-Signal Einkaufsportal).
 .footer-main .footer-service-menu-list {
     gap: .35rem 0;
     margin-bottom: .75rem;
+}
+
+// Nicht konfigurierte Core-Blöcke reservieren sonst Höhe, Abstand
+// und Trennlinie und reißen sichtbare Löcher in den Footer. Beim
+// Service-Menü greift :empty (der Core rendert das <ul> ganz ohne
+// Inhalt), die Logo-Leiste enthält Whitespace — dort prüft :has()
+// stattdessen auf echte Kinder.
+.footer-main .footer-service-menu-list:empty {
+    display: none;
+}
+
+.footer-main .footer-logos:not(:has(.footer-logo)) {
+    display: none;
 }
 
 // Punkt-Trenner zwischen den Service-Links (nicht vor dem ersten)

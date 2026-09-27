@@ -25,21 +25,21 @@
   ],
   "config": {
     "fields": {
-      "sw-color-brand-primary": { "value": "#0f4c81" },
+      "sw-color-brand-primary": { "value": "#ff8c00" },
       "sw-color-brand-secondary": { "value": "#5b6470" },
-      "sw-border-color": { "value": "#e4e7eb" },
-      "sw-background-color": { "value": "#ffffff" },
-      "sw-color-success": { "value": "#1f9d55" },
+      "sw-border-color": { "value": "#ddc1ae" },
+      "sw-background-color": { "value": "#fcf9f8" },
+      "sw-color-success": { "value": "#2e7d32" },
       "sw-color-info": { "value": "#0f4c81" },
       "sw-color-warning": { "value": "#b97d00" },
-      "sw-color-danger": { "value": "#cf4b3a" },
+      "sw-color-danger": { "value": "#ba1a1a" },
       "sw-font-family-base": { "value": "'Inter', sans-serif" },
-      "sw-text-color": { "value": "#14181e" },
-      "sw-font-family-headline": { "value": "'Manrope', 'Inter', sans-serif" },
-      "sw-headline-color": { "value": "#14181e" },
-      "sw-color-price": { "value": "#14181e" },
-      "sw-color-buy-button": { "value": "#0f4c81" },
-      "sw-color-buy-button-text": { "value": "#ffffff" }
+      "sw-text-color": { "value": "#2c2825" },
+      "sw-font-family-headline": { "value": "'Hanken Grotesk', 'Inter', sans-serif" },
+      "sw-headline-color": { "value": "#2c2825" },
+      "sw-color-price": { "value": "#2c2825" },
+      "sw-color-buy-button": { "value": "#ff8c00" },
+      "sw-color-buy-button-text": { "value": "#2c2825" }
     }
   }
 }

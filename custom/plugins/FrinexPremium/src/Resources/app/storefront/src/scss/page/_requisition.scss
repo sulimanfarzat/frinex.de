@@ -13,15 +13,24 @@ der Anforderung, auf Mobile als Overlay über eine Bottom-Bar.
     padding-top: var(--frx-s4);
     padding-bottom: var(--frx-s6);
 
-    // ERP: eckig, dicht — Pill-Radius des Themes zurücknehmen
+    // ERP: eckig, dicht — Theme-Button-Optik zurücknehmen. Das
+    // globale .btn (base.scss) setzt Versalien, Headline-Font und
+    // Laufweite; auf den kompakten Buttons dieser Werkzeug-Ansicht
+    // bläht das die Beschriftung auf — „Hinzufügen" wurde dadurch zu
+    // gesperrtem „HINZUFÜGEN", sprengte die Aktionsspalte und wurde
+    // vom Scroll-Container abgeschnitten.
     .btn {
-        border-radius: .375rem;
+        border-radius: var(--frx-radius);
         padding: .4rem .9rem;
+        font-family: #{$font-family-base};
+        font-weight: 600;
+        text-transform: none;
+        letter-spacing: normal;
     }
 
     .form-control,
     .form-select {
-        border-radius: .375rem;
+        border-radius: var(--frx-radius);
         padding: .4rem .6rem;
         font-size: .875rem;
     }
@@ -86,7 +95,7 @@ der Anforderung, auf Mobile als Overlay über eine Bottom-Bar.
     display: inline-flex;
     background: var(--frx-surface);
     border: 1px solid var(--frx-line);
-    border-radius: .5rem;
+    border-radius: var(--frx-radius);
     padding: .2rem;
     gap: .2rem;
 }
@@ -94,7 +103,7 @@ der Anforderung, auf Mobile als Overlay über eine Bottom-Bar.
 .frx-req-view {
     border: 0;
     background: transparent;
-    border-radius: .35rem;
+    border-radius: var(--frx-radius);
     padding: .35rem .8rem;
     font-size: .82rem;
     font-weight: 600;
@@ -109,8 +118,8 @@ der Anforderung, auf Mobile als Overlay über eine Bottom-Bar.
 
     &.is-active {
         background: var(--frx-paper);
-        color: var(--frx-accent);
-        box-shadow: 0 1px 2px rgba(20, 24, 30, .1);
+        color: var(--frx-accent-ink);
+        box-shadow: 0 1px 2px rgba(#{$frx-ink}, .1);
     }
 }
 
@@ -143,7 +152,7 @@ der Anforderung, auf Mobile als Overlay über eine Bottom-Bar.
 
 // Hinweiszeile (Warenkorb-Meldungen, Fehler)
 .frx-req-alert {
-    border-radius: .375rem;
+    border-radius: var(--frx-radius);
     padding: .5rem .75rem;
     font-size: .82rem;
     margin-bottom: var(--frx-s2);
@@ -185,7 +194,7 @@ der Anforderung, auf Mobile als Overlay über eine Bottom-Bar.
 .frx-req-tablewrap {
     background: var(--frx-paper);
     border: 1px solid var(--frx-line);
-    border-radius: .5rem;
+    border-radius: var(--frx-radius);
     overflow: auto;
     max-height: min(64vh, 46rem);
     scrollbar-width: thin;
@@ -238,7 +247,7 @@ der Anforderung, auf Mobile als Overlay über eine Bottom-Bar.
             height: 2.25rem;
             object-fit: contain;
             background: var(--frx-surface);
-            border-radius: .25rem;
+            border-radius: var(--frx-radius);
             display: block;
         }
     }
@@ -275,10 +284,15 @@ der Anforderung, auf Mobile als Overlay über eine Bottom-Bar.
         width: 5.5rem;
     }
 
+    // Aktionsspalte schrumpft exakt auf ihren Inhalt (width: 1% ist
+    // der Shrink-to-fit-Trick für Tabellenzellen). So kann sie nie
+    // schmaler als Stern + Button werden — die Namensspalte nimmt den
+    // Rest. Verhindert das Abschneiden unabhängig von der Beschriftung.
     .col-act {
         white-space: nowrap;
         text-align: right;
-        width: 9rem;
+        width: 1%;
+        padding-left: 1rem;
     }
 }
 
@@ -288,7 +302,7 @@ der Anforderung, auf Mobile als Overlay über eine Bottom-Bar.
     justify-content: center;
     width: 2.25rem;
     height: 2.25rem;
-    border-radius: .25rem;
+    border-radius: var(--frx-radius);
     background: var(--frx-surface);
     color: var(--frx-line);
     font-weight: 800;
@@ -333,15 +347,15 @@ der Anforderung, auf Mobile als Overlay über eine Bottom-Bar.
     width: 4.25rem;
     text-align: center;
     border: 1.5px solid var(--frx-line);
-    border-radius: .375rem;
+    border-radius: var(--frx-radius);
     padding: .3rem .2rem;
     font-size: .875rem;
     font-variant-numeric: tabular-nums;
 
     &:focus {
         outline: 0;
-        border-color: var(--frx-accent);
-        box-shadow: 0 0 0 3px rgba(15, 76, 129, .18);
+        border-color: var(--frx-accent-ink);
+        box-shadow: 0 0 0 3px rgba(255, 140, 0, .35);
     }
 }
 
@@ -356,20 +370,46 @@ der Anforderung, auf Mobile als Overlay über eine Bottom-Bar.
     vertical-align: middle;
 
     &:hover {
-        color: var(--frx-b2b);
+        color: var(--frx-accent-ink);
     }
 
     &.is-active {
-        color: var(--frx-b2b);
+        color: var(--frx-accent-ink);
     }
 }
 
+// Icon-Button: kompaktes Quadrat statt Textbutton (spart Platz in
+// der dichten Tabelle). Selektor .frx-req-add.btn, damit die
+// Innenabstände den .frx-req .btn-Reset überstimmen (gleiche
+// Spezifität, aber später im Quellcode).
+.frx-req-add.btn {
+    min-width: 0;
+    width: 2.5rem;
+    padding: .4rem 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .frx-req-add {
-    min-width: 6.2rem;
+    margin-left: .4rem; // Abstand zum Favoriten-Stern
 
     &.is-done {
         background: #1f9d55;
         border-color: #1f9d55;
+    }
+
+    // Grundzustand Plus, nach Erfolg (.is-done) Häkchen
+    .frx-req-add-check {
+        display: none;
+    }
+
+    &.is-done .frx-req-add-plus {
+        display: none;
+    }
+
+    &.is-done .frx-req-add-check {
+        display: inline-flex;
     }
 }
 
@@ -397,7 +437,7 @@ der Anforderung, auf Mobile als Overlay über eine Bottom-Bar.
 .frx-req-panel {
     background: var(--frx-paper);
     border: 1px solid var(--frx-line);
-    border-radius: .5rem;
+    border-radius: var(--frx-radius);
     box-shadow: var(--frx-shadow);
     overflow: hidden;
 }
@@ -414,8 +454,8 @@ der Anforderung, auf Mobile als Overlay über eine Bottom-Bar.
 
 .frx-req-panel-badge {
     background: var(--frx-accent);
-    color: #fff;
-    border-radius: 50rem;
+    color: var(--frx-ink);
+    border-radius: var(--frx-radius);
     font-size: .72rem;
     font-weight: 700;
     padding: .1rem .5rem;
@@ -652,7 +692,7 @@ der Anforderung, auf Mobile als Overlay über eine Bottom-Bar.
     }
 
     .frx-req-panel {
-        border-radius: .75rem .75rem 0 0;
+        border-radius: var(--frx-radius) var(--frx-radius) 0 0;
         box-shadow: var(--frx-shadow-lift);
     }
 
@@ -671,7 +711,7 @@ der Anforderung, auf Mobile als Overlay über eine Bottom-Bar.
         border: 0;
         border-radius: 50rem;
         background: var(--frx-accent);
-        color: #fff;
+        color: var(--frx-ink);
         font-weight: 700;
         font-size: .9rem;
         padding: .75rem 1.25rem;

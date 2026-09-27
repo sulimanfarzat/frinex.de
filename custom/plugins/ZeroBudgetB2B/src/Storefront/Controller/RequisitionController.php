@@ -84,10 +84,16 @@ class RequisitionController extends StorefrontController
 
         $cart = $this->cartService->getCart($context->getToken(), $context);
 
+        // Abteilung/Kostenstelle aus den Stammdaten (Kunden-Custom-Fields,
+        // gepflegt in der Administration) — belegt das Formular vor.
+        $customFields = $customer->getCustomFields() ?? [];
+
         return $this->renderStorefront('@ZeroBudgetB2B/storefront/page/requisition/index.html.twig', [
             'requisitionCategories' => $this->loadCategories($context),
             'requisitionFavorites' => $this->favorites->get($customer),
             'requisitionPanel' => $this->panelState($cart),
+            'requisitionDepartment' => (string) ($customFields['zb_b2b_department'] ?? ''),
+            'requisitionCostCenter' => (string) ($customFields['zb_b2b_cost_center'] ?? ''),
         ]);
     }
 

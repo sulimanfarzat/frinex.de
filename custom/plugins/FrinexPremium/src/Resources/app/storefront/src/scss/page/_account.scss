@@ -53,12 +53,12 @@ Dazu: klare Kartentitel und eine aufgeräumte Seitenleiste.
 
 .account-content-aside .account-aside-item:hover {
     background: var(--frx-surface);
-    color: var(--frx-accent);
+    color: var(--frx-accent-ink);
 }
 
 // aktiver Menüpunkt: Akzentbalken links statt Vollflächen-Highlight
 .account-content-aside .account-aside-item.is-active {
-    color: var(--frx-accent);
+    color: var(--frx-accent-ink);
     font-weight: 650;
     background: transparent;
     box-shadow: inset 3px 0 0 var(--frx-accent);

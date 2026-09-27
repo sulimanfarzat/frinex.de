@@ -3,6 +3,7 @@
         "blocks": {
             "frinex": {
                 "hero": { "label": "FRINEX Hero (Startseite)" },
+                "heroSlider": { "label": "FRINEX Hero-Slider (mehrere Bilder)" },
                 "uspBar": { "label": "FRINEX USP-Leiste (4 Spalten)" },
                 "categoryGrid": { "label": "FRINEX Kategorien-Grid" },
                 "productSlider": { "label": "FRINEX Produkt-Slider (B2B)" },
@@ -32,6 +33,31 @@
                     "ctaSecondaryUrlHelp": "Ohne Link wird der sekundäre CTA ausgeblendet",
                     "showTrustBar": "Trust-Leiste anzeigen (Nettopreise, Rechnung, 24-h-Versand, Ansprechpartner)",
                     "media": "Hintergrundbild"
+                }
+            },
+            "frinexHeroSlider": {
+                "label": "FRINEX Hero-Slider",
+                "placeholder": {
+                    "headline": "Headline eingeben …",
+                    "subline": "Subline eingeben …",
+                    "ctaPrimary": "Geschäftskonto anlegen",
+                    "ctaSecondary": "Katalog ansehen"
+                },
+                "config": {
+                    "headline": "Headline",
+                    "subline": "Subline",
+                    "ctaPrimaryLabel": "Primärer CTA — Beschriftung",
+                    "ctaPrimaryUrl": "Primärer CTA — Link",
+                    "ctaPrimaryUrlHelp": "Leer lassen für die Registrierungsseite (/account/register)",
+                    "ctaSecondaryLabel": "Sekundärer CTA — Beschriftung",
+                    "ctaSecondaryUrl": "Sekundärer CTA — Link",
+                    "ctaSecondaryUrlHelp": "Ohne Link wird der sekundäre CTA ausgeblendet",
+                    "showTrustBar": "Trust-Leiste anzeigen (Nettopreise, Rechnung, 24-h-Versand, Ansprechpartner)",
+                    "autoplay": "Bilder automatisch wechseln",
+                    "interval": "Wechsel-Intervall (Sekunden)",
+                    "intervalHelp": "Nur aktiv bei automatischem Wechsel",
+                    "imagesHelp": "Bis zu 6 Bilder — die Reihenfolge unten ist die Reihenfolge im Slider. Leere Felder werden übersprungen. Bild 1 wird zuerst gezeigt.",
+                    "image": "Bild {index}"
                 }
             },
             "frinexUspItem": {

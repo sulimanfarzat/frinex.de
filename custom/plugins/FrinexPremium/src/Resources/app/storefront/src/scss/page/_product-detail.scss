@@ -1,9 +1,11 @@
 /*
-FRINEX Premium — Produktdetailseite (Phase 3)
+FRINEX Premium — Produktdetailseite
 ==================================================
-Große Galerie auf Surface-Grund, Sticky-Kaufbox als
-Entscheidungszentrale, Akzent-Tabs, präzise Daten-Tabelle
-(Konzept 02/09/11).
+Industrial-Entwurf, Light Mode: asymmetrisches 7/5-Raster (kommt
+bereits aus @Storefront/block/cms-block-gallery-buybox), Galerie auf
+Weiß mit Hairline, Sticky-Kaufbox als Entscheidungszentrale, Größen
+als Button-Raster, Staffelpreise als umrandete Karte, technische
+Daten als Karten-Raster (Markup aus dem properties-Override).
 */
 
 // ---------------------------------------------------------------
@@ -11,54 +13,142 @@ Entscheidungszentrale, Akzent-Tabs, präzise Daten-Tabelle
 // ---------------------------------------------------------------
 .product-detail-buy {
     position: sticky;
-    top: 6.5rem; // unter dem kollabierten Sticky-Header
+    top: 7rem; // unter dem kollabierten Sticky-Header
+    display: flex;
+    flex-direction: column;
+    gap: var(--frx-stack-md);
+    height: fit-content;
 }
 
 .product-detail-name {
-    font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+    font-family: #{$headings-font-family};
     font-weight: 800;
+    text-transform: uppercase;
     letter-spacing: -.02em;
     line-height: 1.12;
+    margin-bottom: .5rem;
 }
 
+// Preis: die schwerste Zahl der Seite — 48px/900 in Ink. Der
+// Entwurf setzt hier bewusst Schwarz statt Orange; das ist nicht
+// nur lauter, sondern löst auch die Kontrastfrage (17,8:1 statt
+// 2,3:1, die Orange als Preisfarbe gehabt hätte).
 .product-detail-price {
-    font-weight: 650;
-    font-size: 1.6rem;
+    font-family: #{$headings-font-family};
+    font-weight: 900;
+    font-size: clamp(2rem, calc(1.4rem + 2.6vw), 3rem);
+    line-height: 1;
+    letter-spacing: -.03em;
     color: var(--frx-ink);
     font-variant-numeric: tabular-nums;
+    margin-bottom: 0;
+}
+
+// Eyebrow über dem Preis (kommt aus dem buy-widget-price-Override,
+// erscheint nur wenn ein Streichpreis existiert)
+.frx-price-eyebrow {
+    @extend %frx-label;
+
+    display: block;
+    color: var(--frx-muted);
+    margin-bottom: -.25rem;
+}
+
+// Streichpreis daneben, nicht darunter
+.product-detail-list-price-wrapper {
+    color: var(--frx-muted);
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: line-through;
 }
 
 .product-detail-price-unit,
-.product-detail-tax {
+.product-detail-tax,
+.product-detail-tax-container {
     color: var(--frx-muted);
     font-size: .82rem;
 }
 
-// Kauf-Button: volle Breite, großes Touchziel; auf Mobile klebt er
-// am unteren Viewport-Rand, solange die Kaufbox im Fluss steht
-.product-detail-buy .btn-buy {
+.product-detail-ordernumber-container {
+    @extend %frx-label;
+
+    color: var(--frx-muted);
+}
+
+// ---------------------------------------------------------------
+// Varianten: Größen als Raster quadratischer Schalter statt als
+// lose Buttonreihe. Der Core liefert die Optionen bereits als
+// .btn-outline-secondary (is-display-text).
+// ---------------------------------------------------------------
+.product-detail-configurator-group {
+    border-top: 1px solid var(--frx-line);
+    border-bottom: 1px solid var(--frx-line);
+    padding: var(--frx-stack-md) 0;
+}
+
+.product-detail-configurator-group-title {
+    @extend %frx-label;
+
+    color: var(--frx-muted);
+    font-weight: 700;
+    margin-bottom: var(--frx-stack-sm);
+}
+
+.product-detail-configurator-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(3.25rem, 1fr));
+    gap: .5rem;
+}
+
+.product-detail-configurator-option {
+    display: block;
+}
+
+.product-detail-configurator-option-label.is-display-text {
+    --bs-btn-border-color: #{$frx-outline};
+    --bs-btn-color: #{$frx-ink};
+    --bs-btn-hover-bg: #{$frx-ink};
+    --bs-btn-hover-border-color: #{$frx-ink};
+    --bs-btn-hover-color: #{$frx-paper};
+    --bs-btn-active-bg: #{$frx-ink};
+    --bs-btn-active-border-color: #{$frx-ink};
+    --bs-btn-active-color: #{$frx-paper};
+
     width: 100%;
-    padding-top: .85rem;
-    padding-bottom: .85rem;
+    padding: .75rem .25rem;
+    font-family: #{$font-family-base};
+    font-weight: 700;
     font-size: 1rem;
+    letter-spacing: 0;
+    text-transform: none;
 }
 
-@media (max-width: 767.98px) {
-    .product-detail-buy {
-        position: static;
-    }
-
-    .product-detail-buy .btn-buy {
-        position: sticky;
-        bottom: .75rem;
-        z-index: 10;
-        box-shadow: var(--frx-shadow-lift);
-    }
+// Gewählte Variante: schwarz gefüllt mit orangem 2-px-Rahmen. Die
+// Kante trägt die Auswahl, die Füllung den Kontrast — zusammen im
+// Raster auf einen Blick lesbar.
+.product-detail-configurator-option-input:checked
+    + .product-detail-configurator-option-label.is-display-text {
+    background: var(--frx-ink);
+    border-color: var(--frx-accent);
+    border-width: 2px;
+    color: var(--frx-paper);
 }
 
-// Lieferstatus: klarer Farbpunkt + Text
+// Nicht kombinierbar: stumme Steel-Gray-Fläche statt durchgestrichen
+.product-detail-configurator-option-label.is-combinable-disabled {
+    background: var(--frx-surface);
+    border-color: transparent;
+    color: rgba(#{$frx-ink}, .25);
+    cursor: not-allowed;
+}
+
+// ---------------------------------------------------------------
+// Lieferstatus: Punkt + Text, Verfügbarkeit in Grün
+// ---------------------------------------------------------------
+.product-detail-delivery-information,
 .delivery-information {
     font-size: .88rem;
+    font-weight: 600;
 }
 
 .delivery-status-indicator {
@@ -66,41 +156,253 @@ Entscheidungszentrale, Akzent-Tabs, präzise Daten-Tabelle
     height: .55rem;
 }
 
+.delivery-available .delivery-status-indicator {
+    background: #{$success};
+}
+
 // ---------------------------------------------------------------
-// Galerie: ruhiger Grund, klare Thumbnail-Zustände
+// Kaufzeile: Mengenwähler und Kauf-Button auf einer Höhe (3.5rem),
+// der Button nimmt den Rest der Breite
+// ---------------------------------------------------------------
+.product-detail-form-container form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--frx-stack-sm);
+    align-items: stretch;
+}
+
+.product-detail-quantity-group {
+    flex: 0 0 auto;
+    width: 8rem;
+}
+
+.product-detail-quantity-group .form-control,
+.product-detail-quantity-group .btn {
+    height: 3.5rem;
+    font-weight: 700;
+}
+
+// Kauf-Button: harter Versatzschatten statt Weichzeichnung, beim
+// Drücken schiebt sich der Button in seinen eigenen Schatten. Hover
+// invertiert komplett auf Schwarz.
+.product-detail-buy .btn-buy {
+    flex: 1 1 12rem;
+    min-height: 4rem;
+    font-size: .6875rem;
+    font-weight: 900;
+    letter-spacing: .2em;
+    box-shadow: 8px 8px 0 0 var(--frx-ink);
+    transition:
+        background-color var(--frx-t-fast) var(--frx-ease),
+        color var(--frx-t-fast) var(--frx-ease),
+        transform var(--frx-t-fast) var(--frx-ease),
+        box-shadow var(--frx-t-fast) var(--frx-ease);
+}
+
+.product-detail-buy .btn-buy:hover,
+.product-detail-buy .btn-buy:focus {
+    background-color: var(--frx-ink);
+    border-color: var(--frx-ink);
+    color: var(--frx-paper);
+}
+
+.product-detail-buy .btn-buy:active {
+    transform: translate(4px, 4px);
+    box-shadow: 4px 4px 0 0 var(--frx-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .product-detail-buy .btn-buy {
+        transition: none;
+    }
+
+    .product-detail-buy .btn-buy:active {
+        transform: none;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .product-detail-buy {
+        position: static;
+    }
+
+    // Am Viewport klebend braucht der Button den Versatzschatten
+    // nicht — er würde über den Inhalt darunter ragen
+    .product-detail-buy .btn-buy {
+        position: sticky;
+        bottom: .75rem;
+        z-index: 10;
+        box-shadow: var(--frx-shadow-lift);
+    }
+
+    .product-detail-buy .btn-buy:active {
+        transform: none;
+        box-shadow: var(--frx-shadow-lift);
+    }
+}
+
+// ---------------------------------------------------------------
+// Staffelpreise: weiße Karte mit 2-px-Charcoal-Rahmen und
+// angeschnittener oranger Ecke (Light-Mode-Entwurf)
+// ---------------------------------------------------------------
+.product-block-prices {
+    position: relative;
+    background: var(--frx-paper);
+    border: 2px solid var(--frx-ink);
+    padding: 1.5rem;
+    overflow: hidden;
+    box-shadow: var(--frx-shadow);
+}
+
+// Angeschnittenes Quadrat oben rechts, wie im Entwurf
+.product-block-prices::after {
+    content: "";
+    position: absolute;
+    top: -.75rem;
+    right: -3rem;
+    width: 6rem;
+    height: 6rem;
+    background: rgba(255, 140, 0, .1);
+    transform: rotate(45deg);
+    pointer-events: none;
+}
+
+.product-block-prices-grid {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 0;
+    font-variant-numeric: tabular-nums;
+
+    // Bootstrap-Tabellenfarben zurücknehmen — die Karte trägt bereits
+    --bs-table-bg: transparent;
+    --bs-table-color: #{$frx-ink};
+
+    th,
+    td {
+        border: 0;
+        padding: .45rem 0;
+        background: transparent;
+        color: var(--frx-ink);
+    }
+
+    // Trennlinien zwischen den Staffeln, nicht darüber
+    tbody tr + tr th,
+    tbody tr + tr td {
+        border-top: 1px solid var(--frx-line);
+    }
+}
+
+// Der Entwurf setzt die Überschrift in Safety-Orange — auf Weiß
+// sind das 2,3:1. Hier die schriftfähige Stufe (6,2:1).
+.product-block-prices-head th {
+    @extend %frx-label;
+
+    color: var(--frx-accent-ink) !important;
+    padding-bottom: .75rem !important;
+}
+
+.product-block-prices-body .product-block-prices-cell {
+    font-family: #{$headings-font-family};
+    font-weight: 900;
+    font-size: 1.125rem;
+    text-align: right;
+}
+
+.product-block-prices-body .product-block-prices-cell-thin {
+    font-family: #{$font-family-base};
+    font-weight: 500;
+    font-size: 1rem;
+    text-align: left;
+}
+
+.product-block-prices-quantity {
+    font-variant-numeric: tabular-nums;
+}
+
+// ---------------------------------------------------------------
+// Galerie: Ware auf Weiß, Rahmen als Hairline. Thumbnails ruhen
+// gedimmt und melden sich bei Hover/Auswahl.
 // ---------------------------------------------------------------
 .gallery-slider-item,
 .gallery-slider-single-image {
-    background: var(--frx-surface);
-    border-radius: var(--frx-radius);
+    background: var(--frx-paper);
+    border: 1px solid var(--frx-line);
+    border-radius: 0;
 }
 
 .gallery-slider-thumbnails-item .gallery-slider-thumbnails-image {
-    border-radius: .375rem;
-    border: 1.5px solid transparent;
-    transition: border-color var(--frx-t-fast) var(--frx-ease);
+    border-radius: 0;
+    border: 1px solid var(--frx-line);
+    padding: .4rem;
+    background: var(--frx-paper);
+    opacity: .6;
+    transition:
+        border-color var(--frx-t-fast) var(--frx-ease),
+        opacity var(--frx-t-fast) var(--frx-ease);
 }
 
-.gallery-slider-thumbnails-item.tns-nav-active .gallery-slider-thumbnails-image,
 .gallery-slider-thumbnails-item:hover .gallery-slider-thumbnails-image {
-    border-color: var(--frx-accent);
+    opacity: 1;
+}
+
+.gallery-slider-thumbnails-item.tns-nav-active .gallery-slider-thumbnails-image {
+    border: 2px solid var(--frx-accent);
+    opacity: 1;
 }
 
 // ---------------------------------------------------------------
-// Tabs: Akzent-Unterstreichung statt Kästen (wie Konzept-Demo 07)
+// Tabs: Versal-Labels mit 4-px-Akzentkante unter dem aktiven Reiter,
+// dahinter das Outline-Wasserzeichen aus dem Entwurf.
 // ---------------------------------------------------------------
+.product-detail-tabs {
+    position: relative;
+    margin-top: var(--frx-stack-lg);
+}
+
+// Rein dekorativ. Die Alt-Text-Syntax content: "…" / "" hält den
+// Text aus dem Accessibility-Tree; Browser ohne Support ignorieren
+// die ganze Deklaration, dann fehlt nur die Verzierung.
+@media (min-width: 992px) {
+    .product-detail-tabs::before {
+        content: "TECHNIK" / "";
+        position: absolute;
+        left: 0;
+        bottom: 100%;
+        transform: translateY(35%);
+        font-family: #{$headings-font-family};
+        font-size: 7.5rem;
+        font-weight: 900;
+        line-height: 1;
+        letter-spacing: -.04em;
+        white-space: nowrap;
+        color: transparent;
+        -webkit-text-stroke: 1px rgba(#{$frx-ink}, .09);
+        user-select: none;
+        pointer-events: none;
+        z-index: 0;
+    }
+}
+
 .product-detail-tabs .nav-tabs {
-    border-bottom: 1.5px solid var(--frx-line);
-    gap: .25rem;
+    position: relative;
+    z-index: 1;
+    border-bottom: 1px solid var(--frx-line);
+    gap: 0;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: thin;
 }
 
 .product-detail-tabs .nav-tabs .nav-link {
+    @extend %frx-label;
+
     border: 0;
-    border-bottom: 2px solid transparent;
-    margin-bottom: -1.5px;
+    border-bottom: 4px solid transparent;
+    margin-bottom: -1px;
+    border-radius: 0;
     background: none;
-    font-weight: 600;
-    font-size: .92rem;
+    padding: 1rem 2rem;
+    white-space: nowrap;
     color: var(--frx-muted);
     transition:
         color var(--frx-t-fast) var(--frx-ease),
@@ -108,27 +410,68 @@ Entscheidungszentrale, Akzent-Tabs, präzise Daten-Tabelle
 }
 
 .product-detail-tabs .nav-tabs .nav-link:hover {
-    color: var(--frx-ink);
+    color: var(--frx-accent-ink);
 }
 
+// Aktiv trägt zwei Signale: Schriftfarbe UND Kante. Die orange
+// Kante allein käme auf Weiß nicht auf 3:1.
 .product-detail-tabs .nav-tabs .nav-link.active {
-    color: var(--frx-accent);
+    color: var(--frx-ink);
+    font-weight: 700;
     border-bottom-color: var(--frx-accent);
 }
 
 // ---------------------------------------------------------------
-// Technische Daten: Hairlines, fluchtende Werte
+// Technische Daten: Karten-Raster statt Tabelle. Markup kommt aus
+// dem properties-Override (Definitionsliste), erste und letzte
+// Karte tragen die orange Kante wie im Entwurf.
 // ---------------------------------------------------------------
-.product-detail-properties-table td,
-.product-detail-properties-table th {
-    border-color: var(--frx-line);
-    padding: .6rem .75rem;
+.frx-specs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: var(--frx-gutter);
+    margin-bottom: 0;
+}
+
+.frx-spec {
+    background: var(--frx-paper);
+    border: 1px solid var(--frx-line);
+    border-left: 4px solid var(--frx-ink);
+    padding: 2rem;
+    box-shadow: var(--frx-shadow);
+    transition: box-shadow var(--frx-t-med) var(--frx-ease);
+}
+
+.frx-spec:hover {
+    box-shadow: var(--frx-shadow-lift);
+}
+
+.frx-spec:first-child,
+.frx-spec:last-child {
+    border-left-color: var(--frx-accent);
+}
+
+.frx-spec-label {
+    font-family: #{$headings-font-family};
+    font-weight: 900;
+    font-size: .875rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--frx-ink);
+    margin-bottom: .5rem;
+}
+
+.frx-spec-value {
+    color: var(--frx-muted);
+    line-height: 1.6;
+    margin-bottom: 0;
     font-variant-numeric: tabular-nums;
 }
 
-.product-detail-properties-table .properties-label {
-    color: var(--frx-muted);
-    font-weight: 500;
+@media (prefers-reduced-motion: reduce) {
+    .frx-spec {
+        transition: none;
+    }
 }
 
 // ---------------------------------------------------------------
@@ -136,11 +479,11 @@ Entscheidungszentrale, Akzent-Tabs, präzise Daten-Tabelle
 // ---------------------------------------------------------------
 .product-detail-review-teaser .point-rating,
 .product-review-rating .point-rating {
-    color: var(--frx-b2b); // Sterne in Amber — einziges Nicht-Blau-Signal
+    color: var(--frx-accent-ink); // Sterne: schriftfähiges Orange, hell wäre 2,3:1
 }
 
 .product-detail-cross-selling .cms-element-title,
 .cross-selling-tab-navigation .nav-link {
-    font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+    font-family: #{$headings-font-family};
     font-weight: 800;
 }

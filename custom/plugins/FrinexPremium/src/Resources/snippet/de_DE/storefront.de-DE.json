@@ -9,6 +9,10 @@
             "trust3": "Versand innerhalb von 24 h",
             "trust4": "Persönlicher Ansprechpartner"
         },
+        "heroSlider": {
+            "dotsAriaLabel": "Bildauswahl",
+            "gotoSlide": "Zu Bild %index%"
+        },
         "categoryGrid": {
             "ariaLabel": "Produktkategorien"
         },

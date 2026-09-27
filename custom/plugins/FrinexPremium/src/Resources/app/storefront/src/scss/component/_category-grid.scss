@@ -61,7 +61,7 @@ sauber auf. Feste Seitenverhältnisse verhindern Layout Shifts.
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+    font-family: #{$headings-font-family};
     font-size: 3rem;
     font-weight: 800;
     color: var(--frx-line);
@@ -79,7 +79,7 @@ sauber auf. Feste Seitenverhältnisse verhindern Layout Shifts.
 }
 
 .frx-cat-tile-name {
-    font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+    font-family: #{$headings-font-family};
     font-weight: 700;
     font-size: 1rem;
     color: #ffffff;

@@ -13,13 +13,13 @@ Menge), Fußzeile mit „Weiterer Artikel" und „In den Warenkorb".
     height: 3rem;
     border-radius: 50%;
     background: var(--frx-surface);
-    color: var(--frx-accent);
+    color: var(--frx-accent-ink);
     flex-shrink: 0;
 }
 
 .quick-order-card {
     border: 1px solid var(--frx-line);
-    border-radius: .75rem;
+    border-radius: var(--frx-radius);
     box-shadow: var(--frx-shadow);
     overflow: hidden;
 }

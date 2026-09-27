@@ -3,6 +3,7 @@
         "blocks": {
             "frinex": {
                 "hero": { "label": "FRINEX hero (home page)" },
+                "heroSlider": { "label": "FRINEX hero slider (multiple images)" },
                 "uspBar": { "label": "FRINEX USP bar (4 columns)" },
                 "categoryGrid": { "label": "FRINEX category grid" },
                 "productSlider": { "label": "FRINEX product slider (B2B)" },
@@ -32,6 +33,31 @@
                     "ctaSecondaryUrlHelp": "Without a link the secondary CTA is hidden",
                     "showTrustBar": "Show trust bar (net prices, invoice, 24 h dispatch, account manager)",
                     "media": "Background image"
+                }
+            },
+            "frinexHeroSlider": {
+                "label": "FRINEX hero slider",
+                "placeholder": {
+                    "headline": "Enter headline …",
+                    "subline": "Enter subline …",
+                    "ctaPrimary": "Create business account",
+                    "ctaSecondary": "Browse catalogue"
+                },
+                "config": {
+                    "headline": "Headline",
+                    "subline": "Subline",
+                    "ctaPrimaryLabel": "Primary CTA — label",
+                    "ctaPrimaryUrl": "Primary CTA — link",
+                    "ctaPrimaryUrlHelp": "Leave empty to link to the registration page (/account/register)",
+                    "ctaSecondaryLabel": "Secondary CTA — label",
+                    "ctaSecondaryUrl": "Secondary CTA — link",
+                    "ctaSecondaryUrlHelp": "Without a link the secondary CTA is hidden",
+                    "showTrustBar": "Show trust bar (net prices, invoice, 24 h dispatch, account manager)",
+                    "autoplay": "Rotate images automatically",
+                    "interval": "Rotation interval (seconds)",
+                    "intervalHelp": "Only active when auto-rotation is on",
+                    "imagesHelp": "Up to 6 images — the order below is the order in the slider. Empty fields are skipped. Image 1 is shown first.",
+                    "image": "Image {index}"
                 }
             },
             "frinexUspItem": {

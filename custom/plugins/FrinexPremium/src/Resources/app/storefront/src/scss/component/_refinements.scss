@@ -37,7 +37,7 @@ Karten-Quick-Buy, ruhige Detail-Politur.
 }
 
 .breadcrumb-link:hover {
-    color: var(--frx-accent);
+    color: var(--frx-accent-ink);
     text-decoration: underline;
     text-underline-offset: 3px;
 }
@@ -54,7 +54,7 @@ Karten-Quick-Buy, ruhige Detail-Politur.
 .quantity-selector-group,
 .frx-card-qty-group {
     border: 1.5px solid var(--frx-line);
-    border-radius: 50rem;
+    border-radius: var(--frx-radius);
     overflow: hidden;
     // −/Zahl/+ immer in einer Zeile, egal wie schmal der Container:
     // Buttons fix kompakt, nur das Zahlenfeld flext. (Bugs: erst brach
@@ -81,7 +81,7 @@ Karten-Quick-Buy, ruhige Detail-Politur.
 .quantity-selector-group .btn:hover,
 .frx-card-qty-group .btn:hover {
     background: var(--frx-surface);
-    color: var(--frx-accent);
+    color: var(--frx-accent-ink);
     transform: none;
     box-shadow: none;
 }
@@ -129,7 +129,7 @@ Karten-Quick-Buy, ruhige Detail-Politur.
 }
 
 .offcanvas .offcanvas-title {
-    font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+    font-family: #{$headings-font-family};
     font-weight: 800;
     letter-spacing: -.01em;
 }

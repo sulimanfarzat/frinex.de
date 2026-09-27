@@ -9,6 +9,10 @@
             "trust3": "Dispatch within 24 h",
             "trust4": "Personal account manager"
         },
+        "heroSlider": {
+            "dotsAriaLabel": "Slide selection",
+            "gotoSlide": "Go to slide %index%"
+        },
         "categoryGrid": {
             "ariaLabel": "Product categories"
         },
